@@ -1,0 +1,30 @@
+.book-shelf{
+  background-color: white;
+  border-radius: 6px;
+  min-height: 150px;
+  box-shadow: 0 0 20px 0 #cfd2d478;
+  .cover{
+    height: 9em;
+    width: auto;
+  }
+  .book-placeholder{
+    //position: absolute;
+    //z-index:2;
+    //top:0;
+    height: 9em;
+    width:90px;
+    //margin-bottom:0.5em;
+    background-color:#dbdbdb;
+  }
+  .content{
+    //padding:5px;
+  }
+}
+
+.shelf{
+  .content{
+    h1{
+      margin-top:0 !important;
+    }
+  }
+}

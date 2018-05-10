@@ -1,0 +1,25 @@
+.navbar{
+  background-color: #2d2b4a;
+  .logo{
+    font-weight: 600;
+    font-size: 1.5rem;
+  }
+  .avatar{
+    margin-right:0.5em;
+  }
+  .search{
+    min-width:500px;
+  }
+}
+.search-dropdown{
+  max-height: 300px;
+  overflow: scroll;
+  .search-item{
+    padding: 1em;
+    cursor: pointer;
+    &:hover{
+      background-color: whitesmoke;
+    }
+  }
+}
+

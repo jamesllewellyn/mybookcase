@@ -1,0 +1,34 @@
+.book{
+  cursor: pointer;
+  .cover{
+    height: 270px;
+  }
+  .book-title{
+    size:0em;
+  }
+}
+.book{
+  position: relative;
+  min-height:271px;
+  .book-placeholder{
+    //position: absolute;
+    //z-index:2;
+    //top:0;
+    height:271px;
+    width:100%;
+    margin-bottom:0.5em;
+    background-color:#dbdbdb;
+  }
+}
+.description{
+  min-height: 200px;
+}
+.wrapper{
+  position: relative;
+  .loading-text{
+    position: absolute;
+    z-index:2;
+    top:0;
+    left:0;
+  }
+}

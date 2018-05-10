@@ -1,0 +1,16 @@
+
+/** ajax loader */
+
+.main-content {
+  position: relative;
+  &.columns{
+    margin-top:0 !important;
+  }
+}
+.vue-simple-spinner-wrap {
+  margin-top: 20%;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  align-items: center;
+}

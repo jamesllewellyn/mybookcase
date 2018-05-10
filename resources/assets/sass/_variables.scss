@@ -1,8 +1,12 @@
 
-// Body
-$body-bg: #f5f8fa;
+/**  Body */
+$body-bg: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
 
-// Typography
+/** Typography */
 $font-family-sans-serif: "Raleway", sans-serif;
 $font-size-base: 0.9rem;
 $line-height-base: 1.6;
+
+$switch-background: #ff3860;
+
+$navbar-item-hover-background-color: #7570a2;

@@ -1,0 +1,47 @@
+@import "bootstrap";
+@import "transitions";
+
+#app{
+  background-image: $body-bg;
+}
+
+.homepage-hero{
+  //background-image: url("/images/home-page/my-book-shelf.jpg");
+  h1{
+    font-size: 6rem;
+    padding-bottom:0.5em;
+  }
+}
+.register-interest-hero{
+  h1{
+    font-size: 4rem;
+  }
+}
+.is-background-color{
+  background-color: $body-bg;
+}
+
+.card{
+  background-color: transparent;
+  .card-image img{
+    border-radius: 6px;
+    box-shadow: 0 0 20px 0 #cfd2d478;
+    margin-bottom: 12px;
+  }
+  .card-content{
+    background-color: white;
+    min-height: 160px;
+    border-radius: 6px;
+    box-shadow: 0 0 20px 0 #cfd2d478;
+  }
+}
+
+img{
+  border-radius: 6px;
+}
+
+
+
+//.homepage-content{
+//  padding-bottom: 4em;
+//}

@@ -14,3 +14,18 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Auth::routes();
+
+Route::post('interested-user/register', 'Invitation\RegisterInterestedUserController@register');
+
+
+Route::get('/home/', 'HomeController@index')->name('home');
+
+Route::get('/logout', 'Auth\LoginController@logout')->name('app.logout');
+
+Route::group(["middleware"=>"guest"], function() {
+
+    Route::get('interested-user', 'Invitation\InterestedUserController@create');
+
+});

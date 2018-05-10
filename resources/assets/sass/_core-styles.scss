@@ -1,0 +1,108 @@
+body{
+  background-image: $body-bg;
+}
+[v-cloak] {display: none}
+.avatar {
+  border-radius: 100%;
+}
+.is-placeholder-avatar{
+  height:100px;
+  width:100px;
+  background-color:#dbdbdb;
+  border:none;
+}
+.breadcrumb{
+  .avatar {
+    max-height: 2.5rem;
+    margin-right:0.5em;
+  }
+  h2{
+    margin-left: .5em;
+    margin-bottom: 0;
+  }
+}
+.content .breadcrumb li + li {
+  margin-top: 0;
+}
+
+.loading-text{
+  font-family: "BLOKK";
+  color:#dbdbdb;
+}
+
+.is-fixed{
+  position: fixed;
+  overflow-y: auto;
+}
+
+.is-width-90{
+  width:90% !important;
+}
+
+.is-width-80{
+  width:80% !important;
+}
+
+.is-width-70{
+  width:70% !important;
+}
+
+.is-width-60{
+  width:60% !important;
+}
+
+.is-width-50{
+  width:50% !important;
+}
+
+.is-width-30{
+  width:30% !important;
+}
+
+.is-width-10{
+  width:10% !important;
+}
+
+.is-width-20{
+  width:20% !important;
+}
+
+
+
+.has-no-boarder, .is-boarderless{
+  border: none !important;
+}
+
+.is-transparent{
+  background-color: transparent !important;
+}
+
+.is-pointer{
+  &:hover{
+    cursor: pointer;
+  }
+}
+
+.scrollable {
+  //position: fixed;
+  overflow-y: scroll !important;
+}
+.full-height, html, body {
+  height: 100%;
+}
+
+.content ul{
+  margin-left: 0;
+}
+
+.has-shadow{
+  box-shadow: 0 0 20px 0 #cfd2d478;
+}
+
+@font-face {
+  font-family: 'blokk';
+  src: url('/fonts/blokk/blokkneue-regular-webfont.woff2') format('woff2'),
+  url('/fonts/blokk/blokkneue-regular-webfont.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}

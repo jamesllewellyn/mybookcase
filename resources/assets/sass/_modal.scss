@@ -1,0 +1,9 @@
+.modal-card{
+  &.modal-container{
+    overflow: visible !important;
+    .modal-card-body{
+      overflow: visible !important;
+    }
+  }
+
+}

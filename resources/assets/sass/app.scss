@@ -1,14 +1,24 @@
+@import "bootstrap";
 
-// Fonts
-@import url("https://fonts.googleapis.com/css?family=Raleway:300,400,600");
+@import "navbar";
 
-// Variables
-@import "variables";
+@import "side-bar";
 
-// Bootstrap
-@import '~bootstrap/scss/bootstrap';
+@import "page";
 
-.navbar-laravel {
-  background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.04);
-}
+@import "transitions";
+
+@import "book";
+
+@import "book-shelf";
+
+@import "loader";
+
+@import "modal";
+
+@import "friends_page";
+
+@import "user";
+
+/** vue-multiselect */
+@import "node_modules/vue-multiselect/dist/vue-multiselect.min";
