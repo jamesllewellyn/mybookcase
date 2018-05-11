@@ -18,8 +18,11 @@ class FriendController extends Controller
     public function index(Request $request)
     {
         $pendingFriendRequest = $request->user()->getPendingFriendRequests();
+
         $sentFriendRequest = $request->user()->getSentFriendRequests();
+
         $friend = $request->user()->getFriends();
+
         return $this->apiSuccess(['active' => $friend, 'pending' => $pendingFriendRequest, 'sent' => $sentFriendRequest]);
     }
 }
