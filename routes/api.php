@@ -28,8 +28,8 @@ Route::group(["middleware"=>"guest"], function() {
  * Search API
  **********************/
 Route::group(["middleware"=>['auth:api','throttle:30,1']], function() {
-    Route::get('goodreads', 'Search\GoodreadsAPIController@index');
-    Route::get('goodreads/{id}', 'Search\GoodreadsAPIController@show');
+    Route::get('goodreads', 'Search\GoodReadsAPIController@index');
+    Route::get('goodreads/{id}', 'Search\GoodReadsAPIController@show');
     Route::get('new-york-times/best-sellers', 'Search\NewYorkTimesAPIController@index');
 });
 

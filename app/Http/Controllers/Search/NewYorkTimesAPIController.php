@@ -7,7 +7,7 @@ use App\Traits\ApiResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Cache;
 
-class NewYorkTimesApiController  extends Controller
+class NewYorkTimesAPIController  extends Controller
 {
     use ApiResponse;
 
