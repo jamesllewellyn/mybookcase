@@ -25,6 +25,8 @@
                                  :show_menu="false"
                     >
                     </google-book>
+                    <google-book :placeholder="true" v-if="books.length == 0">
+                    </google-book>
                 </div>
                 <nav class="pagination" role="navigation" aria-label="pagination" v-if="totalPages > 1">
                     <ul class="pagination-list"></ul>
