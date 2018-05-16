@@ -4,7 +4,8 @@
             <div class="card-content">
                 <div class="columns">
                     <div class="column is-one-third is-paddingless">
-                        <img class="image cover" :src="book.cover_url" alt="">
+                        <img class="image cover" :src="book.cover_url" alt="" v-if="book">
+                        <div class="book-placeholder" v-if="!book"></div>
                     </div>
                     <div class="column is-two-thirds">
                         <div class="content">
@@ -37,8 +38,7 @@
                 required: true
             },
             book: {
-                type: Object,
-                required: true
+                required: false
             },
             book_count: {
                 type: Number,
