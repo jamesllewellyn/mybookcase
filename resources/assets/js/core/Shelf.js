@@ -32,7 +32,7 @@ class Shelf {
         this.name = shelf.name
     }
 
-    delete(){
+    destroy(){
         console.log('shelfDelete')
         store.dispatch('shelfDelete', this.id);
     }

@@ -8,6 +8,7 @@ class Bookcase{
     }
 
     addShelf(shelf){
+        shelf.books_count = 0
         return this.shelves.push(new Shelf(shelf))
     }
 
