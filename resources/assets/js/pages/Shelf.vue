@@ -19,7 +19,8 @@
                                  :title="book.title"
                                  :cover_url="book.small_cover_url"
                                  :authors="book.authors"
-                                 :identifiers="book.identifiers">
+                                 :identifiers="book.identifiers"
+                                 :show_menu="true">
                     </google-book>
                     <google-book :placeholder="true" v-if="books.length == 0">
                     </google-book>
