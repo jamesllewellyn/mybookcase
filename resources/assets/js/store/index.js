@@ -23,15 +23,10 @@ const store = new Vuex.Store({
         bestSellers: null,
         book: null,
         pageLoading: true,
-        searchAsyncResults: null,
-        lastAsyncSearchTime: null,
         friendsSearchAsyncResults: null,
         showFriendsSearchOptions: false,
         searchResults: null,
         searchQuery: null,
-        isLoadingOptions: false,
-        isSearching: false,
-        showSearchOptions: false,
         modals: [], /** all app models */
         formErrors: {}, /** current form errors */
     },
@@ -71,17 +66,6 @@ const store = new Vuex.Store({
             axios.get('/api/goodreads?search=' + query)
                 .then((response) => {
                     commit('searchSuccess', {searchResults: response.data.searchResults, query: query})
-                }, (error) => {
-                    console.log(response);
-                });
-        },
-        searchAsyncFind({state, commit}, query) {
-            commit('toggleIsSearching');
-            state.isLoadingOptions = true;
-            state.lastAsyncSearchTime = _.now();
-            axios.get('/api/goodreads?search=' + query)
-                .then((response) => {
-                    commit('searchAsyncFindSuccess', {searchResults: response.data.searchResults, query: query})
                 }, (error) => {
                     console.log(response);
                 });
@@ -292,14 +276,6 @@ const store = new Vuex.Store({
         showSearchOptions: (state) => {
             state.showSearchOptions = true;
         },
-        searchAsyncFindSuccess: (state, {searchResults}) => {
-            /** add search results to store */
-            state.searchAsyncResults = searchResults;
-            state.isLoadingOptions = false;
-            if (state.searchAsyncResults) {
-                state.showSearchOptions = true;
-            }
-        },
         searchSuccess: (state, {searchResults, query}) => {
             /** add search results to store */
             state.searchResults = searchResults;
@@ -425,18 +401,6 @@ const store = new Vuex.Store({
                 return false;
             }
             return state.bookcase.shelves;
-        },
-        getSearchAsyncResults: (state) => {
-            return state.searchAsyncResults;
-        },
-        getIsLoadingOptions: (state) => {
-            return state.isLoadingOptions;
-        },
-        getLastAsyncSearchTime: (state) => {
-            return state.lastAsyncSearchTime;
-        },
-        showSearchOptions: (state) => {
-            return state.showSearchOptions;
         },
         getBestSellerLists: (state) => {
             if (!state.bestSellers) {
