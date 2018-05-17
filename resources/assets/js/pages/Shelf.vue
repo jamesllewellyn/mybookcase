@@ -121,7 +121,7 @@
 
             /** listen for project delete event **/
             Event.$on('shelf.' + this.id + '.delete', function () {
-                self.shelf.delete();
+                self.shelf.destroy();
             });
         }
     }
