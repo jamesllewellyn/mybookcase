@@ -55,7 +55,7 @@
             /** trigger event */
             triggerEvent(object){
                 if(object.areYouSure){
-                    Event.$emit('showAreYouSure', object.action, object.event.name);
+                    Event.$emit('showAreYouSure', object.action, object.event.name, object.event.payload);
                     this.hideDropdown()
                     return true
                 }

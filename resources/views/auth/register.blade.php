@@ -6,43 +6,75 @@
             <section class="hero register-interest-hero">
                 <div class="hero-body">
                     <div class="container has-text-centered">
-                        <h1 class="title is-quicksans">
+                        <h1 class="title is-quicksans has-text-centered">
                             My Bookcase
                         </h1>
-                        <p v-if="! hasRegisteredInterest" v-cloak>
-                                We are currently going though beta testing and are invitation only.
-                                Sign up below to register your interest in My Bookcase and we'll give you a heads up as soon
-                                as we're ready.
-                        </p>
-                        <transition name="fade-slow" mode="out-in">
-                            <article class="message is-success" v-if="hasRegisteredInterest" v-cloak>
-                                <div class="message-header">
-                                    <p>You've registered your interest</p>
-                                </div>
-                                <div class="message-body">
-                                    Thank you for registering your interest in My Bookcase. We'll email you over an invite to
-                                    <span v-text="email"></span> once we're ready for you
-                                </div>
-                            </article>
-                        </transition>
+                        <div class="content has-text-centered">
+                            <p>Start building and sharing your bookcase today.</p>
+                        </div>
                     </div>
                 </div>
             </section>
-            <div class="box" v-if="! hasRegisteredInterest">
-                <form>
-                    <div class="field">
-                        <label class="label">Email</label>
+            <div class="box">
+                <form role="form" method="POST" action="{{ route('register') }}">
+                    {{ csrf_field() }}
+                    <div class="form-group{{ $errors->has('first_name') ? ' has-error' : '' }}">
+                        <label for="name" class="label">Name</label>
                         <p class="control">
-                            <input class="input" type="email" name="email"
-                                   placeholder="Please enter your email address"
-                                   v-model="email">
+                            <input id="name" type="text" class="input" name="name" value="{{ old('name') }}"
+                                   required autofocus>
+                        @if ($errors->has('name'))
+                            <p class="help is-danger">{{ $errors->first('name') }}</p>
+                            @endif
+                            </p>
+                    </div>
+                    <div class="form-group{{ $errors->has('email') ? ' has-error' : '' }} field">
+                        <label for="email" class="label">E-Mail Address</label>
+                        <p class="control">
+                            <input id="email" type="email" class="input" name="email" value="{{ old('email') }}"
+                                   required>
+                        @if ($errors->has('email'))
+                            <p class="help is-danger">{{ $errors->first('email') }}</p>
+                            @endif
+                            </p>
+                    </div>
+                    <div class="form-group{{ $errors->has('handle') ? ' has-error' : '' }} field">
+                        <label for="handle" class="label">Handle</label>
+                        <p class="control">
+                            <input id="handle" type="text" class="input" name="handle" value="{{ old('handle') }}"
+                                   required>
+                            @if ($errors->has('handle'))
+                                <span class="help is-danger">
+                                <strong>{{ $errors->first('handle') }}</strong>
+                            </span>
+                            @endif
                         </p>
-                        <p class="help is-danger" v-text="getErrors('email')"></p>
+                        <p>
+                            <small>This will be displayed along with your messages in My Bookcase.</small>
+                        </p>
+                    </div>
+                    <div class="form-group{{ $errors->has('password') ? ' has-error' : '' }} field">
+                        <label for="password" class="label">Password</label>
+                        <p class="control">
+                            <input id="password" type="password" class="input" name="password" required>
+                        @if ($errors->has('password'))
+                            <p class="help is-danger">{{ $errors->first('password') }}</p>
+                            @endif
+                            </p>
+                    </div>
+                    <div class="field">
+                        <label for="password-confirm" class="label">Confirm Password</label>
+
+                        <p class="control">
+                            <input id="password-confirm" type="password" class="input" name="password_confirmation"
+                                   required>
+                        @if ($errors->has('password'))
+                            <p class="help is-danger">{{ $errors->first('password') }}</p>
+                            @endif
+                            </p>
                     </div>
                     <p class="control">
-                        <button class="button is-primary" @click.prevent="submit"
-                                :class="{'is-loading' : isLoading}">Submit
-                        </button>
+                        <button class="button is-primary">Submit</button>
                     </p>
                 </form>
             </div>
@@ -50,7 +82,6 @@
     </div>
 
 @endsection
-
 @section('scripts')
-    <script src="{{ mix('js/register-interest.js') }}"></script>
+    {{--<script src="{{ mix('js/register-user.js') }}"></script>--}}
 @endsection

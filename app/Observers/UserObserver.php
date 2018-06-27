@@ -4,6 +4,7 @@ namespace App\Observers;
 
 use App\User;
 use App\Jobs\User\CreateDefaultShelves;
+use App\Notifications\UserWelcome;
 
 class UserObserver
 {
@@ -15,8 +16,9 @@ class UserObserver
      */
     public function created(User $user)
     {
-        /** Create Users Default Shelves */
         CreateDefaultShelves::dispatch($user);
+
+        $user->notify(new UserWelcome());
     }
 
     /**
