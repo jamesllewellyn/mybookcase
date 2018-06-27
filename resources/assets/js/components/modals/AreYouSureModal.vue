@@ -26,6 +26,7 @@
             return{
                 action:'',
                 yesAction : '',
+                payload : '',
                 modalName : 'areYouSure'
             }
         },
@@ -41,21 +42,23 @@
             yes(){
                 /** set modal save button to loading status **/
                 this.modal.loading();
-                Event.$emit(this.yesAction);
+                Event.$emit(this.yesAction, this.payload);
             }
         },
         created: function() {
             let self = this;
             store.commit('modalAdd',  { name:  this.modalName })
-            Event.$on('showAreYouSure', function(action, yesAction) {
+            Event.$on('showAreYouSure', function(action, yesAction, payload) {
                 console.log('showAreYouSure event')
                 self.action = action;
                 self.yesAction = yesAction;
+                self.payload = payload;
                 self.modal.show();
             });
             Event.$on('hideAreYouSure', function() {
                 self.action = '';
                 self.yesAction = '';
+                self.payload = '';
                 self.modal.hide();
             });
         }
