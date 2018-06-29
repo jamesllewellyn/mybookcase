@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
 use App\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -26,11 +27,33 @@ class UserController extends Controller
     /**
      * Update the specified resource in storage.
      *
+     * @return \Illuminate\Http\Response
+     */
+    public function store()
+    {
+        $user = new User();
+
+        $this->validate(request(), $user->validation);
+
+        $user = $user->create([
+            'name'     => request('name'),
+            'email'    => request('email'),
+            'handle'   => request('handle'),
+            'password' => Hash::make(request('password')),
+        ]);
+
+        return $this->apiSuccess(['message' => 'User have been registered', 'user' => $user]);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
      * @param  \Illuminate\Http\Request $request
      * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user)
+    public
+    function update(Request $request, User $user)
     {
         $this->authorize('access-user', [$user]);
 

@@ -37,13 +37,25 @@ class User extends Authenticatable
 
     /**
      * Modal validation.
+     *
+     * @var array
+     */
+    public $validation = [
+        'name'     => 'required',
+        'email'    => "required|email|unique:users,email",
+        'handle'   => "required|unique:users,handle",
+        'password' => "required|confirmed|min:6",
+    ];
+
+    /**
+     * Modal validation.
      * @return  array
      */
     public function updateValidation()
     {
         return [
-            'name'     => 'required',
-            'email'    => "required|email|unique:users,id,{$this->id}",
+            'name'   => 'required',
+            'email'  => "required|email|unique:users,id,{$this->id}",
             'handle' => "required|unique:users,id,{$this->id}"
         ];
     }

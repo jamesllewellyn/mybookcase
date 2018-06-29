@@ -1,5 +1,5 @@
 .navbar{
-  background-color: #2d2b4a;
+  background-color: #2d2b4a !important;
   .logo{
     font-weight: 600;
     font-size: 1.5rem;
@@ -8,6 +8,7 @@
     margin-right:0.5em;
   }
   .search{
+    float: left;
     min-width:500px;
   }
 }

@@ -10,6 +10,7 @@ import Shelf from "../core/Shelf";
 
 const store = new Vuex.Store({
     state: {
+        isAuthenticated : false,
         user: null,
         bookcase: {
             shelves: {}
@@ -38,7 +39,7 @@ const store = new Vuex.Store({
                     commit('userGetSuccess', {user: response.data.user})
                     commit('createUsersBookcase', {shelves: response.data.shelves})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         userUpdate({state, commit}, user) {
@@ -67,7 +68,7 @@ const store = new Vuex.Store({
                 .then((response) => {
                     commit('searchSuccess', {searchResults: response.data.searchResults, query: query})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         getGoodreadsBook({commit}, {id, isbn}) {
@@ -76,7 +77,7 @@ const store = new Vuex.Store({
                 .then((response) => {
                     commit('bookGetSuccess', {book: response.data.book})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         /** New York Times */
@@ -85,7 +86,7 @@ const store = new Vuex.Store({
                 .then((response) => {
                     commit('newYorkTimeGetBestSellersSuccess', {bestSellers: response.data.bestSellers})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         /** Shelves */
@@ -198,7 +199,7 @@ const store = new Vuex.Store({
                 .then((response) => {
                     commit('friendsSearchAsyncSuccess', {users: response.data.users})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         friendAdd({state, commit}, friendId) {
@@ -207,7 +208,7 @@ const store = new Vuex.Store({
                     commit('modalHide', {name: 'friendAddModal'})
                     commit('friendAddSuccess', {friend: response.data.friend})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         friendsGet({state, commit}) {
@@ -221,7 +222,7 @@ const store = new Vuex.Store({
                         active: response.data.active
                     })
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         friendAccept({state, commit}, friendId) {
@@ -230,7 +231,7 @@ const store = new Vuex.Store({
                     commit('modalHide', {name: 'friendAcceptModal'})
                     commit('friendAcceptSuccess', {friend: response.data.friend})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         friendRequestDelete({state, commit}, requestId) {
@@ -239,14 +240,15 @@ const store = new Vuex.Store({
                     commit('modalHide', {name: 'areYouSure'})
                     commit('friendRequestDeleteSuccess', {requestId})
                 }, (error) => {
-                    console.log(response);
+                    // console.log(response);
                 });
         },
         /** Modals */
     },
     mutations: {
         userGetSuccess: (state, {user}) => {
-            state.user = user;
+            state.user = user
+            state.isAuthenticated = true
         },
         createUsersBookcase: (state, {shelves}) => {
             state.bookcase = new Bookcase(shelves);

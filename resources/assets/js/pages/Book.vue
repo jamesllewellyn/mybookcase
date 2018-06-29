@@ -43,6 +43,12 @@
                 <p class="has-text-weight-bold">Find Book.</p>
 
                 <p class="field">
+                    <a class="button" :href="`https://www.amazon.com/gp/product/${book.isbn}/ref=as_li_tl?ie=UTF8&tag=mybookcase03-20`" target="_blank">
+                        <span class="icon is-small">
+                            <i class="fab fa-amazon"></i>
+                        </span>
+                        <span>Amazon</span>
+                    </a>
                     <a class="button" :href="'http://www.worldcat.org/isbn/'+book.isbn" target="_blank">
                         <span class="icon">
                             <i class="fas fa-heart"></i>
@@ -54,12 +60,6 @@
                           <i class="fab fa-goodreads-g"></i>
                         </span>
                         <span>Goodreads</span>
-                    </a>
-                    <a class="button" :href="'https://www.amazon.com/gp/product/'+book.isbn" target="_blank">
-                        <span class="icon is-small">
-                            <i class="fab fa-amazon"></i>
-                        </span>
-                        <span>Amazon</span>
                     </a>
                 </p>
 
@@ -119,6 +119,9 @@
                 return this.$store.dispatch('getGoodreadsBook', {id: this.id, isbn: this.isbn});
             },
             addToShelfModal() {
+                if(! this.$store.state.isAuthenticated){
+                    return Event.$emit('modalShow', 'loginModal');
+                }
                 Event.$emit('modalShow', 'addToShelf');
             }
         },
