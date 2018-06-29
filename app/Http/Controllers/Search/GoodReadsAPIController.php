@@ -16,7 +16,7 @@ class GoodReadsAPIController  extends Controller
 
     public function __construct() {
         /** define controller middleware */
-        $this->middleware('auth:api');
+//        $this->middleware('auth:api');
 
         $this->goodreads = new GoodReads();
     }

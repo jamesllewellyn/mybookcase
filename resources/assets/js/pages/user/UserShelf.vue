@@ -81,7 +81,7 @@
                         self.shelf = response.data.shelf
                         self.books = response.data.books
                     }, (error) => {
-                        console.log(response)
+//                        console.log(response)
                     });
             },
             getBooks(page = 1) {
@@ -97,7 +97,7 @@
                         /** todo: fix scroll to top**/
                         self.$refs.top.scrollTop = 0;
                     }, (error) => {
-                        console.log(response)
+//                        console.log(response)
                     });
             }
         },

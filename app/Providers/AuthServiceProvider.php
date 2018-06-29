@@ -28,6 +28,8 @@ class AuthServiceProvider extends ServiceProvider
 
         Passport::routes();
 
+        Passport::tokensExpireIn(now()->addDay());
+
         /***********************
          * Project Gates
          **********************/
@@ -54,9 +56,10 @@ class AuthServiceProvider extends ServiceProvider
          * @return bool
          */
         Gate::define('access-public-shelf', function ($user, $owner, $shelf) {
-            if(! $owner->hasShelf($shelf->id)){
+            if (!$owner->hasShelf($shelf->id)) {
                 return false;
             }
+
             return $shelf->isPublic();
         });
 
@@ -65,7 +68,7 @@ class AuthServiceProvider extends ServiceProvider
          *
          * @return bool
          */
-        Gate::define('access-friend-request', function ($user,$friendRequest) {
+        Gate::define('access-friend-request', function ($user, $friendRequest) {
             return $user->hasSentRequest($friendRequest->id);
         });
     }
