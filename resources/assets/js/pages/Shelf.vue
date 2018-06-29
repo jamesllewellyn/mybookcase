@@ -22,8 +22,8 @@
                                  :identifiers="book.identifiers"
                                  :show_menu="true">
                     </google-book>
-                    <google-book :placeholder="true" v-if="books.length == 0">
-                    </google-book>
+
+                    <google-book :placeholder="true" v-if="books.length == 0"></google-book>
 
                 </div>
 
@@ -121,6 +121,11 @@
             /** listen for project delete event **/
             Event.$on('shelf.' + this.id + '.delete', function () {
                 self.shelf.destroy();
+            });
+
+            Event.$on(`shelf.${this.id}.book.remove`, function (isbn) {
+                self.books = _.reject(self.books, ['isbn',isbn])
+                Event.$emit('hideAreYouSure')
             });
         }
     }

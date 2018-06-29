@@ -23,7 +23,10 @@ class Shelf {
     }
 
     removeBook(isbn){
+        console.log(isbn)
+        console.log(this.books)
         this.books = _.reject(this.books, ['isbn',isbn])
+        console.log(this.books)
         this.books_count --
     }
 

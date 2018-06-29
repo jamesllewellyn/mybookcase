@@ -13,7 +13,7 @@
                     <div class="column is-two-thirds">
                         <div class="div is-pulled-right">
                             <drop-down-button :boarder="false"
-                                              :dropdowns="[{text : 'View', event: { name : 'changePage', payload : `/book/${isbn}?isbn=true` }, action: 'update project', areYouSure : false},{text : 'Move', event: { name : 'modalShowWithPayload', payload : {name : 'bookMoveShelf', payload : isbn} }, action: 'update project', areYouSure : false},{text : 'Remove', event: { name : `shelf.${shelfId}.remove.${isbn}`, payload : null}, action: 'remove this book from your shelf', areYouSure : true}]"
+                                              :dropdowns="[{text : 'View', event: { name : 'changePage', payload : `/book/${isbn}?isbn=true` }, action: 'update project', areYouSure : false},{text : 'Move', event: { name : 'modalShowWithPayload', payload : {name : 'bookMoveShelf', payload : isbn} }, action: 'update project', areYouSure : false},{text : 'Remove', event: { name : `shelf.${shelfId}.book.remove`, payload : isbn}, action: 'remove this book from your shelf', areYouSure : true}]"
                                               :class="'is-pulled-right'"
                                               :direction="'is-right'"
                                               :icon="'fa-ellipsis-v'"
@@ -108,9 +108,6 @@
         },
         mounted() {
             let self = this
-            Event.$on(`shelf.${this.shelfId}.remove.${this.isbn}`, function () {
-                self.$store.dispatch('shelfRemoveBook', self.isbn);
-            });
         }
     }
 </script>
