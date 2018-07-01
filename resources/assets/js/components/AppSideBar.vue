@@ -4,7 +4,7 @@
             <ul class="menu-list">
                 <li>
                     <transition name="fade" mode="out-in">
-                        <router-link exact class="item" active-class="is-active" tag="a" to="/home/" v-if="!pageLoading">
+                        <router-link exact class="item" active-class="is-active" tag="a" :to="{ name: 'dashboard'}" v-if="!pageLoading">
                             <span class="icon">
                                 <i class="fa fa-home"></i>
                             </span>

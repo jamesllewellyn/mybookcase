@@ -94,7 +94,6 @@
                         /** todo: fix scroll to top**/
                         self.$refs.top.scrollTop = 0;
                     }, (error) => {
-                        console.log(response)
                     });
             }
         },

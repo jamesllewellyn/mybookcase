@@ -1,11 +1,11 @@
 <template>
-    <nav class="navbar is-fixed-top">
+    <nav class="navbar is-fixed-top is-dark">
         <div class="container is-fluid">
             <div class="navbar-brand">
-                <a class="navbar-item logo is-quicksans has-text-centered has-text-white " href="../">
+                <router-link :to="{ name: 'welcome'}" class="navbar-item logo is-quicksans has-text-centered has-text-white">
                     <!--<img src="/images/logo/my-bookcase_logo.png" alt="Logo">-->
                     My Bookcase
-                </a>
+                </router-link>
 
                 <div class="navbar-burger burger" data-target="navMenu">
                     <span></span>
@@ -15,49 +15,83 @@
             </div>
 
             <div class="navbar-menu">
-                <div class="navbar-end">
+                <div class="navbar-start">
                     <div class="navbar-item">
                         <div class="control has-text-centered">
                             <nav-bar-search></nav-bar-search>
                         </div>
                     </div>
-                    <div class="navbar-item has-dropdown" :class="{'is-active' : showUserDropDown}" @click="showDropDown" v-on-clickaway="hideDropDown">
+                </div>
+
+                <div class="navbar-end">
+
+                    <div class="navbar-item has-dropdown" :class="{'is-active' : showUserDropDown}"
+                         @click="showDropDown" v-on-clickaway="hideDropDown" v-if="user">
                         <a class="navbar-link has-text-white">
                             <img class="avatar" :src="user.avatar_url" alt="">
                             {{user.name}}
                         </a>
-                        <div class="navbar-dropdown">
+                        <div class="navbar-dropdown" @click="hideDropDown">
                             <div class="navbar-item has-text-white">
-                                <a href="/logout">
+                                <router-link :to="{ name: 'dashboard'}">
+                                    <!--<img src="/images/logo/my-bookcase_logo.png" alt="Logo">-->
+                                    Dashboard
+                                </router-link>
+                            </div>
+                            <div class="navbar-item has-text-white">
+                                <a href="" @click.prevent="logout">
                                     Logout
                                 </a>
                             </div>
                         </div>
                     </div>
+                    <!--<div v-else>-->
+                    <div class="navbar-item">
+                        <router-link :to="{ name: 'login'}" class="has-text-white" v-if="!user">
+                            Login
+                        </router-link>
+                    </div>
+
+                    <div class="navbar-item ">
+                        <router-link :to="{ name: 'register'}" class="button is-primary" v-if="!user">
+                            Build your Bookcase
+                        </router-link>
+                      <!--<a class="" v-if="!user">-->
+                        <!--<span></span>-->
+                      <!--</a>-->
+                    </div>
                 </div>
+                <!--</div>-->
             </div>
         </div>
     </nav>
 </template>
 
 <script>
-    import { mixin as clickaway } from 'vue-clickaway'
+    import {mixin as clickaway} from 'vue-clickaway'
+
     export default {
         data() {
             return {
                 showUserDropDown: false
             }
         },
-        mixins: [ clickaway ],
-        computed:{
-            user () { return this.$store.getters.getUser },
+        mixins: [clickaway],
+        computed: {
+            user() {
+                return this.$store.getters.getUser
+            },
         },
-        methods:{
-            hideDropDown(){
+        methods: {
+            hideDropDown() {
                 return this.showUserDropDown = false
             },
-            showDropDown(){
+            showDropDown() {
                 return this.showUserDropDown = true
+            },
+            logout(){
+                this.hideDropDown()
+                Event.$emit('logout')
             }
         },
         mounted() {
