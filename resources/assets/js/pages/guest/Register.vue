@@ -21,7 +21,7 @@
                         <label class="label">Name</label>
                         <p class="control">
                             <input class="input" type="text" name="name"
-                                   placeholder="Kitty Lou"
+                                   placeholder="Please enter your name"
                                    v-model="user.name">
                         </p>
                         <p class="help is-danger" v-text="getErrors('name')"></p>
@@ -30,7 +30,7 @@
                         <label class="label">Email</label>
                         <p class="control">
                             <input class="input" type="email" name="email"
-                                   placeholder=""
+                                   placeholder="Please enter your email address"
                                    v-model="user.email">
                         </p>
                         <p class="help is-danger" v-text="getErrors('email')"></p>
@@ -38,7 +38,7 @@
                     <div class="field">
                         <label class="label">Handle</label>
                         <p class="control has-icons-left">
-                            <input class="input" type="text" name="handle" placeholder="lou"
+                            <input class="input" type="text" name="handle" placeholder="Create a handle"
                                    v-model="user.handle">
                             <span class="icon is-small is-left">@</span>
                         </p>

@@ -12066,6 +12066,9 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use(function (response) {
     return Promise.resolve(response);
 }, function (error) {
+    // if (error.response.status === 401 && this.$route.name === 'login') {
+    //     return  Promise.reject(error);
+    // }
     if (error.response.status === 401) {
         /** todo: try and use refresh token */
         return Event.$emit('unauthorized');

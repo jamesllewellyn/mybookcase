@@ -27,6 +27,27 @@
                     <router-view :key="$route.params.handle"></router-view>
                 </transition>
             </div>
+            <footer class="footer" v-if="!isAuthenticated || $route.name == 'welcome'">
+                <div class="container">
+                    <div class="content has-text-centered">
+                        <p>
+                            My Bookcase is a participant in the Amazon Services LLC Associates Program, an affiliate advertising program designed to provide a means for sites to earn advertising fees by advertising and linking to Amazon.co.uk
+                        </p>
+                        <p>
+                            <strong>My Bookcase</strong> by <a href="https://github.com/jamesllewellyn/">James Llewellyn</a>.
+                        </p>
+                        <p>
+                            <strong>App Avatars</strong> by <a href="http://avatars.adorable.io/">Adorable Avatars</a>.
+                        </p>
+                        <p>
+                            <strong>Open Source</strong> at
+                            <a class="icon" href="https://github.com/jamesllewellyn/mybookcase">
+                                <i class="fab fa-github"></i>
+                            </a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         </div>
     </div>
     <modal modal-name="shelfAdd" title="Create a New Shelf">
