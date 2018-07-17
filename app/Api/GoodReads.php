@@ -105,6 +105,10 @@ class GoodReads
 
     private function filterApiSearchResults($results)
     {
+        if(! isset($results['search']['results']['work'])){
+            return false;
+        }
+
         $books = $results['search']['results']['work'];
 
         return Collection::make($books)->map(function ($book) {
