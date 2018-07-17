@@ -22,7 +22,7 @@
             <app-side-bar :user="user" :bookcase="bookcase" v-if="isAuthenticated && hasShowSideMenu"></app-side-bar>
         </transition>
         <div class="column full-height scrollable" :class="[isGuestPage ?  '' :  'is-10-desktop is-9-tablet' ]" ref="top">
-            <div :class="{ 'page' : $route.name !== 'welcome'}">
+            <div class="main-content" :class="{ 'page' : $route.name !== 'welcome'}">
                 <transition name="fade" mode="out-in">
                     <router-view :key="$route.params.handle"></router-view>
                 </transition>

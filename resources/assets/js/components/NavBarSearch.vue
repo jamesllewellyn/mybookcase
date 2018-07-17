@@ -11,15 +11,12 @@
             </a>
         </div>
         <div class="navbar-dropdown search-dropdown" v-on-clickaway="hideDropdown">
-            <div class="search-item" v-for="(book, key) in options" :key="key">
+            <div class="search-item" v-for="(book, key) in options" :key="key"  @click.prevent="hideDropdown">
                 <router-link :to="{ name: 'book.view', params: { id: book.goodreads_id }}" class="has-text-left" tag="div">
 
                     <p class=" has-text-weight-bold">{{ book.title }}</p>
-                    <p v-for="(author, index) in book.authors" :key="index">{{ author }}<span
-                            v-if="index != 0 && index == book.authors.length - 1">, </span></p>
+                    <p v-for="(author, index) in book.authors" :key="index">{{ author }}<span v-if="index != 0 && index == book.authors.length - 1">, </span></p>
                 </router-link>
-
-                <!---->
 
             </div>
         </div>
@@ -55,6 +52,9 @@
             },
             pausedTyping() {
                 this.isSearching = true
+                if(!this.query){
+                    return false
+                }
                 axios.get(`/api/goodreads?search=${this.query}`)
                     .then((response) => {
                         this.options = response.data.searchResults;
@@ -81,19 +81,18 @@
                 this.showSearchOptions = true
             },
             hideDropdown() {
-                return this.showSearchOptions = false
+                 this.showSearchOptions = false
             },
-//            selected(book) {
-//                this.hideDropdown()
-//                Event.$emit('changePage', '/book/' + )
-//            },
             clearAll() {
                 this.selectedBook = null
             },
-            search(query) {
+            search() {
                 clearTimeout(this.typingTimer)
+                if(!this.query){
+                    return false
+                }
                 this.hideDropdown()
-                return this.$store.dispatch('searchGoodreads', this.urlEncoded(query))
+                return this.$store.dispatch('searchGoodreads', this.urlEncoded())
             }
         }
     }
