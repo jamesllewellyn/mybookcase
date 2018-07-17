@@ -99,6 +99,10 @@ body{
   box-shadow: 0 0 20px 0 #cfd2d478;
 }
 
+.main-content{
+  min-height: 900px;
+}
+
 @font-face {
   font-family: 'blokk';
   src: url('/fonts/blokk/blokkneue-regular-webfont.woff2') format('woff2'),
