@@ -23,14 +23,14 @@ class CreateBookTable extends Migration
             $table->timestamps();
             $table->softDeletes();
         });
-
+        Schema::disableForeignKeyConstraints();
         Schema::table('shelf_books', function (Blueprint $table) {
             $table->dropColumn('isbn');
             $table->dropColumn('isbn_13');
             $table->unsignedInteger('book_id')->after('shelf_id');
-
             $table->foreign('book_id')->references('id')->on('books')->onDelete('cascade');
         });
+        Schema::enableForeignKeyConstraints();
     }
 
     /**
