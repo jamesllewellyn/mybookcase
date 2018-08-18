@@ -16,23 +16,23 @@
                 </nav>
                 <div class="columns is-multiline">
 
-                    <google-book v-for="(book, index) in books" :key="index"
+                    <shelf-book v-for="(book, index) in books" :key="index"
                                  :title="book.title"
-                                 :cover_url="book.cover_url"
+                                 :cover_url="book.image"
                                  :authors="book.authors"
                                  :isbn="book.isbn"
                                  :identifiers="book.identifiers"
                                  :show_menu="false"
                     >
-                    </google-book>
-                    <google-book :placeholder="true" v-if="books.length == 0">
-                    </google-book>
+                    </shelf-book>
+                    <shelf-book :placeholder="true" v-if="books.length == 0">
+                    </shelf-book>
                 </div>
-                <nav class="pagination" role="navigation" aria-label="pagination" v-if="totalPages > 1">
+                <nav class="pagination" role="navigation" aria-label="pagination" v-if="nextPageUrl || prevPageUrl">
                     <ul class="pagination-list"></ul>
                     <a class="pagination-previous button is-right" :disabled="currentPage == 1"
                        @click.prevent="getBooks(currentPage - 1)">Previous</a>
-                    <a class="pagination-next button is-right" :disabled="currentPage >= totalPages"
+                    <a class="pagination-next button is-right" :disabled="!nextPageUrl"
                        @click.prevent="getBooks(currentPage + 1)">Next page</a>
                 </nav>
             </div>
@@ -45,19 +45,20 @@
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner'
+    import ShelfBook from  '../../components/ShelfBook.vue';
     export default {
         data() {
             return {
                 user: null,
                 shelf: null,
                 books: [],
-                totalPages: 1,
+                nextPageUrl: false,
+                prevPageUrl: false,
                 currentPage: 1,
-                totalBooks: 0,
                 isLoading: true
             }
         },
-        components: {VueSimpleSpinner},
+        components: {VueSimpleSpinner, ShelfBook},
         computed: {
             handle: function () {
                 if (!this.$route.params.handle) {
@@ -77,23 +78,22 @@
                 let self = this
                 axios.get(`/api/user/${this.handle}/public/shelf/${this.id}`)
                     .then((response) => {
-                        self.user = response.data.user
-                        self.shelf = response.data.shelf
-                        self.books = response.data.books
+                        self.user = response.data.user;
+                        self.shelf = response.data.shelf;
                     }, (error) => {
 //                        console.log(response)
                     });
             },
             getBooks(page = 1) {
-                let self = this
-                this.isLoading = true
+                let self = this;
+                this.isLoading = true;
                 axios.get(`/api/user/${this.handle}/public/shelf/${this.id}/book?page=${page}`)
                     .then((response) => {
-                        self.books = response.data.books
-                        self.currentPage = response.data.currentPage
-                        self.totalPages = response.data.totalPages
-                        self.totalBooks = response.data.totalBooks
-                        self.isLoading = false
+                        self.books = response.data.books.data;
+                        self.currentPage = response.data.books.current_page;
+                        self.nextPageUrl = response.data.books.next_page_url;
+                        self.prevPageUrl = response.data.books.prev_page_url;
+                        self.isLoading = false;
                         /** todo: fix scroll to top**/
                         self.$refs.top.scrollTop = 0;
                     }, (error) => {

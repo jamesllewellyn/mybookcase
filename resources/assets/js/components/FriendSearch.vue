@@ -1,79 +1,94 @@
 <template>
     <div class="field has-addons navbar-item has-dropdown" :class="{'is-active' : showSearchOptions}" v-on-clickaway="hideDropdown">
-        <div class="control" :class="{'is-loading': isLoading}">
-            <input class="input search is-boarderless is-shadowless" v-model="query" type="text" placeholder="Search for a friend" @keyup="asyncFind" @keyup.enter="search" @click.prevent="inFocus">
+        <div class="control" :class="{'is-loading': isSearching}">
+            <input class="input search is-boarderless is-shadowless"  type="text" placeholder="Search for a friend"
+                   v-model="query"
+                   @keyup="isTyping()"
+                   @keyup.enter="search()"
+                   @click.prevent="inFocus()">
         </div>
         <div class="control">
-            <a class="button is-primary" @click.prevent="search">
+            <a class="button is-primary" @click.prevent="search()">
                 Search
             </a>
         </div>
         <div class="navbar-dropdown search-dropdown">
-            <div class="search-item level" v-for="(user, key) in friends" :key="key" @click.prevent="selected(user)">
+            <router-link tag="div"  class="search-item level" v-for="(user, key) in searchResults" :key="key" :to="`/user/@${user.handle}`">
                 <div class="level-left">
                     <img class="avatar" :src="user.avatar_url" alt="">
                 </div>
                 <div class="level-right" >
                     <p class="has-text-weight-bold">{{ user.name }}</p>
-                    <!--<p v-for="(author, index) in book.authors" :key="index">{{ author }}<span v-if="index != 0 && index == book.authors.length - 1">, </span></p>-->
                 </div>
-            </div>
+            </router-link>
         </div>
     </div>
 </template>
 
 <script>
-    import store from '../store';
-    import Multiselect from 'vue-multiselect'
     import { mixin as clickaway } from 'vue-clickaway'
 
     export default {
         data() {
             return{
                 query: null,
-                selectedUser: null
+                selectedUser: null,
+                searchResults: null,
+                isSearching : false,
+                showSearchOptions : false,
+                typingTimer: null,
+                doneTypingInterval: 1000,
             }
         },
         mixins: [ clickaway ],
-        components: { Multiselect },
-        computed:{
-            friends () { return this.$store.getters.getFriendsSearchAsyncResults },
-            isLoading(){return this.$store.getters.getIsLoadingOptions},
-            lastAsyncTimeStamp(){return this.$store.getters.getLastAsyncSearchTime},
-            showSearchOptions(){return this.$store.getters.showFriendsSearchOptions;}
-        },
         methods:{
-            limitText (count) {
-                return `and ${count} other books`
-            },
             inFocus() {
-                if(!this.options){
+                if(!this.searchResults){
                     return false
                 }
-                return this.$store.commit('showSearchOptions')
+                return this.showSearchOptions = true;
             },
             hideDropdown(){
-                return this.$store.commit('hideSearchOptions')
+                return this.showSearchOptions = false;
             },
-            asyncFind () {
-//                if(this.query.length < 5){
-//                    return false;
-//                }
-                return this.$store.dispatch('searchAsyncFindFriends', this.query)
+            isTyping() {
+                clearTimeout(this.typingTimer);
+                return this.typingTimer = setTimeout(this.pausedTyping, this.doneTypingInterval);
             },
-            selected(user){
-                this.$store.commit('hideSearchOptions')
-                Event.$emit('modalShowWithPayload', {name : 'friendAddModal' , payload : user})
+            pausedTyping() {
+                let self = this;
+
+                if(!this.query){
+                    return false;
+                }
+
+                this.isSearching = true;
+
+                axios.get(`/api/friends-find?search=${this.query}`)
+                    .then((response) => {
+                        self.searchResults = response.data.users;
+                        self.showSearchOptions = true;
+                        self.isSearching = false;
+                    }, (error) => {
+                        console.log(error);
+                    });
             },
-            clearAll () {
-                this.selectedBook = null
-            },
+            // selected(user){
+            //     this.hideDropdown();
+            //     // Event.$emit('modalShowWithPayload', {name : 'friendAddModal' , payload : user})
+            // },
             search(query){
-                this.$store.commit('hideSearchOptions')
-                return this.$store.dispatch('searchGoodreads', this.urlEncoded(query))
-            }
+                this.hideDropdown();
+                clearTimeout(this.typingTimer);
+                if(!this.query){
+                    return false
+                }
+                this.hideDropdown();
+                return Event.$emit('changePage', `/friends/search?query=${this.urlEncoded()}`);
+            },
+            urlEncoded() {
+                return _.replace(this.query, ' ', "+");
+            },
         },
-        mounted() {
-        }
     }
 </script>

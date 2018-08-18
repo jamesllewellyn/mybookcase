@@ -53,11 +53,12 @@ let routes = [
                 name: 'friends-requests-sent',
                 meta: { requiresAuth: true,  hasShowSideMenu: true  }
             },
-            // {
-            //     path: 'pending',
-            //     component: require('./views/pages/FriendsPending.vue'),
-            //     name: 'friends-pending'
-            // }
+            {
+                path: 'search',
+                component: require('./pages/FriendSearch.vue'),
+                name: 'friends-search',
+                meta: { requiresAuth: true,  hasShowSideMenu: true  }
+            }
         ]
     },
     {
@@ -87,7 +88,7 @@ let routes = [
         meta: { requiresAuth: true,  hasShowSideMenu: true  }
     },
     {
-        path: '/book/:id',
+        path: '/book/:isbn',
         component: require('./pages/Book.vue'),
         name: 'book.view',
         meta: { requiresAuth: false,  hasShowSideMenu: true  }
@@ -103,25 +104,26 @@ let routes = [
 
 const router = new VueRouter({
     routes,
-    // mode: 'history'
-    scrollBehavior(to, from, savedPosition) {
-        return {x: 0, y: 0}
+    // mode: 'history',
+    scrollBehavior (to, from, savedPosition) {
+        return { selector: '.page'};
+        // return document.getElementById('app').scrollIntoView();
     }
 });
 
 router.beforeEach((to, from, next) => {
 
     if (! to.meta.requiresAuth) {
-         next()
-        return false
+         next();
+        return false;
     }
 
     if (localStorage.getItem('access_token')) {
-        next()
-        return false
+        next();
+        return false;
     }
 
-    return next('/login')
+    return next('/login');
 });
 
 export default router

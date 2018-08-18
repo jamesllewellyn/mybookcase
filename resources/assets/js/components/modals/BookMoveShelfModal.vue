@@ -1,51 +1,54 @@
 <template>
-    <div>
-        <section class="modal-card-body">
-            <multiselect v-model="selectedShelf" placeholder="Select a shelf to move this book to" :options="shelves" track-by="name" label="name" >
-            </multiselect>
-        </section>
-        <footer class="modal-card-foot">
-            <a class="button is-success" :class="{'is-loading': modal.isLoading}"  @click="moveToShelf()">Move To Shelf</a>
-            <a class="button"  @click="hide()">Cancel</a>
-        </footer>
-    </div>
+    <modal title="Move Book To Another Shelf" :isVisible="isVisible" @close="hide">
+        <template slot="body">
+            <section class="modal-card-body">
+                <multiselect v-model="selectedShelf" placeholder="Select a shelf to move this book to"
+                             :options="shelves" track-by="name" label="name">
+                </multiselect>
+            </section>
+            <footer class="modal-card-foot">
+                <a class="button is-success" :class="{'is-loading': isLoading}" @click="moveToShelf()">Move To
+                    Shelf</a>
+                <a class="button" @click="hide()">Cancel</a>
+            </footer>
+        </template>
+    </modal>
 </template>
 
 <script>
-    import store from '../../store';
+    import Modal from '../../components/Modal.vue';
+
     export default {
         data() {
-            return{
-                name : null,
+            return {
+                isLoading: false,
+                name: null,
                 selectedShelf: null,
-                modalName : 'bookMoveShelf'
             }
         },
-        computed:{
-            modal(){
-                return store.getters.getModalByName(this.modalName);
-            },
-            shelves(){
-                return store.getters.getShelves;
+        components:{Modal},
+        props: ['shelfId', 'userId', 'isVisible', 'isbn'],
+        computed: {
+            shelves() {
+                return this.$store.getters['bookcase/getShelves'];
             }
         },
         methods: {
-            moveToShelf () {
-                /** set modal save button to loading status **/
-                this.modal.loading();
-                /** dispatch add new project action **/
-                store.dispatch('shelfMove', {shelf : this.selectedShelf, isbn : this.modal.data});
+            moveToShelf() {
+                let self = this;
+                this.isLoading = true;
+                this.$store.dispatch('bookcase/moveBook', {currentShelfId : this.shelfId, isbn : this.isbn , newShelfId : this.selectedShelf.id})
+                    .then((response) => {
+                        self.isLoading = false;
+                        Event.$emit('shelf.book.remove', response.data.book.isbn);
+                        return self.hide();
+                    }, (error) => {
+                        return self.isLoading = false;
+                    });
             },
-            hide(){
-                this.modal.hide();
-            },
-            /** method to get form field errors **/
-            getErrors(fieldName) {
-                return store.getters.getFormErrors(fieldName);
+            hide() {
+                this.$emit('close');
             }
-        },
-        created(){
-            console.log('bookMoveShelf created')
         }
     }
 </script>

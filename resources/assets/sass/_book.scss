@@ -6,6 +6,9 @@
   .book-title{
     size:0em;
   }
+  @include mobile {
+    padding-top:30px;
+  }
 }
 .book{
   position: relative;

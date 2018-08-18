@@ -84,4 +84,13 @@ class FriendRequest extends Model {
 
         return $this->getUser()->notify(new FriendRequestAcceptedNotification($this->getFriend()));
     }
+
+    public function decline()
+    {
+        $this->update([
+            'declined' => true
+        ]);
+
+        return $this->delete();
+    }
 }

@@ -7,17 +7,22 @@
 require('./bootstrap');
 
 window.Vue = require('vue');
-
 import VueRouter from 'vue-router';
-
 Vue.use(VueRouter);
 import router from './app-routes';
-
+import PortalVue from 'portal-vue';
+Vue.use(PortalVue);
+import Raven from 'raven-js';
+import RavenVue from 'raven-js/plugins/vue';
 import store from './store/index';
-import {mapState} from 'vuex'
 import VueSimpleSpinner from 'vue-simple-spinner'
 import Multiselect from 'vue-multiselect'
-import StarRating from 'vue-star-rating'
+
+/** Sentry vuejs**/
+Raven
+    .config('https://f5c8e970f89d47e39af712727ef99164@sentry.io/1206231')
+    .addPlugin(RavenVue, Vue)
+    .install();
 
 /** event bus */
 window.Event = new Vue();
@@ -30,54 +35,47 @@ window.Event = new Vue();
 /** structure components **/
 Vue.component('app-nav-bar', require('./components/AppNavBar.vue'));
 Vue.component('app-side-bar', require('./components/AppSideBar.vue'));
+Vue.component('app-mobile-nav-bar', require('./components/AppMobileNavBar.vue'));
 Vue.component('nav-bar-search', require('./components/NavBarSearch.vue'));
-Vue.component('book', require('./components/goodreads/Book.vue'));
-Vue.component('google-book', require('./components/googleBooks/Book.vue'));
+// Vue.component('book', require('./components/goodreads/Book.vue'));
 Vue.component('public-shelf', require('./components/googleBooks/PublicShelf.vue'));
 Vue.component('multiselect', Multiselect);
 Vue.component('login-form', require('./components/LoginForm.vue'));
 /** friends **/
 Vue.component('friends-search', require('./components/FriendSearch.vue'));
-Vue.component('friend', require('./components/Friend.vue'));
 /** bulma components **/
 Vue.component('drop-down-button', require('./components/bulma/DropDownButton.vue'));
-Vue.component('star-rating', StarRating);
-/** Modals **/
-Vue.component('modal', require('./components/Modal.vue'));
-Vue.component('shelf-add-modal', require('./components/modals/ShelfAddModal.vue'));
-Vue.component('shelf-update-modal', require('./components/modals/ShelfUpdateModal.vue'));
-Vue.component('are-you-sure-modal', require('./components/modals/AreYouSureModal.vue'));
-Vue.component('add-to-shelf-modal', require('./components/modals/AddToShelfModal.vue'));
-Vue.component('book-move-shelf-modal', require('./components/modals/BookMoveShelfModal.vue'));
-Vue.component('add-friend-modal', require('./components/modals/FriendAddModal.vue'));
-Vue.component('accept-friend-modal', require('./components/modals/FriendAcceptModal.vue'));
-Vue.component('user-update-modal', require('./components/modals/UserUpdateModal.vue'));
-Vue.component('login-modal', require('./components/modals/LoginModal.vue'));
 
 
 const app = new Vue({
     el: '#app',
     router,
     store,
+    data(){
+        return {
+             // : false,
+            // pageLoading: true
+        }
+    },
     components: {VueSimpleSpinner},
     computed: {
-        pageLoading() {
-            return this.$store.state.pageLoading
-        },
+        // pageLoading() {
+        //     return store.state.pageLoading;
+        // },
         user() {
-            return this.$store.state.user
+            return store.getters['user/get'];
         },
         bookcase() {
-            return this.$store.state.bookcase
+            return store.getters['bookcase/get'];
+        },
+        isAuthenticated() {
+            return this.$store.getters['user/isAuthenticated'];
         },
         isGuestPage() {
-            return ! this.$route.meta.requiresAuth
+            return ! this.$route.meta.requiresAuth;
         },
         hasShowSideMenu() {
-            return this.$route.meta.hasShowSideMenu
-        },
-        isAuthenticated(){
-            return this.$store.state.isAuthenticated
+            return this.$route.meta.hasShowSideMenu;
         }
     },
     methods: {
@@ -85,50 +83,43 @@ const app = new Vue({
         triggerEvent(eventName, payload) {
             Event.$emit(eventName, payload);
         },
-        clearTokens(){
-            localStorage.removeItem('access_token')
-            localStorage.removeItem('token_type')
-            localStorage.removeItem('refresh_token')
-            this.$store.state.user = null
-            this.$store.state.isAuthenticated = false
+        unauthorized(){
+            return this.$store.commit('authentication/unauthorized');
         },
         changePage($route){
             return router.push($route);
+        },
+        logout(){
+            this.$store.commit('authentication/logout');
+            this.$store.commit('user/clear');
+            this.changePage('/');
         }
     },
     mounted() {
         let self = this;
 
-        if(!this.user && this.isAuth){
-            this.$store.dispatch('userGet')
+        if(!this.user && localStorage.getItem('access_token')){
+            self.$store.dispatch('user/get');
+            self.$store.dispatch('bookcase/get');
         }
 
-        Event.$on('clearTokens',  () => {
-           self.clearTokens()
-        });
-
         Event.$on('logout', () => {
-            self.clearTokens()
-            self.changePage('/')
+            self.logout();
         });
 
         Event.$on('unauthorized', () => {
-            self.clearTokens()
-            self.changePage('/login')
+            self.unauthorized();
         });
 
         /** listen for force change page events */
-        Event.$on('changePage', function ($route) {
-           self.changePage($route)
+        Event.$on('changePage', ($route) => {
+           self.changePage($route);
         });
 
-        /** listen for modal show events */
-        Event.$on('modalShow', function (name) {
-            self.$store.commit('modalShow', {name});
-        });
-
-        Event.$on('modalShowWithPayload', function ({name, payload}) {
-            self.$store.commit('modalShowWithPayload', {name, payload});
-        });
+    },
+    beforeDestroy(){
+        Event.$off('logout');
+        Event.$off('unauthorized');
+        Event.$off('changePage');
     }
 });

@@ -12780,6 +12780,15 @@ h1 {
   min-width: 500px;
 }
 
+@media screen and (max-width: 768px) {
+  .navbar .search {
+    min-width: 0;
+    width: 100%;
+    border: none;
+    border-bottom: 1px #b5b5b5;
+  }
+}
+
 .search-dropdown {
   max-height: 300px;
   overflow: scroll;
@@ -12814,6 +12823,7 @@ h1 {
 
 .page {
   padding: 2em;
+  position: relative;
 }
 
 .fade-enter-active,
@@ -12876,6 +12886,12 @@ h1 {
 
 .book .book-title {
   size: 0em;
+}
+
+@media screen and (max-width: 768px) {
+  .book {
+    padding-top: 30px;
+  }
 }
 
 .book {
@@ -12986,6 +13002,19 @@ h1 {
 .homepage-hero h1 {
   font-size: 6rem;
   padding-bottom: 0.5em;
+}
+
+@media screen and (max-width: 768px) {
+  .homepage-hero h1 {
+    font-size: 3rem;
+    padding-bottom: 1em;
+  }
+}
+
+@media screen and (min-width: 769px), print {
+  .homepage-hero h1 {
+    font-size: 7rem;
+  }
 }
 
 .register-interest-hero h1 {

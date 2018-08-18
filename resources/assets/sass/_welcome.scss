@@ -1,20 +1,15 @@
-////@import "app";
-//@import "bootstrap";
-//@import "core-styles";
-//@import "transitions";
-//@import "navbar";
-//@import "book";
-//@import "page";
-//
-//#app{
-//  background-image: $body-bg;
-//}
-
 .homepage-hero{
-  //background-image: url("/images/home-page/my-book-shelf.jpg");
+
   h1{
     font-size: 6rem;
     padding-bottom:0.5em;
+    @include mobile {
+      font-size: 3rem;
+      padding-bottom:1em;
+    }
+    @include tablet {
+      font-size: 7rem;
+    }
   }
 }
 .register-interest-hero{

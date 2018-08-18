@@ -10,10 +10,7 @@
         </div>
         <div class="dropdown-menu" id="dropdown-menu" role="menu" ref="dropdown" >
             <div class="dropdown-content" >
-                    <a class="dropdown-item" v-for="dropdown in dropdowns" @click="triggerEvent(dropdown)">
-                       {{dropdown.text}}
-                    </a>
-                </span>
+                <slot name="dropdown-items"></slot>
             </div>
         </div>
     </div>
@@ -32,10 +29,6 @@
             boarder:{
                 type: Boolean,
                 default: true
-            },
-            dropdowns:{
-                type: Array,
-                required: true
             },
             text:{
                 type: String,

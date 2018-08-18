@@ -23,14 +23,8 @@ class PublicShelfBookController extends Controller
 
         $this->authorize('access-public-shelf', [$user, $shelf]);
 
-        $currentPage = request()->query('page') ? (int) request()->query('page') : 1;
+        $books = $shelf->books()->simplePaginate(10);
 
-        $books = $shelf->getBooksPaginated(10, $currentPage);
-
-        $totalBooks = $shelf->books()->count();
-
-        $totalPages = ceil($totalBooks / 10);
-
-        return $this->apiSuccess(['books' => $books, 'totalBooks' => $totalBooks, 'totalPages' => $totalPages, 'currentPage' => $currentPage]);
+        return $this->apiSuccess(['books' => $books]);
     }
 }

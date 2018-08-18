@@ -32,7 +32,7 @@ class User extends Authenticatable
 
 
     public $filterable = [
-        'name', 'email'
+        'name', 'email', 'handle'
     ];
 
     /**
@@ -121,6 +121,18 @@ class User extends Authenticatable
         return $this->sentFriendRequests()->where('friend_requests.id', $friendRequestId)->exists();
     }
 
+    public function hasPendingFriendRequests($friendId)
+    {
+        $receivedRequest =  $this->pendingFriendRequests()->where('friend_requests.user_id', $friendId)->exists();
+        $sendRequest = $this->sentFriendRequests()->where('friend_requests.friend_id', $friendId)->exists();
+        return $receivedRequest || $sendRequest;
+    }
+
+    public function hasFriend($friendId)
+    {
+        return $this->friends()->where('user_friends.friend_id', $friendId)->exists();
+    }
+
     /***********************
      * Get methods
      **********************/
@@ -134,7 +146,7 @@ class User extends Authenticatable
 
     public function getShelves()
     {
-        return $this->shelves()->withCount('books')->get();
+        return $this->shelves()->with('books')->withCount('books')->get();
     }
 
     public function getPublicShelves()

@@ -30,6 +30,7 @@ Route::group(["middleware" => "guest"], function () {
  **********************/
 Route::group(["middleware" => ["guest", 'throttle:30,1']], function () {
     Route::get('goodreads', 'Search\GoodReadsAPIController@index');
+    Route::get('isbndb', 'Search\IsbndbAPIController@index');
     Route::get('goodreads/{id}', 'Search\GoodReadsAPIController@show');
 
 });
@@ -40,10 +41,10 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::apiResource('user', 'UserController', ['only' => ['index', 'update']]);
 
     /** User Shelf */
-    Route::apiResource('user/{user}/shelf', 'ShelfController');
+    Route::apiResource('shelf', 'ShelfController');
 
     /** User Shelf Book*/
-    Route::apiResource('user/{user}/shelf/{shelf}/book', 'ShelfBookController');
+    Route::apiResource('shelf/{shelf}/book', 'ShelfBookController');
 
     /** Public */
     Route::get('user/{handle}/public', 'PublicShelfController@index');
@@ -51,14 +52,16 @@ Route::group(["middleware" => "auth:api"], function () {
     Route::get('user/{handle}/public/shelf/{shelf}/book', 'PublicShelfBookController@index');
 
     /** Friends */
-    Route::apiResource('friend', 'FriendController');
-    Route::get('friends', 'FriendSearchController@index');
+    Route::get('friends', 'Friends\FriendController@index');
+//    Route::get('friends/pending', 'Friends\FriendRequestPendingController@index');
+//    Route::get('friends/sent', 'Friends\FriendRequestSentController@index');
+    Route::get('friends-find', 'Friends\FriendSearchController@index');
     /** Create friend request **/
-    Route::post('user/{user}/friend-request/{friend}', 'FriendRequestController@create');
+    Route::post('friend-request/{friend}', 'Friends\FriendRequestController@create');
     /** accept or decline friend request */
-    Route::put('user/{user}/friend-request/{friend}', 'FriendRequestController@update');
+    Route::put('friend-request/{friendRequest}', 'Friends\FriendRequestController@update');
     /** Deleted Friend Request */
-    Route::delete('user/{user}/friend-request/{friendRequest}', 'FriendRequestController@destroy');
+    Route::delete('friend-request/{friendRequest}', 'Friends\FriendRequestController@destroy');
     
 });
 

@@ -5,6 +5,7 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use App\Api\GoogleBooks;
+use App\Api\ISBNdb;
 use App\ShelfBook;
 use App\Traits\ApiResponse;
 use Illuminate\Support\Facades\Cache;
@@ -62,16 +63,22 @@ class Shelf extends Model
 
     public function books()
     {
-        return $this->hasMany(ShelfBook::class, 'shelf_id', 'id');
+        return $this->belongsToMany(Book::class, 'shelf_books')
+            ->wherePivot('deleted_at', '=', null)->withTimestamps();
     }
+
+//    public function books()
+//    {
+//        return $this->hasMany(ShelfBook::class, 'shelf_id', 'id');
+//    }
 
     /***********************
      * Boolean Methods
      **********************/
 
-    public function hasBook($isnb)
+    public function hasBook($isbn)
     {
-        return $this->books()->where('isbn', $isnb)->first() ? true : false;
+        return $this->books()->where('isbn', $isbn)->first() ? true : false;
     }
 
     public function isPublic()
@@ -85,30 +92,18 @@ class Shelf extends Model
 
     public function getBooksPaginated($perPage = 10, $currentPage)
     {
-        $googleBooks = New GoogleBooks();
-        return $this->books()->skip($perPage * ($currentPage - 1))->take($perPage)->get()->map(function ($book) use ($googleBooks) {
-            return Cache::remember("google-books.isbn.{$book->isbn}", 1440, function () use ($googleBooks, $book) {
-                return $googleBooks->getBook($book->isbn);
-            });
+        $ISBNdb = New ISBNdb();
+        return $this->books()->skip($perPage * ($currentPage - 1))->take($perPage)->get()->map(function ($book) use ($ISBNdb) {
+//            dd();
+//            return Cache::remember("google-books.isbn.{$book->isbn}", 1440, function () use ($ISBNdb, $book) {
+                return $ISBNdb->getBook($book->isbn);
+//            });
         })->filter()->all();
     }
 
     public function getFirstBook()
     {
-        $book = $this->hasMany(ShelfBook::class, 'shelf_id', 'id')->first();
-        if(!$book){
-            return false;
-        }
-        return $this->getBook($book);
-    }
-
-    public function getBook($book)
-    {
-        $googleBooks = New GoogleBooks();
-
-        return Cache::remember("google-books.isbn.{$book->isbn}", 1440, function () use ($googleBooks, $book) {
-            return $googleBooks->getBook($book->isbn);
-        });
+        return $this->books()->first();
     }
 
     /***********************
@@ -118,26 +113,27 @@ class Shelf extends Model
     public function addBook($isbn, $isbn_13 = false)
     {
         if ($this->hasBook($isbn)) {
-            return $this->apiFail(['message' => "Book is already on shelf {$this->name}"]);
+            return false;
         }
 
-        $shelfBook = $this->books()->create([
-            'isbn'    => $isbn,
-            'isbn_13' => isset($isbn_13) ? $isbn_13 : null
-        ]);
+        $book = Book::findByISBN($isbn);
 
-        return $this->apiSuccess(['message' => "Book has been added to shelf {$this->name}", 'book' => $shelfBook]);
+        $this->books()->attach($book->id);
+
+        return $book;
     }
 
     public function removeBook($isbn)
     {
-        if (!$this->hasBook($isbn)) {
-            return $this->apiFail(['message' => "That book doesn't seem to be on that shelf"]);
+        if (! $this->hasBook($isbn)) {
+            return false;
         }
 
-        $this->books()->where('isbn', $isbn)->first()->delete();
+        $book = Book::findByISBN($isbn);
 
-        return $this->apiSuccess(['message' => "Book has been removed from shelf {$this->name}", 'isbn' => $isbn]);
+        $this->books()->detach($book->id);
+
+        return $book;
     }
 
 }

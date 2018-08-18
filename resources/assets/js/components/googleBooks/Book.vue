@@ -54,7 +54,7 @@
                 required: false,
                 default: false
             },
-            identifiers: {
+            isbn: {
                 required: false,
                 default: false
             },
@@ -64,19 +64,23 @@
             placeholder: {
                 type: Boolean,
                 default: false
+            },
+            shelfId:{
+                type: Number,
+                default: false
             }
         },
         computed: {
-            isbn() {
-                if (!this.identifiers) {
-                    return false
-                }
-                let index = _.findIndex(this.identifiers, ['type', 'ISBN_10']);
-                return this.identifiers[index].identifier;
-            },
-            shelfId() {
-                return this.$store.getters.getShelf.id
-            },
+//            isbn() {
+//                if (!this.identifiers) {
+//                    return false
+//                }
+//                let index = _.findIndex(this.identifiers, ['type', 'ISBN_10']);
+//                return this.identifiers[index].identifier;
+//            },
+//            shelfId() {
+//                return this.$store.getters.getShelf.id
+//            },
             titleToLength() {
                 if (!this.title) {
                     return false
