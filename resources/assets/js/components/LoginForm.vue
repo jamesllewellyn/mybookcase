@@ -89,6 +89,8 @@
         mounted() {
             if (localStorage.getItem('access_token')) {
                 this.$store.dispatch('user/get');
+                this.$store.dispatch('bookcase/get');
+                Event.$emit('changePage', '/dashboard/');
             }
         }
     }

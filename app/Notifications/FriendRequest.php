@@ -46,7 +46,7 @@ class FriendRequest extends Notification
         return (new MailMessage)
             ->subject("My Bookcase Friend Request Accepted")
             ->line("{$this->friend->name} has accepted you friend request")
-            ->action('View Friends', url('/friends'));
+            ->action('View Friends', url('/#/friends'));
     }
 
     /**

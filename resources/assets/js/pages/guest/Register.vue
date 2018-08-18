@@ -1,20 +1,11 @@
 <template>
     <div class="columns is-centered">
         <div class="column is-4">
-            <!--<section class="hero register-interest-hero">-->
-            <!--<div class="hero-body">-->
             <div class=" has-text-centered">
                 <h1 class="title is-quicksans is-title">
                     My Bookcase
                 </h1>
-                <!--<p v-cloak>-->
-                <!--We are currently going though beta testing and are invitation only.-->
-                <!--Sign up below to register your interest in My Bookcase and we'll give you a heads up as soon-->
-                <!--as we're ready.-->
-                <!--</p>-->
             </div>
-            <!--</div>-->
-            <!--</section>-->
             <div class="box is-shadowless">
                 <form>
                     <div class="field">
@@ -76,7 +67,6 @@
     </div>
 </template>
 <script>
-    import Errors from '../../core/Errors'
 
     export default {
         data() {
@@ -105,12 +95,12 @@
         },
         methods: {
             submit() {
-                let self = this
+                let self = this;
                 this.isLoading = true;
                 axios.post('/api/user', this.user)
                     .then((response) => {
-                        self.isLoading = false
-                        self.grantPassportToken()
+                        self.isLoading = false;
+                        self.grantPassportToken();
                     }, (error) => {
                         console.log(error)
                         if (error.response.data) {
@@ -120,22 +110,20 @@
                     });
             },
             grantPassportToken() {
-                let self = this
+                let self = this;
                 this.isLoading = true;
-                axios.post('/oauth/token', this.login)
+                this.$store.dispatch('authentication/login', {login: this.login})
                     .then((response) => {
-                        console.log(this.user);
-                        self.isLoading = false
-                        localStorage.setItem('access_token', response.data.access_token)
-                        localStorage.setItem('token_type', response.data.token_type)
-                        localStorage.setItem('refresh_token', response.data.refresh_token)
-                        self.$store.dispatch('userGet')
-                        Event.$emit('changePage', '/dashboard/')
-                    }, (error) => {
-                        if (error.response.data) {
-                            self.isLoading = false;
-                            return self.formErrors = error.response.data.errors;
-                        }
+                        self.isLoading = false;
+                        Event.$emit('changePage', '/dashboard/');
+                        return self.$store.dispatch('user/get');
+                    })
+                    .then((response) => {
+                        return self.$store.dispatch('bookcase/get');
+                    })
+                    .catch((error) => {
+                        self.isLoading = false;
+                        return self.loginError = true;
                     });
             },
             getErrors(fieldName) {
@@ -146,8 +134,9 @@
         },
         mounted() {
             if (localStorage.getItem('access_token')) {
-                this.$store.dispatch('userGet')
-                Event.$emit('changePage', '/dashboard/')
+                this.$store.dispatch('user/get');
+                this.$store.dispatch('bookcase/get');
+                Event.$emit('changePage', '/dashboard/');
             }
         }
     }

@@ -47,7 +47,7 @@ class FriendRequestAcceptedNotification extends Notification
             ->subject("My Bookcase Friend Request")
             ->line("{$this->user->name} has sent you a My Bookcase friend request")
             ->line("Confirm {$this->user->name}'s friend request to view their public shelves and send them book recommendations")
-            ->action('View Request', url('/inbox'));
+            ->action('View Request', url('/#/friends/pending'));
     }
 
     /**
