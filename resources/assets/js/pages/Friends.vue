@@ -11,17 +11,16 @@
                 <friends-search></friends-search>
             </div>
         </div>
-        <!--<a class="is-pulled-right align-vertical tooltip is-tooltip-right is-primary" data-tooltip="Invite Friend" @click.prevent="triggerEvent('modalShow', 'shelfAdd')"><i class="fa fa-plus-circle is-pulled-right align-vertical is-primary" aria-hidden="true"></i></a>-->
         <div class="tabs is-small">
             <ul>
                 <router-link exact active-class="is-active" tag="li" :to="{name : 'friends'}" >
-                    <a>Active<span class="tag is-light is-pulled-right" v-text="friends.active.length" v-if="friends.active">0</span></a>
+                    <a>Active<span class="tag is-light is-pulled-right" v-text="friendsCount.active" v-if="friendsCount">0</span></a>
                 </router-link>
                 <router-link exact  active-class="is-active" tag="li" :to="{name : 'friends-requests-pending'}" >
-                    <a>Pending Requests<span class="tag is-small is-pulled-right" :class="{'is-danger' : friends.pending.length > 0}" v-text="friends.pending.length" v-if="friends.pending">0</span></a>
+                    <a>Pending Requests<span class="tag is-small is-pulled-right" :class="{'is-danger' : friendsCount.pending > 0}" v-text="friendsCount.pending" v-if="friendsCount">0</span></a>
                 </router-link>
                 <router-link exact  active-class="is-active" tag="li" :to="{name : 'friends-requests-sent'}" >
-                    <a>Request Sent<span class="tag is-light is-pulled-right" v-text="friends.sent.length" v-if="friends.sent">0</span></a>
+                    <a>Request Sent<span class="tag is-light is-pulled-right" v-text="friendsCount.sent" v-if="friendsCount">0</span></a>
                 </router-link>
             </ul>
         </div>
@@ -34,23 +33,15 @@
 
 <script>
     export default {
-        data() {
-            return{
-
-            }
-        },
-        components:{},
         computed: {
-            friends(){
-                return this.$store.state.friends;
+            friendsCount(){
+                return this.$store.getters['friends/getCount'];
             },
         },
         methods: {
             getFriends(){
-                return this.$store.dispatch('friendsGet');
+                return this.$store.dispatch('friends/get');
             }
-        },
-        watch: {
         },
         created() {
             this.getFriends();

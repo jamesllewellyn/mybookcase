@@ -2,43 +2,30 @@ import store from '../store';
 
 class Shelf {
     constructor(shelf) {
-        this.id = shelf.id
-        this.description = shelf.description
-        this.name = shelf.name
-        this.books_count = shelf.books_count
-        this.public = shelf.public
-        this.books = []
+        this.id = shelf.id;
+        this.description = shelf.description;
+        this.name = shelf.name;
+        this.public = shelf.public;
+        this.books = shelf.books ? shelf.books : [];
+        this.books_count = shelf.books_count ? shelf.books_count : 0;
     }
 
-    addBooks(books){
-        this.books = books;
+    addBook(book) {
+        this.books.push(book);
+        return this.books_count++;
     }
 
-    addBookCount(){
-        return this.books_count ++
+    removeBook(isbn) {
+        this.books = _.reject(this.books, ['isbn', isbn]);
+        return this.books_count--;
     }
 
-    subtractBookCount(){
-        return this.books_count --
+    update(shelf) {
+        this.description = shelf.description;
+        this.public = shelf.public;
+        return this.name = shelf.name;
     }
 
-    removeBook(isbn){
-        console.log(isbn)
-        console.log(this.books)
-        this.books = _.reject(this.books, ['isbn',isbn])
-        console.log(this.books)
-        this.books_count --
-    }
-
-    update(shelf){
-        this.description = shelf.description
-        this.name = shelf.name
-    }
-
-    destroy(){
-        console.log('shelfDelete')
-        store.dispatch('shelfDelete', this.id);
-    }
 }
 
 export default Shelf;

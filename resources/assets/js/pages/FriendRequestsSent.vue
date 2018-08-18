@@ -11,30 +11,20 @@
                     :type="'sent'"
             >
             </friend>
-            <friend :placeholder="true" v-if="sent && sent.length == 0">
+            <friend :placeholder="true" v-if="sent && sent.length === 0">
             </friend>
         </div>
     </div>
 </template>
 
 <script>
+    import Friend from '../components/Friend';
     export default {
-        data() {
-            return{
-
-            }
-        },
+        components:{Friend},
         computed: {
             sent(){
-                return this.$store.state.friends.sent;
+                return this.$store.getters['friends/getSent'];
             }
         },
-        methods: {
-
-        },
-        watch: {
-        },
-        created() {
-        }
     }
 </script>

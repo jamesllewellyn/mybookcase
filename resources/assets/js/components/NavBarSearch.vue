@@ -1,21 +1,26 @@
 <template>
-    <div class="field has-addons navbar-item has-dropdown" :class="{'is-active' : showSearchOptions}"
-         v-on-clickaway="hideDropdown" @click="showDropdown()">
-        <div class="control" :class="{'is-loading': isSearching}">
-            <input class="input search is-boarderless is-shadowless" v-model="query" type="text"
-                   placeholder="Search for a book title or an author" @keyup="isTyping" @keyup.enter="search">
+    <div class="field has-addons navbar-item has-dropdown is-fullwidth"
+         :class="{'is-active' : showSearchOptions, 'is-marginless' : mobile}"
+         v-on-clickaway="hideDropdown">
+
+        <div class="control is-expanded" :class="{'is-loading': isSearching}">
+            <input class="input search  is-shadowless is-fullwidth" :class="{'is-boarderless': !mobile, 'is-marginless' : mobile}" placeholder="Search for a book title" type="text"
+                   v-model="query"
+                    @keyup="isTyping"
+                   @keyup.enter="search"
+                   @click.prevent="showDropdown()"
+            >
         </div>
         <div class="control">
             <a class="button is-primary" @click.prevent="search">
                 Search
             </a>
         </div>
-        <div class="navbar-dropdown search-dropdown" v-on-clickaway="hideDropdown">
+        <div class="navbar-dropdown search-dropdown is-hidden-touch" v-on-clickaway="hideDropdown">
             <div class="search-item" v-for="(book, key) in options" :key="key"  @click.prevent="hideDropdown">
-                <router-link :to="{ name: 'book.view', params: { id: book.goodreads_id }}" class="has-text-left" tag="div">
-
+                <router-link :to="`/book/${book.isbn}?isbn=true`" class="has-text-left" tag="div">
                     <p class=" has-text-weight-bold">{{ book.title }}</p>
-                    <p v-for="(author, index) in book.authors" :key="index">{{ author }}<span v-if="index != 0 && index == book.authors.length - 1">, </span></p>
+                    <p v-for="(author, index) in book.authors" :key="index">{{ author }}<span v-if="index !== 0 && index === book.authors.length - 1">, </span></p>
                 </router-link>
 
             </div>
@@ -24,7 +29,6 @@
 </template>
 
 <script>
-    import store from '../store';
     import {mixin as clickaway} from 'vue-clickaway'
 
     export default {
@@ -35,9 +39,15 @@
                 typingTimer: null,
                 doneTypingInterval: 1000,
                 isSearching: false,
-                options: null,
+                options: [],
                 showSearchOptions: false
             }
+        },
+        props:{
+          mobile:{
+              type: Boolean,
+              default: false,
+          }
         },
         mixins: [clickaway],
         computed: {
@@ -51,25 +61,20 @@
                 return this.typingTimer = setTimeout(this.pausedTyping, this.doneTypingInterval);
             },
             pausedTyping() {
-                this.isSearching = true
+                let self = this;
                 if(!this.query){
-                    return false
-                }
-                axios.get(`/api/goodreads?search=${this.query}`)
-                    .then((response) => {
-                        this.options = response.data.searchResults;
-                        this.isSearching = false
-                        this.showDropdown()
-                    }, (error) => {
-                        console.log(response);
-                    });
-            },
-            findIsbn(identifiers) {
-                let index = _.findIndex(identifiers, ['type', 'ISBN_10']);
-                if (!index < 0) {
                     return false;
                 }
-                return identifiers[index].identifier;
+                this.isSearching = true;
+                axios.get(`/api/isbndb?search=${this.query}`)
+                    .then((response) => {
+                        self.options = response.data.data;
+                        self.isSearching = false;
+                        self.showDropdown();
+                    }, (error) => {
+                        self.isSearching = false;
+                        console.log(response);
+                    });
             },
             urlEncoded() {
                 return _.replace(this.query, ' ', "+");
@@ -78,21 +83,25 @@
                 return `and ${count} other books`
             },
             showDropdown() {
-                this.showSearchOptions = true
+                console.log('showDropdown');
+                console.log(this.options.length);
+                if(this.options.length > 0){
+                    console.log(this.showSearchOptions);
+                    this.showSearchOptions = true;
+                    console.log(this.showSearchOptions);
+                }
             },
             hideDropdown() {
-                 this.showSearchOptions = false
-            },
-            clearAll() {
-                this.selectedBook = null
+                 this.showSearchOptions = false;
             },
             search() {
-                clearTimeout(this.typingTimer)
+                clearTimeout(this.typingTimer);
                 if(!this.query){
                     return false
                 }
-                this.hideDropdown()
-                return this.$store.dispatch('searchGoodreads', this.urlEncoded())
+                this.$emit('searching');
+                this.hideDropdown();
+                return Event.$emit('changePage', `/search?query=${this.urlEncoded()}`);
             }
         }
     }

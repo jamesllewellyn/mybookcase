@@ -12,30 +12,20 @@
 
             >
             </friend>
-            <friend :placeholder="true" v-if="pending && pending.length == 0">
+            <friend :placeholder="true" v-if="pending && pending.length === 0">
             </friend>
         </div>
     </div>
 </template>
 
 <script>
+    import Friend from '../components/Friend';
     export default {
-        data() {
-            return{
-
-            }
-        },
+        components:{Friend},
         computed: {
             pending(){
-                return this.$store.state.friends.pending;
+                return this.$store.getters['friends/getPending'];
             }
-        },
-        methods: {
-
-        },
-        watch: {
-        },
-        created() {
         }
     }
 </script>

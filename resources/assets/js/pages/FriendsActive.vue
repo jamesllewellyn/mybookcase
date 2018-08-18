@@ -11,30 +11,20 @@
 
             >
             </friend>
-            <friend :placeholder="true" v-if="active && active.length == 0">
+            <friend :placeholder="true" v-if="active && active.length === 0">
             </friend>
         </div>
     </div>
 </template>
 
 <script>
+    import Friend from '../components/Friend';
     export default {
-        data() {
-            return{
-
-            }
-        },
+        components:{Friend},
         computed: {
             active(){
-                return this.$store.state.friends.active;
+                return this.$store.getters['friends/getActive'];
             }
-        },
-        methods: {
-
-        },
-        watch: {
-        },
-        created() {
         }
     }
 </script>

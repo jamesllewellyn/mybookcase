@@ -2,9 +2,6 @@
 window._ = require('lodash');
 window.Popper = require('popper.js').default;
 
-
-
-
 /**
  * We'll load the axios HTTP library which allows us to easily issue requests
  * to our Laravel back-end. This library automatically handles sending the
@@ -23,12 +20,15 @@ axios.interceptors.request.use(function (config) {
 axios.interceptors.response.use((response) => {
     return Promise.resolve(response);
 }, function (error) {
-    // if (error.response.status === 401 && this.$route.name === 'login') {
-    //     return  Promise.reject(error);
-    // }
+    console.log(error.response);
+    if (error.response.status === 401 && error.response.data.error === 'invalid_credentials') {
+        console.log('401 && login');
+        return  Promise.reject(error);
+    }
     if (error.response.status === 401) {
+        console.log('401');
         /** todo: try and use refresh token */
-        return  Event.$emit('unauthorized')
+        return  Event.$emit('unauthorized');
     }
     return Promise.reject(error);
 });

@@ -10,6 +10,12 @@
   .search{
     float: left;
     min-width:500px;
+    @include mobile {
+      min-width:0;
+      width: 100%;
+      border: none;
+      border-bottom: 1px #b5b5b5;
+    }
   }
 }
 .search-dropdown{

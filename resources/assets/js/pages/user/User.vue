@@ -5,22 +5,3 @@
         </transition>
     </div>
 </template>
-
-<script>
-    export default {
-        data() {
-            return{
-
-            }
-        },
-        components:{},
-        computed: {
-        },
-        methods: {
-        },
-        watch: {
-        },
-        created() {
-        }
-    }
-</script>

@@ -2,7 +2,9 @@
     <div class="box is-shadowless">
         <transition name="modal" mode="out-in">
             <div class="notification is-danger" v-if="loginError">
-                <p class="help is-small" v-text="loginError"></p>
+                <p class="help is-small">
+                    These credentials don't seem quite right.
+                </p>
             </div>
         </transition>
         <form>
@@ -17,13 +19,13 @@
                 <label for="password" class="label">Password</label>
 
                 <p class="control">
-                    <input id="password" type="password" class="input" name="password" required
-                           v-model="login.password">
+                    <input id="password" type="password" class="input" name="password" required v-model="login.password">
                 </p>
             </div>
 
             <p class="control">
-                <button class="button is-primary is-fullwidth" @click.prevent="submit">Submit</button>
+                <button class="button is-primary is-fullwidth" :class="{'is-loading' : isLoading}" @click.prevent="submit">Submit
+                </button>
             </p>
 
             <div class="field">
@@ -34,10 +36,10 @@
                 </p>
             </div>
 
-            <a class="btn btn-link is-text-small" href="">
+            <a class="btn btn-link is-text-small is-block has-text-centered" href="">
                 Forgot Your Password?
             </a>
-            <router-link :to="{ name: 'register'}" class="btn btn-link is-text-small pull-left">
+            <router-link :to="{ name: 'register'}" class="btn btn-link is-text-small is-block has-text-centered">
                 Don't have an account? Get started
             </router-link>
 
@@ -48,8 +50,8 @@
     export default {
         data() {
             return {
-                loginError: false,
                 isLoading: false,
+                loginError: false,
                 login: {
                     username: '',
                     password: '',
@@ -67,37 +69,26 @@
         },
         methods: {
             submit() {
-                let self = this
+                let self = this;
                 this.isLoading = true;
-                axios.post('/oauth/token', this.login)
+                this.$store.dispatch('authentication/login', {login: this.login})
                     .then((response) => {
-                        self.isLoading = false
-                        localStorage.setItem('access_token', response.data.access_token)
-                        localStorage.setItem('token_type', response.data.token_type)
-                        localStorage.setItem('refresh_token', response.data.refresh_token)
-                        self.$store.dispatch('userGet')
-                        if (self.isModal) {
-                            return self.$store.commit('modalHide', {name: 'loginModal'})
-                        }
-                        Event.$emit('changePage', '/dashboard/')
-                    }, (error) => {
-                        console.log(error)
-                        if (error.response.data.invalid_credentials) {
-                            console.log(error.response.data.invalid_credentials)
-                            return self.loginError = "These credentials do not match our records.";
-                        }
+                        self.isLoading = false;
+                        Event.$emit('changePage', '/dashboard/');
+                        return self.$store.dispatch('user/get');
+                    })
+                    .then((response) => {
+                        return self.$store.dispatch('bookcase/get');
+                    })
+                    .catch((error) => {
+                        self.isLoading = false;
+                        return self.loginError = true;
                     });
-            },
-            getErrors(fieldName) {
-                if (this.formErrors[fieldName]) {
-                    return this.formErrors[fieldName][0];
-                }
             }
         },
         mounted() {
             if (localStorage.getItem('access_token')) {
-                this.$store.dispatch('userGet')
-                Event.$emit('changePage', '/dashboard/')
+                this.$store.dispatch('user/get');
             }
         }
     }

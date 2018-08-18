@@ -44,10 +44,12 @@
                 </li>
             </ul>
             <p class="menu-label">
-                Bookcase <a class="is-pulled-right align-vertical tooltip is-tooltip-right is-primary"
-                            data-tooltip="Add New Bookshelf" @click.prevent="triggerEvent('modalShow', 'shelfAdd')"><i
-                    class="fa fa-plus-circle is-pulled-right align-vertical is-primary"
-                    aria-hidden="true"></i></a>
+                Bookcase
+                <shelf-add-button></shelf-add-button>
+                <!--<a class="is-pulled-right align-vertical tooltip is-tooltip-right is-primary"-->
+                            <!--data-tooltip="Add New Bookshelf" @click.prevent="triggerEvent('modalShow', 'shelfAdd')"><i-->
+                    <!--class="fa fa-plus-circle is-pulled-right align-vertical is-primary"-->
+                    <!--aria-hidden="true"></i></a>-->
             </p>
             <transition name="fade" mode="out-in">
                 <ul class="menu-list" v-if="!pageLoading">
@@ -86,6 +88,7 @@
 </template>
 
 <script>
+    import ShelfAddButton from '../components/buttons/ShelfAddButton.vue'
     export default {
         props: {
             user: {
@@ -95,6 +98,7 @@
                 required: true
             }
         },
+        components:{ShelfAddButton},
         computed: {
             pageLoading() {
                 return this.$store.getters.getPageLoading && !this.user

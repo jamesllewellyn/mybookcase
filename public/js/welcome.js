@@ -518,8 +518,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
         bestSellers: null,
         book: null,
         pageLoading: true,
-        friendsSearchAsyncResults: null,
-        showFriendsSearchOptions: false,
         searchResults: null,
         searchQuery: null,
         modals: [], /** all app models */
@@ -1004,12 +1002,6 @@ var store = new __WEBPACK_IMPORTED_MODULE_1_vuex__["a" /* default */].Store({
                 return null;
             }
             return state.bestSellers;
-        },
-        getFriendsSearchAsyncResults: function getFriendsSearchAsyncResults(state) {
-            if (!state.friendsSearchAsyncResults) {
-                return null;
-            }
-            return state.friendsSearchAsyncResults;
         },
         getFriends: function getFriends(state) {
             if (!state.friends) {

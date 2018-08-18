@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Shelf;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
-use App\User;
 
 class ShelfController extends Controller
 {
@@ -18,23 +17,24 @@ class ShelfController extends Controller
      */
     public function index()
     {
-        //
+        $shelves = request()->user()->getShelves();
+
+        return $this->apiSuccess(['shelves' => $shelves]);
     }
 
     /**
      * Store new shelf
      *
      * @param \Illuminate\Http\Request $request
-     * @param User $user
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user)
+    public function store(Request $request)
     {
         $shelf = new Shelf();
 
         $this->validate(Request(), $shelf->validation, $shelf->messages);
 
-        $shelf = Shelf::create(['name' => $request->get('name'), 'user_id' => $user->id]);
+        $shelf = Shelf::create(['name' => $request->get('name'), 'user_id' => $request->user()->id]);
 
         return $this->apiSuccess(['message' => "Shelf {$shelf->name} has been created", 'shelf' => $shelf]);
     }
@@ -43,10 +43,9 @@ class ShelfController extends Controller
      * get shelf
      *
      * @param \App\User $user
-     * @param \App\Shelf $shelf
      * @return \Illuminate\Http\Response
      */
-    public function show(User $user, Shelf $shelf)
+    public function show(Shelf $shelf)
     {
         $this->authorize('access-shelf', [$shelf]);
 
@@ -63,7 +62,7 @@ class ShelfController extends Controller
      * @param \App\Shelf $shelf
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, User $user, Shelf $shelf)
+    public function update(Request $request, Shelf $shelf)
     {
         $this->authorize('access-shelf', [$shelf]);
 
@@ -84,7 +83,7 @@ class ShelfController extends Controller
      * @param \App\Shelf $shelf
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, Shelf $shelf)
+    public function destroy(Shelf $shelf)
     {
         $this->authorize('access-shelf', [$shelf]);
 

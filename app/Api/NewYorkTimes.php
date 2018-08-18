@@ -7,6 +7,7 @@ use App\Traits\ApiResponse;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Collection;
 use Carbon\Carbon;
+use App\Jobs\ProcessBooks;
 
 class NewYorkTimes
 {
@@ -32,9 +33,9 @@ class NewYorkTimes
     {
         $today = Carbon::today()->toDateString();
         $results = $this->apiRequest("overview.json?api-key={$this->apiKey}&published_date={$today}");
-        $book = $this->filterApiResults($results);
+        $bestSellers = $this->filterApiResults($results);
 
-        return $book;
+        return $bestSellers;
     }
 
     /**
@@ -57,23 +58,26 @@ class NewYorkTimes
     private function filterApiResults($results)
     {
         return Collection::make($results->results->lists)->map(function ($list) {
-            return [
+            $books = $this->getBooks($list->books);
+            ProcessBooks::dispatch(json_decode($books));
+            return collect([
                 'name'  => $list->display_name,
-                'books' => $this->getBooks($list->books)
-            ];
+                'books' => $books
+            ]);
         })->all();
     }
 
     private function getBooks($books)
     {
         return Collection::make($books)->map(function ($book) {
-            return [
-                'author'    => $book->author,
+
+            return Collection::make([
+                'authors'    => $book->author,
                 'title'     => title_case($book->title),
                 'isbn'      => $book->primary_isbn10,
-                'isbn_13'      => $book->primary_isbn13,
-                'cover_url' => $book->book_image
-            ];
-        })->all();
+                'isbn13'      => $book->primary_isbn13,
+                'image' => $book->book_image
+            ]);
+        });
     }
 }

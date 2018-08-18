@@ -18,28 +18,28 @@ class UserController extends Controller
      */
     public function index(Request $request)
     {
-        $shelves = $request->user()->getShelves();
-
-//        $friends = $request->user()->getFriends();
-        return $this->apiSuccess(['user' => $request->user(), 'shelves' => $shelves, 'friends' => null]);
+        return $this->apiSuccess(['user' => $request->user()]);
     }
 
     /**
      * Update the specified resource in storage.
      *
+     * @param  \Illuminate\Http\Request $request
      * @return \Illuminate\Http\Response
      */
-    public function store()
+    public function store(Request $request)
     {
         $user = new User();
+
+        $request->merge(['handle' => str_replace( ' ',  '' , strtolower($request->handle))]);
 
         $this->validate(request(), $user->validation);
 
         $user = $user->create([
-            'name'     => request('name'),
-            'email'    => request('email'),
-            'handle'   => request('handle'),
-            'password' => Hash::make(request('password')),
+            'name'     => $request->name,
+            'email'    => $request->email,
+            'handle'   => $request->handle,
+            'password' => Hash::make($request->password),
         ]);
 
         return $this->apiSuccess(['message' => 'User have been registered', 'user' => $user]);
@@ -52,10 +52,13 @@ class UserController extends Controller
      * @param  User $user
      * @return \Illuminate\Http\Response
      */
-    public
-    function update(Request $request, User $user)
+    public function update(Request $request)
     {
+        $user = $request->user();
+
         $this->authorize('access-user', [$user]);
+
+        $request->merge(['handle' => str_replace( ' ',  '' , strtolower($request->handle))]);
 
         $this->validate(Request(), $user->updateValidation());
 

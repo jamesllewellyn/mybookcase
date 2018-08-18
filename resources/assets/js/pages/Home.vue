@@ -10,9 +10,9 @@
                             <div class="columns is-multiline">
                                 <book v-for="(book, index)  in list.books" :key="index"
                                       :title="book.title"
-                                      :cover_url="book.cover_url"
-                                      :author="book.author"
-                                      :isbn="book.isbn_13">
+                                      :cover_url="book.image"
+                                      :author="book.authors"
+                                      :isbn="book.isbn13">
                                 </book>
                             </div>
                         </div>
@@ -27,30 +27,30 @@
 </template>
 
 <script>
-    import VueSimpleSpinner from 'vue-simple-spinner'
+    import VueSimpleSpinner from 'vue-simple-spinner';
+    import Book from '../components/goodreads/Book';
     export default {
         data() {
             return{
-
+                bestSellers: null,
+                pageLoading: null,
             }
         },
-        components:{VueSimpleSpinner},
-        computed: {
-            bestSellers(){
-                return this.$store.getters.getBestSellerLists;
-            },
-            pageLoading(){
-                return this.$store.getters.getPageLoading;
-            }
-        },
+        components:{VueSimpleSpinner, Book},
         methods: {
             getBestSellers(){
-                return this.$store.dispatch('newYorkTimeGetBestSellers');
+                let self = this;
+                axios.get(`/api/new-york-times/best-sellers`)
+                    .then((response) => {
+                        self.bestSellers = response.data.bestSellers;
+                        self.pageLoading = false;
+                    }, (error) => {
+
+                    });
             }
         },
-        watch: {
-        },
         created() {
+
             this.getBestSellers();
         }
     }

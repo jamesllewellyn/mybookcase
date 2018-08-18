@@ -2,17 +2,18 @@
     <div class="content">
         <div class="columns">
             <div class="column is-one-fifth">
-                <div class="book">
+                <back-button class="is-hidden-desktop"></back-button>
+                <div class="book has-text-centered">
                     <img :src="book.cover_url" alt="" v-if="book.cover_url">
                     <div class="book-placeholder" v-if="!book.cover_url"></div>
                 </div>
                 <p class="field">
-                    <a class="button is-block" @click="addToShelfModal">
-                    <span class="icon">
-                      <i class="fa fa-plus-circle"></i>
-                    </span>
-                        <span>Add To Shelf</span>
-                    </a>
+                    <add-book-to-shelf-button :book="book" v-if="!isOnShelf"></add-book-to-shelf-button>
+                    <router-link class="button is-success is-block"
+                                 v-if="isOnShelf"
+                                 :to="`/shelf/${isOnShelf.id}`"
+
+                    >On Shelf</router-link>
                 </p>
             </div>
             <div class="column">
@@ -43,19 +44,13 @@
                 <p class="has-text-weight-bold">Find Book.</p>
 
                 <p class="field">
-                    <a class="button" :href="`https://www.amazon.com/gp/product/${book.isbn}/ref=as_li_tl?ie=UTF8&tag=mybookcase03-20`" target="_blank">
-                        <span class="icon is-small">
-                            <i class="fab fa-amazon"></i>
-                        </span>
-                        <span>Amazon</span>
-                    </a>
-                    <a class="button" :href="'http://www.worldcat.org/isbn/'+book.isbn" target="_blank">
+                    <a class="button" :href="`http://www.worldcat.org/isbn/${book.isbn}`" target="_blank">
                         <span class="icon">
                             <i class="fas fa-heart"></i>
                         </span>
                         <span>Library</span>
                     </a>
-                    <a class="button" :href="'https://www.goodreads.com/book/isbn/'+book.isbn" target="_blank">
+                    <a class="button" :href="`https://www.goodreads.com/book/isbn/${book.isbn}`" target="_blank">
                         <span class="icon">
                           <i class="fab fa-goodreads-g"></i>
                         </span>
@@ -69,54 +64,71 @@
 </template>
 
 <script>
+    import StarRating from 'vue-star-rating';
+    import AddBookToShelfButton from '../components/buttons/AddBookToShelfButton';
+    import BackButton from '../components/buttons/BackButton';
     export default {
         data() {
-            return {}
+            return {
+                book: ''
+            }
         },
+        components:{StarRating, AddBookToShelfButton, BackButton},
         computed: {
-            id: function () {
-                if (!this.$route.params.id) {
+            isbn(){
+                if (!this.$route.params.isbn) {
                     return false;
                 }
-                return this.$route.params.id;
+                return this.$route.params.isbn;
             },
-            isbn() {
-                if (!this.$route.query.isbn) {
-                    return false
+            isOnShelf(){
+                if(! this.isbn){
+                    return false;
                 }
-                return this.$route.query.isbn
+                console.log(`isOnShelf ${this.isbn}`);
+                return this.$store.getters['bookcase/isOnShelf'](this.isbn);
             },
-            book() {
-                return this.$store.getters.getBook
+            searchQuery() {
+                if (!this.$route.query.search) {
+                    return false;
+                }
+                return this.$route.query.search
             },
             getRating() {
                 if (!this.book) {
-                    return 0
+                    return 0;
                 }
                 if (!this.book.average_rating) {
-                    return 0
+                    return 0;
                 }
-                return parseFloat(this.book.average_rating)
+                return parseFloat(this.book.average_rating);
             },
             getAuthors() {
                 if (!this.book) {
-                    return null
+                    return null;
                 }
                 if (this.book.authors.name) {
-                    return this.book.authors.name
+                    return this.book.authors.name;
                 }
                 return _.map(this.book.authors, function (author, key) {
-                    let name = ` ${author.name}`
+                    let name = ` ${author.name}`;
                     if (author.role.length !== 0) {
-                        name += ` (${author.role})`
+                        name += ` (${author.role})`;
                     }
-                    return name
+                    return name;
                 }).toString()
             }
         },
         methods: {
             getBook() {
-                return this.$store.dispatch('getGoodreadsBook', {id: this.id, isbn: this.isbn});
+                let self = this;
+                this.book = null;
+                axios.get(`/api/goodreads/${this.isbn}`)
+                    .then((response) => {
+                        self.book = response.data.book;
+                    }, (error) => {
+                        // console.log(response);
+                    });
             },
             addToShelfModal() {
                 if(! this.$store.state.isAuthenticated){
@@ -135,8 +147,7 @@
             },
         },
         created() {
-            this.$store.commit('clearBook');
             this.getBook();
-        }
+        },
     }
 </script>

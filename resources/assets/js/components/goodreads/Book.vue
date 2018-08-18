@@ -1,10 +1,25 @@
 <template>
-    <div class="column is-one-fifth">
-        <router-link exact class="book" tag="div" :to="'/book/'+id">
+    <div class="column is-one-fifth is-half-tablet">
+        <router-link exact class="book is-hidden-touch" tag="div" :to="`/book/${isbn}`">
             <img class="image cover" :src="cover_url" alt="" width="180">
             <!--<div class="image cover book-placeholder" width="180" v-if="!cover_url" ></div>-->
             <p class="book-title has-text-weight-bold">{{titleFormatted}}</p>
             <p class="author">by {{ authorFormatted }}</p>
+        </router-link>
+        <router-link exact class="card book-shelf is-hidden-desktop" tag="div" :to="`/book/${isbn}`">
+            <div class="card-content">
+                <div class="columns is-mobile">
+                    <div class="column is-one-third is-paddingless">
+                        <img class="image cover" :src="cover_url" alt="" width="180">
+                    </div>
+                    <div class="column is-two-thirds">
+                        <div class="content">
+                            <p class="book-title has-text-weight-bold">{{titleFormatted}}</p>
+                            <p class="author">by {{ authorFormatted }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </router-link>
     </div>
 </template>
@@ -25,22 +40,12 @@
             author: {
                 required: true
             },
-            goodreads_id: {
-                type: Number,
-                required: false
-            },
             isbn: {
                 type: String,
-                required: false
+                required: true
             }
         },
         computed: {
-            id() {
-                if (this.goodreads_id) {
-                    return this.goodreads_id
-                }
-                return this.isbn + '?isbn=true'
-            },
             titleFormatted() {
                 return this.limitLength(this.title, 40)
             },

@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Friends;
 
-use App\User;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
+use App\Http\Controllers\Controller;
 
 class FriendController extends Controller
 {

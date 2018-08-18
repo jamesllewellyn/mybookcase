@@ -14,34 +14,26 @@ class ShelfBookController extends Controller
     /**
      * List books on shelf.
      *
-     * @param  User $user
      * @param  Shelf $shelf
      * @return \Illuminate\Http\Response
      */
-    public function index(User $user, Shelf $shelf)
+    public function index(Shelf $shelf)
     {
         $this->authorize('access-shelf', [$shelf]);
 
-        $currentPage = request()->query('page') ? (int)request()->query('page') : 1;
+        $books = $shelf->books()->simplePaginate(10);
 
-        $books = $shelf->getBooksPaginated(10, $currentPage);
-
-        $totalBooks = $shelf->books()->count();
-
-        $totalPages =  ceil($totalBooks / 10);
-
-        return $this->apiSuccess(['books' => $books, 'totalBooks' => $totalBooks , 'totalPages' => $totalPages, 'currentPage' => $currentPage]);
+        return $this->apiSuccess(['books' => $books]);
     }
 
     /**
      * Add book to shelf
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  User $user
      * @param  Shelf $shelf
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $user, Shelf $shelf)
+    public function store(Request $request, Shelf $shelf)
     {
         $this->authorize('access-shelf', [$shelf]);
 
@@ -50,13 +42,12 @@ class ShelfBookController extends Controller
         $this->validate(Request(), $shelfBook->validation, $shelfBook->messages);
 
         if($shelf->hasBook($request->get('isbn'))){
-            return $this->apiFail(['message' => 'Book is already on shelf']);
+            return $this->apiFail(['message' => 'Book is already on this shelf']);
         }
 
-        $shelfBook = $shelf->addBook($request->get('isbn'), $request->get('isbn_13'));
-
-        /** return success and requested task */
-        return $this->apiSuccess(['message' => 'Book has been added to shelf', 'shelfBook' => $shelfBook]);
+        $book = $shelf->addBook($request->get('isbn'), $request->get('isbn_13'));
+        /** return success and added book*/
+        return  $this->apiSuccess(['message' => "Book has been added to shelf {$shelf->name}", 'book' => $book]);
     }
 
     /**
@@ -65,9 +56,9 @@ class ShelfBookController extends Controller
      * @param  User $user
      * @param  Shelf $shelf
      * @param  String $isbn
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\Resources\Json
      */
-    public function update(User $user, Shelf $shelf, $isbn)
+    public function update(Shelf $shelf, $isbn)
     {
         $this->authorize('access-shelf', [$shelf]);
 
@@ -75,19 +66,31 @@ class ShelfBookController extends Controller
             return $this->apiFail(['message' => 'Place provide a shelf to move the book to']);
         }
 
-        $book = ShelfBook::where(['shelf_id' => $shelf->id, 'isbn' => $isbn])->first();
-
-        if(!$book){
-            return $this->apiFail(['message' => 'Place provide a shelf to move the book to']);
+        if(! $shelf->hasBook($isbn)){
+            return $this->apiFail(['message' => "Book could not be found on shelf {$shelf->name}"]);
         }
 
         $newShelf = Shelf::find(request()->get('new_shelf_id'));
 
+        if(! $newShelf){
+            return $this->apiFail(['message' => "Shelf could not be found"]);
+        }
+
         $this->authorize('access-shelf', [$newShelf]);
 
-        $shelf->removeBook($book->isbn);
+        if(! $shelf->removeBook($isbn)){
+            return $this->apiFail(['message' => "This book doesn't seem to be on shelf {$shelf->name}"]);
+        }
 
-        return $newShelf->addBook($book->isbn, $book->isbn_13);
+        $book = $newShelf->addBook($isbn);
+
+        if(! $book){
+            return $this->apiFail(['message' => "This book is already on shelf {$newShelf->name}"]);
+        }
+
+        $book->shelf_id = $newShelf->id;
+
+        return $this->apiFail(['message' => "{$book->title} has been added to shelf {$newShelf->name}", 'book' => $book]);
     }
 
     /**
@@ -98,10 +101,16 @@ class ShelfBookController extends Controller
      * @param  String $isbn
      * @return \Illuminate\Http\Response
      */
-    public function destroy(User $user, Shelf $shelf, $isbn)
+    public function destroy(Shelf $shelf, $isbn)
     {
         $this->authorize('access-shelf', [$shelf]);
 
-        return $shelf->removeBook($isbn);
+        $book = $shelf->removeBook($isbn);
+
+        if(! $book){
+            return $this->apiFail(['message' => "This book doesn't seem to be on shelf {$shelf->name}"]);
+        }
+
+        return $this->apiFail(['message' => "{$book->title} has been removed from shelf {$shelf->name}", 'book' => $book]);
     }
 }
