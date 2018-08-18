@@ -46,7 +46,7 @@ class UserWelcome extends Notification
             ->line("Thank you for signing up with My Bookcase")
             ->line("Happy reading")
             ->action('Login',
-                url("/login")
+                url("/#/login")
             );
     }
 
