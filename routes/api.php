@@ -30,7 +30,7 @@ Route::group(["middleware" => "guest"], function () {
  **********************/
 Route::group(["middleware" => ["guest", 'throttle:30,1']], function () {
     Route::get('goodreads', 'Search\GoodReadsAPIController@index');
-    Route::get('isbndb', 'Search\IsbndbAPIController@index');
+    Route::get('isbndb', 'Search\ISBNdbAPIController@index');
     Route::get('goodreads/{id}', 'Search\GoodReadsAPIController@show');
 
 });
