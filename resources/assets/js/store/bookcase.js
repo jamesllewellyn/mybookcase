@@ -49,7 +49,7 @@ export default {
         },
         addShelf: ({commit}, name) => {
             return new Promise((resolve, reject) => {
-            axios.post(`/api/shelf/`, {name : name})
+            axios.post(`/api/shelf`, {name : name})
                 .then((response) => {
                     commit('addShelf', {shelf: response.data.shelf});
                     return resolve(response);

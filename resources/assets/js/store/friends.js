@@ -29,7 +29,7 @@ export default {
     },
     actions: {
         get({state, commit}) {
-            axios.get(`/api/friends/`)
+            axios.get(`/api/friends`)
                 .then((response) => {
                     commit('getSuccess', {
                         pending: response.data.pending,

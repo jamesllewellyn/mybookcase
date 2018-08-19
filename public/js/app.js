@@ -41786,7 +41786,7 @@ var index_esm = {
             var state = _ref5.state,
                 commit = _ref5.commit;
 
-            axios.get('/api/friends/').then(function (response) {
+            axios.get('/api/friends').then(function (response) {
                 commit('getSuccess', {
                     pending: response.data.pending,
                     sent: response.data.sent,
@@ -42101,7 +42101,7 @@ var index_esm = {
             var commit = _ref10.commit;
 
             return new Promise(function (resolve, reject) {
-                axios.post('/api/shelf/', { name: name }).then(function (response) {
+                axios.post('/api/shelf', { name: name }).then(function (response) {
                     commit('addShelf', { shelf: response.data.shelf });
                     return resolve(response);
                 }, function (error) {
