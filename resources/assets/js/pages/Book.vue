@@ -139,9 +139,9 @@
         },
         watch: {
             /** whenever isbn changes, get book data */
-            id() {
+            isbn() {
                 /** dispatch action */
-                if (this.id) {
+                if (this.isbn) {
                     this.getBook();
                 }
             },

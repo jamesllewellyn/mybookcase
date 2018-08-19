@@ -47098,9 +47098,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     watch: {
         /** whenever isbn changes, get book data */
-        id: function id() {
+        isbn: function isbn() {
             /** dispatch action */
-            if (this.id) {
+            if (this.isbn) {
                 this.getBook();
             }
         }
