@@ -14,20 +14,13 @@
                             :isbn="isbn"
                             @close="bookMoveShelfModalOpen = false"
                     ></book-move-shelf-modal>
-                    <!--<modal modal-name="bookMoveShelf" title="Move To Another Shelf">-->
-                        <!--<template slot="body">-->
-                            <!--<book-move-shelf-modal></book-move-shelf-modal>-->
-                        <!--</template>-->
-                    <!--</modal>-->
-                    <!--<shelf-update-modal-->
-                            <!--:user-id="userId"-->
-                            <!--:shelf="shelf"-->
-                            <!--:isVisible="shelfUpdateModalOpen"-->
-                            <!--@close="shelfUpdateModalOpen = false"-->
-                    <!--&gt;</shelf-update-modal>-->
                 </portal>
             </a>
-            <a class="dropdown-item" @click="bookRemoveModalOpen = true">
+            <a class="dropdown-item">
+                Mark As Read
+            </a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item is-danger" @click="bookRemoveModalOpen = true">
                 Remove
                 <portal to="modals" v-if="bookRemoveModalOpen">
                     <book-remove-modal

@@ -95,7 +95,7 @@ let routes = [
     },
     {
         path: '/search/',
-        component: require('./pages/goodreads/Search.vue'),
+        component: require('./pages/isbndb/Search.vue'),
         name: 'search',
         meta: { requiresAuth: false,  hasShowSideMenu: true  }
     },

@@ -5,8 +5,7 @@
                 <nav class="breadcrumb has-arrow-separator" aria-label="breadcrumbs" v-if="user">
                     <ul>
                         <li>
-                            <router-link exact href="#" active-class="is-active" tag="a" :to="`/user/@${user.handle}`"
-                                         v-if="user">
+                            <router-link exact href="#" active-class="is-active" tag="a" :to="`/user/@${user.handle}`" v-if="user">
                                 <img class="avatar" :src="user.avatar_url" alt="" >
                                 {{user.name}}
                             </router-link>
@@ -15,18 +14,14 @@
                     </ul>
                 </nav>
                 <div class="columns is-multiline">
+                    <book-in-list v-for="(book, index) in books" :key="index"  :isbn="book.isbn" :shelf-id="shelf.id" :user-id="user.id">
+                        <img slot="cover"  class="image cover" :src="book.image" :alt="book.title">
+                        <template slot="title">{{book.title}}</template>
+                        <template slot="authors">{{book.authors}}</template>
+                    </book-in-list>
 
-                    <shelf-book v-for="(book, index) in books" :key="index"
-                                 :title="book.title"
-                                 :cover_url="book.image"
-                                 :authors="book.authors"
-                                 :isbn="book.isbn"
-                                 :identifiers="book.identifiers"
-                                 :show_menu="false"
-                    >
-                    </shelf-book>
-                    <shelf-book :placeholder="true" v-if="books.length == 0">
-                    </shelf-book>
+                    <book-in-list v-if="books.length === 0">
+                    </book-in-list>
                 </div>
                 <nav class="pagination" role="navigation" aria-label="pagination" v-if="nextPageUrl || prevPageUrl">
                     <ul class="pagination-list"></ul>
@@ -45,7 +40,7 @@
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner'
-    import ShelfBook from  '../../components/ShelfBook.vue';
+    import BookInList from  '../../components/BookInList.vue';
     export default {
         data() {
             return {
@@ -58,7 +53,7 @@
                 isLoading: true
             }
         },
-        components: {VueSimpleSpinner, ShelfBook},
+        components: {VueSimpleSpinner, BookInList},
         computed: {
             handle: function () {
                 if (!this.$route.params.handle) {

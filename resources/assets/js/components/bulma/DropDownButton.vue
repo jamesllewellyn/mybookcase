@@ -45,16 +45,6 @@
             }
         },
         methods: {
-            /** trigger event */
-            triggerEvent(object){
-                if(object.areYouSure){
-                    Event.$emit('showAreYouSure', object.action, object.event.name, object.event.payload);
-                    this.hideDropdown()
-                    return true
-                }
-                Event.$emit(object.event.name, object.event.payload);
-                return this.hideDropdown()
-            },
             hideDropdown(){
                 this.isActive = false;
             }
