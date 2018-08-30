@@ -9,29 +9,21 @@
                 <portal to="modals" v-if="bookMoveShelfModalOpen">
                     <book-move-shelf-modal
                             :shelf-id="shelfId"
-                            :user-id="userId"
                             :is-visible="bookMoveShelfModalOpen"
                             :isbn="isbn"
                             @close="bookMoveShelfModalOpen = false"
                     ></book-move-shelf-modal>
-                    <!--<modal modal-name="bookMoveShelf" title="Move To Another Shelf">-->
-                        <!--<template slot="body">-->
-                            <!--<book-move-shelf-modal></book-move-shelf-modal>-->
-                        <!--</template>-->
-                    <!--</modal>-->
-                    <!--<shelf-update-modal-->
-                            <!--:user-id="userId"-->
-                            <!--:shelf="shelf"-->
-                            <!--:isVisible="shelfUpdateModalOpen"-->
-                            <!--@close="shelfUpdateModalOpen = false"-->
-                    <!--&gt;</shelf-update-modal>-->
                 </portal>
             </a>
-            <a class="dropdown-item" @click="bookRemoveModalOpen = true">
+            <a class="dropdown-item" @click="toggleRead">
+                <span v-if="!read">Mark As Read</span>
+                <span v-else>Mark As Not Read</span>
+            </a>
+            <hr class="dropdown-divider">
+            <a class="dropdown-item is-danger" @click="bookRemoveModalOpen = true">
                 Remove
                 <portal to="modals" v-if="bookRemoveModalOpen">
                     <book-remove-modal
-                            :user-id="userId"
                             :shelf-id="shelfId"
                             :isbn="isbn"
                             :isVisible="bookRemoveModalOpen"
@@ -56,6 +48,17 @@
             }
         },
         components: {DropDownButton, BookMoveShelfModal, BookRemoveModal},
-        props: ['isbn', 'shelfId', 'userId']
+        props: ['isbn', 'shelfId', 'read'],
+        methods:{
+            toggleRead(){
+                let self = this;
+                axios.put(`/api/shelf/${this.shelfId}/book/${this.isbn}/read`)
+                    .then(() => {
+                       self.$emit('readToggled');
+                    }, (error) => {
+                        console.log(error);
+                    });
+            }
+        }
     }
 </script>
