@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 223);
+/******/ 	return __webpack_require__(__webpack_require__.s = 228);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -18184,22 +18184,22 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 223:
+/***/ 228:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(224);
+module.exports = __webpack_require__(229);
 
 
 /***/ }),
 
-/***/ 224:
+/***/ 229:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(20);
 
 window.Vue = __webpack_require__(8);
 
-Vue.component('user-register-form', __webpack_require__(225));
+Vue.component('user-register-form', __webpack_require__(230));
 /** structure components **/
 var app = new Vue({
     el: '#app',
@@ -18236,496 +18236,6 @@ var app = new Vue({
     },
     mounted: function mounted() {}
 });
-
-/***/ }),
-
-/***/ 225:
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var normalizeComponent = __webpack_require__(0)
-/* script */
-var __vue_script__ = __webpack_require__(226)
-/* template */
-var __vue_template__ = __webpack_require__(227)
-/* template functional */
-var __vue_template_functional__ = false
-/* styles */
-var __vue_styles__ = null
-/* scopeId */
-var __vue_scopeId__ = null
-/* moduleIdentifier (server only) */
-var __vue_module_identifier__ = null
-var Component = normalizeComponent(
-  __vue_script__,
-  __vue_template__,
-  __vue_template_functional__,
-  __vue_styles__,
-  __vue_scopeId__,
-  __vue_module_identifier__
-)
-Component.options.__file = "resources/assets/js/components/invitations/InterestedUser.vue"
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-065c7a60", Component.options)
-  } else {
-    hotAPI.reload("data-v-065c7a60", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-
-/***/ 226:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    data: function data() {
-        return {
-            invitationError: null,
-            invitation: null,
-            email: '',
-            formErrors: [],
-            isLoading: false,
-            user: {
-                email: '',
-                name: '',
-                handle: '',
-                password: '',
-                password_confirm: ''
-            }
-        };
-    },
-
-    computed: {
-        invitationCode: function invitationCode() {
-            return location.search.match(new RegExp('invitation_code' + "=(.*?)($|\&)", "i"))[1];
-        }
-    },
-    methods: {
-        getInvitation: function getInvitation() {
-            if (!this.invitationCode) {
-                return false;
-            }
-            var self = this;
-            this.isLoading = true;
-            axios.get('/api/interested-user?invitation_code=' + this.invitationCode, this.user).then(function (response) {
-                if (!response.data.success) {
-                    console.log(response.data.inviteError);
-                    self.isLoading = false;
-                    return self.invitationError = response.data.inviteError;
-                }
-                self.isLoading = false;
-                self.invitation = { id: response.data.invitation.id, token: response.data.invitation.token };
-                self.user.email = response.data.invitation.email;
-                //                        self.hasRegisteredInterest = true;
-            }, function (error) {
-                if (error.response.data) {
-                    console.log(error.response.data.inviteError);
-                    self.isLoading = false;
-                    return self.invitationError = error.response.data.inviteError;
-                }
-            });
-        },
-        submit: function submit() {
-            var self = this;
-            this.isLoading = true;
-            axios.post('/interested-user/register', this.user).then(function (response) {
-                self.isLoading = false;
-                console.log(response);
-                window.location = "/home/";
-            }, function (error) {
-                if (error.response.data) {
-                    self.isLoading = false;
-                    return self.formErrors = error.response.data.errors;
-                }
-            });
-        },
-        getErrors: function getErrors(fieldName) {
-            if (this.formErrors[fieldName]) {
-                return this.formErrors[fieldName][0];
-            }
-        }
-    },
-    mounted: function mounted() {
-        this.getInvitation();
-    }
-});
-
-/***/ }),
-
-/***/ 227:
-/***/ (function(module, exports, __webpack_require__) {
-
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "user-register-form" }, [
-    _c("h1", { staticClass: "title is-quicksans has-text-centered" }, [
-      _vm._v("\n        My Bookcase\n    ")
-    ]),
-    _vm._v(" "),
-    !_vm.invitationError
-      ? _c("div", { staticClass: "content has-text-centered" }, [
-          _c("p", [
-            _vm._v(
-              "Thank you for registering your interest. Let's get you set up with an account"
-            )
-          ])
-        ])
-      : _vm._e(),
-    _vm._v(" "),
-    !_vm.invitationError
-      ? _c("div", { staticClass: "box" }, [
-          _c("form", [
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Name")]),
-              _vm._v(" "),
-              _c("p", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.name,
-                      expression: "user.name"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "text",
-                    name: "name",
-                    placeholder: "Kitty Lou"
-                  },
-                  domProps: { value: _vm.user.name },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "name", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "help is-danger",
-                domProps: { textContent: _vm._s(_vm.getErrors("name")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Email")]),
-              _vm._v(" "),
-              _c("p", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.email,
-                      expression: "user.email"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "email",
-                    name: "email",
-                    placeholder: "kitty.lou@just-asitting-in-the-window.cat",
-                    disabled: ""
-                  },
-                  domProps: { value: _vm.user.email },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "email", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "help is-danger",
-                domProps: { textContent: _vm._s(_vm.getErrors("email")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Handle")]),
-              _vm._v(" "),
-              _c("p", { staticClass: "control has-icons-left" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.handle,
-                      expression: "user.handle"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: { type: "text", name: "handle", placeholder: "lou" },
-                  domProps: { value: _vm.user.handle },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "handle", $event.target.value)
-                    }
-                  }
-                }),
-                _vm._v(" "),
-                _c("span", { staticClass: "icon is-small is-left" }, [
-                  _vm._v("\n                      @\n            ")
-                ])
-              ]),
-              _vm._v(" "),
-              _vm._m(0),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "help is-danger",
-                domProps: { textContent: _vm._s(_vm.getErrors("handle")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [_vm._v("Password")]),
-              _vm._v(" "),
-              _c("p", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.password,
-                      expression: "user.password"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "password",
-                    name: "password",
-                    placeholder: "************"
-                  },
-                  domProps: { value: _vm.user.password },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(_vm.user, "password", $event.target.value)
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "help is-danger",
-                domProps: { textContent: _vm._s(_vm.getErrors("password")) }
-              })
-            ]),
-            _vm._v(" "),
-            _c("div", { staticClass: "field" }, [
-              _c("label", { staticClass: "label" }, [
-                _vm._v("Confirm Password")
-              ]),
-              _vm._v(" "),
-              _c("p", { staticClass: "control" }, [
-                _c("input", {
-                  directives: [
-                    {
-                      name: "model",
-                      rawName: "v-model",
-                      value: _vm.user.password_confirmation,
-                      expression: "user.password_confirmation"
-                    }
-                  ],
-                  staticClass: "input",
-                  attrs: {
-                    type: "password",
-                    name: "password_confirmation",
-                    placeholder: "************"
-                  },
-                  domProps: { value: _vm.user.password_confirmation },
-                  on: {
-                    input: function($event) {
-                      if ($event.target.composing) {
-                        return
-                      }
-                      _vm.$set(
-                        _vm.user,
-                        "password_confirmation",
-                        $event.target.value
-                      )
-                    }
-                  }
-                })
-              ]),
-              _vm._v(" "),
-              _c("p", {
-                staticClass: "help is-danger",
-                domProps: {
-                  textContent: _vm._s(_vm.getErrors("password_confirmation"))
-                }
-              })
-            ]),
-            _vm._v(" "),
-            _c("p", { staticClass: "control" }, [
-              _c(
-                "button",
-                {
-                  staticClass: "button is-primary is-fullwidth",
-                  class: { "is-loading": _vm.isLoading },
-                  on: {
-                    click: function($event) {
-                      $event.preventDefault()
-                      return _vm.submit($event)
-                    }
-                  }
-                },
-                [_vm._v("Submit\n                ")]
-              )
-            ])
-          ])
-        ])
-      : _c("article", { staticClass: "message is-warning" }, [
-          _c("div", { staticClass: "message-header" }, [
-            _vm._v(
-              "\n            " +
-                _vm._s(_vm.invitationError["title"]) +
-                "\n        "
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "message-body" }, [
-            _vm._v(
-              "\n            " +
-                _vm._s(_vm.invitationError["message"]) +
-                "\n        "
-            )
-          ])
-        ])
-  ])
-}
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("p", { staticClass: "is-size-6" }, [
-      _c("small", [
-        _vm._v(
-          "Your handle will be displayed along with any messages in My Bookcase."
-        )
-      ])
-    ])
-  }
-]
-render._withStripped = true
-module.exports = { render: render, staticRenderFns: staticRenderFns }
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-065c7a60", module.exports)
-  }
-}
 
 /***/ }),
 
@@ -21246,6 +20756,496 @@ Popper.Defaults = Defaults;
 
 /***/ }),
 
+/***/ 230:
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(0)
+/* script */
+var __vue_script__ = __webpack_require__(231)
+/* template */
+var __vue_template__ = __webpack_require__(232)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/invitations/InterestedUser.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-065c7a60", Component.options)
+  } else {
+    hotAPI.reload("data-v-065c7a60", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+
+/***/ 231:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            invitationError: null,
+            invitation: null,
+            email: '',
+            formErrors: [],
+            isLoading: false,
+            user: {
+                email: '',
+                name: '',
+                handle: '',
+                password: '',
+                password_confirm: ''
+            }
+        };
+    },
+
+    computed: {
+        invitationCode: function invitationCode() {
+            return location.search.match(new RegExp('invitation_code' + "=(.*?)($|\&)", "i"))[1];
+        }
+    },
+    methods: {
+        getInvitation: function getInvitation() {
+            if (!this.invitationCode) {
+                return false;
+            }
+            var self = this;
+            this.isLoading = true;
+            axios.get('/api/interested-user?invitation_code=' + this.invitationCode, this.user).then(function (response) {
+                if (!response.data.success) {
+                    console.log(response.data.inviteError);
+                    self.isLoading = false;
+                    return self.invitationError = response.data.inviteError;
+                }
+                self.isLoading = false;
+                self.invitation = { id: response.data.invitation.id, token: response.data.invitation.token };
+                self.user.email = response.data.invitation.email;
+                //                        self.hasRegisteredInterest = true;
+            }, function (error) {
+                if (error.response.data) {
+                    console.log(error.response.data.inviteError);
+                    self.isLoading = false;
+                    return self.invitationError = error.response.data.inviteError;
+                }
+            });
+        },
+        submit: function submit() {
+            var self = this;
+            this.isLoading = true;
+            axios.post('/interested-user/register', this.user).then(function (response) {
+                self.isLoading = false;
+                console.log(response);
+                window.location = "/home/";
+            }, function (error) {
+                if (error.response.data) {
+                    self.isLoading = false;
+                    return self.formErrors = error.response.data.errors;
+                }
+            });
+        },
+        getErrors: function getErrors(fieldName) {
+            if (this.formErrors[fieldName]) {
+                return this.formErrors[fieldName][0];
+            }
+        }
+    },
+    mounted: function mounted() {
+        this.getInvitation();
+    }
+});
+
+/***/ }),
+
+/***/ 232:
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "user-register-form" }, [
+    _c("h1", { staticClass: "title is-quicksans has-text-centered" }, [
+      _vm._v("\n        My Bookcase\n    ")
+    ]),
+    _vm._v(" "),
+    !_vm.invitationError
+      ? _c("div", { staticClass: "content has-text-centered" }, [
+          _c("p", [
+            _vm._v(
+              "Thank you for registering your interest. Let's get you set up with an account"
+            )
+          ])
+        ])
+      : _vm._e(),
+    _vm._v(" "),
+    !_vm.invitationError
+      ? _c("div", { staticClass: "box" }, [
+          _c("form", [
+            _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label" }, [_vm._v("Name")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "control" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.name,
+                      expression: "user.name"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: {
+                    type: "text",
+                    name: "name",
+                    placeholder: "Kitty Lou"
+                  },
+                  domProps: { value: _vm.user.name },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "name", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "help is-danger",
+                domProps: { textContent: _vm._s(_vm.getErrors("name")) }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label" }, [_vm._v("Email")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "control" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.email,
+                      expression: "user.email"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: {
+                    type: "email",
+                    name: "email",
+                    placeholder: "kitty.lou@just-asitting-in-the-window.cat",
+                    disabled: ""
+                  },
+                  domProps: { value: _vm.user.email },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "email", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "help is-danger",
+                domProps: { textContent: _vm._s(_vm.getErrors("email")) }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label" }, [_vm._v("Handle")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "control has-icons-left" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.handle,
+                      expression: "user.handle"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: { type: "text", name: "handle", placeholder: "lou" },
+                  domProps: { value: _vm.user.handle },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "handle", $event.target.value)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("span", { staticClass: "icon is-small is-left" }, [
+                  _vm._v("\n                      @\n            ")
+                ])
+              ]),
+              _vm._v(" "),
+              _vm._m(0),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "help is-danger",
+                domProps: { textContent: _vm._s(_vm.getErrors("handle")) }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label" }, [_vm._v("Password")]),
+              _vm._v(" "),
+              _c("p", { staticClass: "control" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.password,
+                      expression: "user.password"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: {
+                    type: "password",
+                    name: "password",
+                    placeholder: "************"
+                  },
+                  domProps: { value: _vm.user.password },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(_vm.user, "password", $event.target.value)
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "help is-danger",
+                domProps: { textContent: _vm._s(_vm.getErrors("password")) }
+              })
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "field" }, [
+              _c("label", { staticClass: "label" }, [
+                _vm._v("Confirm Password")
+              ]),
+              _vm._v(" "),
+              _c("p", { staticClass: "control" }, [
+                _c("input", {
+                  directives: [
+                    {
+                      name: "model",
+                      rawName: "v-model",
+                      value: _vm.user.password_confirmation,
+                      expression: "user.password_confirmation"
+                    }
+                  ],
+                  staticClass: "input",
+                  attrs: {
+                    type: "password",
+                    name: "password_confirmation",
+                    placeholder: "************"
+                  },
+                  domProps: { value: _vm.user.password_confirmation },
+                  on: {
+                    input: function($event) {
+                      if ($event.target.composing) {
+                        return
+                      }
+                      _vm.$set(
+                        _vm.user,
+                        "password_confirmation",
+                        $event.target.value
+                      )
+                    }
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("p", {
+                staticClass: "help is-danger",
+                domProps: {
+                  textContent: _vm._s(_vm.getErrors("password_confirmation"))
+                }
+              })
+            ]),
+            _vm._v(" "),
+            _c("p", { staticClass: "control" }, [
+              _c(
+                "button",
+                {
+                  staticClass: "button is-primary is-fullwidth",
+                  class: { "is-loading": _vm.isLoading },
+                  on: {
+                    click: function($event) {
+                      $event.preventDefault()
+                      return _vm.submit($event)
+                    }
+                  }
+                },
+                [_vm._v("Submit\n                ")]
+              )
+            ])
+          ])
+        ])
+      : _c("article", { staticClass: "message is-warning" }, [
+          _c("div", { staticClass: "message-header" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm.invitationError["title"]) +
+                "\n        "
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "message-body" }, [
+            _vm._v(
+              "\n            " +
+                _vm._s(_vm.invitationError["message"]) +
+                "\n        "
+            )
+          ])
+        ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("p", { staticClass: "is-size-6" }, [
+      _c("small", [
+        _vm._v(
+          "Your handle will be displayed along with any messages in My Bookcase."
+        )
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-065c7a60", module.exports)
+  }
+}
+
+/***/ }),
+
 /***/ 24:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -21262,7 +21262,7 @@ module.exports = __webpack_require__(25);
 var utils = __webpack_require__(1);
 var bind = __webpack_require__(10);
 var Axios = __webpack_require__(27);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(7);
 
 /**
  * Create an instance of Axios
@@ -21347,7 +21347,7 @@ function isSlowBuffer (obj) {
 "use strict";
 
 
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(7);
 var utils = __webpack_require__(1);
 var InterceptorManager = __webpack_require__(36);
 var dispatchRequest = __webpack_require__(37);
@@ -21896,7 +21896,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(1);
 var transformData = __webpack_require__(38);
 var isCancel = __webpack_require__(14);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(7);
 var isAbsoluteURL = __webpack_require__(39);
 var combineURLs = __webpack_require__(40);
 
@@ -22415,7 +22415,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 /***/ }),
 
-/***/ 5:
+/***/ 7:
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

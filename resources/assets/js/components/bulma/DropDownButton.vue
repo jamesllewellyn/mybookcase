@@ -1,61 +1,55 @@
 <template>
     <div class="dropdown" :class="[{'is-active' : isActive}, direction]" v-on-clickaway="hideDropdown">
         <div class="dropdown-trigger" @click.prevent="isActive = !isActive">
-            <button class="button is-transparent" aria-haspopup="true" aria-controls="dropdown-menu" :class="!boarder ? 'has-no-boarder' : ''" >
+            <button class="button is-transparent" aria-haspopup="true" aria-controls="dropdown-menu"
+                    :class="!boarder ? 'has-no-boarder' : ''">
                 <span v-text="text" v-if="text"></span>
                 <span class="icon is-small">
                      <i class="fa" :class="icon" aria-hidden="true"></i>
                 </span>
             </button>
         </div>
-        <div class="dropdown-menu" id="dropdown-menu" role="menu" ref="dropdown" >
-            <div class="dropdown-content" >
+        <div class="dropdown-menu" id="dropdown-menu" role="menu" ref="dropdown"
+             @click.prevent="isActive = false">
+            <div class="dropdown-content">
                 <slot name="dropdown-items"></slot>
             </div>
         </div>
+
     </div>
 </template>
 
 <script>
-    import { mixin as clickaway } from 'vue-clickaway';
+    import {mixin as clickaway} from 'vue-clickaway';
+
     export default {
-        mixins: [ clickaway ],
+        mixins: [clickaway],
         data() {
-            return{
+            return {
                 isActive: false
             }
         },
         props: {
-            boarder:{
+            boarder: {
                 type: Boolean,
                 default: true
             },
-            text:{
+            text: {
                 type: String,
                 required: false,
-                default:null
+                default: null
             },
-            icon:{
+            icon: {
                 type: String,
-                default:'fa-caret-down'
+                default: 'fa-caret-down'
             },
-            direction:{
-                type:String,
-                default:''
+            direction: {
+                type: String,
+                default: ''
             }
         },
         methods: {
-            /** trigger event */
-            triggerEvent(object){
-                if(object.areYouSure){
-                    Event.$emit('showAreYouSure', object.action, object.event.name, object.event.payload);
-                    this.hideDropdown()
-                    return true
-                }
-                Event.$emit(object.event.name, object.event.payload);
-                return this.hideDropdown()
-            },
-            hideDropdown(){
+            hideDropdown() {
                 this.isActive = false;
             }
         }

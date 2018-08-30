@@ -5,10 +5,8 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>My Bookcase</title>
-    {{--<meta name="csrf-token" content="{{ csrf_token() }}">--}}
-    <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"
-            integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
+          integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
     <link href="https://blokkfont-losgordos.netdna-ssl.com/v2/blokkfont.css" rel="stylesheet" type="text/css">
     <link href="{{ mix('css/app.css') }}" rel="stylesheet">
 </head>
@@ -52,7 +50,7 @@
             </footer>
         </div>
     </div>
-    <portal-target name="modals"></portal-target>
+    <portal-target name="modals" slim></portal-target>
 
 </div>
 <script src="{{ mix('js/app.js') }}"></script>

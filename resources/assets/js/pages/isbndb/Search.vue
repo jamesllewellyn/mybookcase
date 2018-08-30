@@ -4,15 +4,16 @@
         <transition name="fade" mode="out-in">
             <div class="search-results" v-if="!isSearching">
                 <div class="columns is-multiline" :class="{'is-loading' : isSearching}" v-if="searchResults">
-                    <shelf-book v-for="(book, index) in searchResults.data" :key="index"
-                                 :title="book.title"
-                                 :cover_url="book.image"
-                                 :authors="book.authors"
-                                 :isbn="book.isbn"
-                                 :show_menu="false"
-                                 :searchQuery="query"
-                    >
-                    </shelf-book>
+
+                    <book-in-list v-for="(book, index) in searchResults.data" :key="index"  :isbn="book.isbn">
+                        <img slot="cover"  class="image cover" :src="book.image" v-if="book.image">
+                        <template slot="title">{{book.title}}</template>
+                        <template slot="authors">{{book.authors}}</template>
+                        <template slot="drop-down">
+                            <search-book-drop-down :isbn="book.isbn" :book="book">
+                            </search-book-drop-down>
+                        </template>
+                    </book-in-list>
                     <nav class="pagination column is-full" role="navigation" aria-label="pagination" v-if="searchResults.totalResults > 9">
                         <a class="pagination-next button is-pulled-right"
                            @click.prevent="search(searchResults.currentPage + 1)">Next page</a>
@@ -33,7 +34,8 @@
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner';
-    import ShelfBook from  '../../components/ShelfBook.vue';
+    import BookInList from  '../../components/BookInList';
+    import SearchBookDropDown from  '../../components/buttons/SearchBookDropDown';
     export default {
         data() {
             return {
@@ -42,7 +44,7 @@
                 isSearching : false
             }
         },
-        components:{ShelfBook, VueSimpleSpinner},
+        components:{BookInList, VueSimpleSpinner, SearchBookDropDown},
         computed:{
             queryString() {
                 if (!this.$route.query.query) {

@@ -64,13 +64,8 @@ class Shelf extends Model
     public function books()
     {
         return $this->belongsToMany(Book::class, 'shelf_books')
-            ->wherePivot('deleted_at', '=', null)->withTimestamps();
+            ->wherePivot('deleted_at', '=', null)->withTimestamps()->withPivot('read');
     }
-
-//    public function books()
-//    {
-//        return $this->hasMany(ShelfBook::class, 'shelf_id', 'id');
-//    }
 
     /***********************
      * Boolean Methods
@@ -89,17 +84,6 @@ class Shelf extends Model
     /***********************
      * Get Methods
      **********************/
-
-    public function getBooksPaginated($perPage = 10, $currentPage)
-    {
-        $ISBNdb = New ISBNdb();
-        return $this->books()->skip($perPage * ($currentPage - 1))->take($perPage)->get()->map(function ($book) use ($ISBNdb) {
-//            dd();
-//            return Cache::remember("google-books.isbn.{$book->isbn}", 1440, function () use ($ISBNdb, $book) {
-                return $ISBNdb->getBook($book->isbn);
-//            });
-        })->filter()->all();
-    }
 
     public function getFirstBook()
     {

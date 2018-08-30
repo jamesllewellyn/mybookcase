@@ -14,20 +14,21 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <shelf-book v-for="(book, index) in books" :key="index"
-                                 :title="book.title"
-                                 :cover_url="book.image"
-                                 :authors="book.authors"
-                                 :isbn="book.isbn"
-                                 :shelf-id="shelf.id"
-                                 :user-id="user.id"
-                                 :show_menu="true"
+                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id" :read="book.pivot.read">
+                        <img slot="cover"  class="image cover" :src="book.image" :alt="book.title">
+                        <template slot="title">{{book.title}}</template>
+                        <template slot="authors">{{book.authors}}</template>
+                        <template slot="drop-down">
+                            <shelf-book-drop-down
+                                    :read="book.pivot.read"
+                                    :isbn="book.isbn"
+                                    :shelf-id="shelf.id"
+                                    @readToggled="updateRead(book.id)">
+                            </shelf-book-drop-down>
+                        </template>
+                    </book-in-list>
 
-                    >
-                    </shelf-book>
-
-                    <shelf-book :placeholder="true" v-if="books.length == 0"></shelf-book>
-
+                    <shelf-book v-if="books.length === 0"></shelf-book>
                 </div>
 
                 <nav class="pagination" role="navigation" aria-label="pagination" v-if="nextPageUrl || prevPageUrl">
@@ -40,18 +41,14 @@
 
             </div>
         </transition>
-        <!--<div class="vue-simple-spinner-wrap is-fullheight" v-if="isLoading">-->
-            <!--<vue-simple-spinner size="75" :line-size=6 line-fg-color="#2d2b4a"></vue-simple-spinner>-->
-        <!--</div>-->
-
-
     </div>
 </template>
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner';
     import ShelfOptionsDropDown from '../components/buttons/ShelfOptionsDropDown.vue';
-    import ShelfBook from  '../components/ShelfBook.vue';
+    import BookInList from '../components/BookInList.vue';
+    import ShelfBookDropDown from '../components/buttons/ShelfBookDropDown.vue';
 
     export default {
         data() {
@@ -63,7 +60,7 @@
                 books: []
             }
         },
-        components: {VueSimpleSpinner, ShelfOptionsDropDown, ShelfBook},
+        components: {VueSimpleSpinner, ShelfOptionsDropDown, BookInList, ShelfBookDropDown},
         computed: {
             id: function () {
                 if (!this.$route.params.id) {
@@ -74,7 +71,7 @@
             user() {
                 return this.$store.getters['user/get'];
             },
-            shelf(){
+            shelf() {
                 return this.$store.getters['bookcase/getShelfById'](this.id);
             }
         },
@@ -96,6 +93,10 @@
                         self.$refs.top.scrollTop = 0;
                     }, (error) => {
                     });
+            },
+            updateRead(bookId){
+                let book = this.books.find(book => book.id === bookId);
+                return book.pivot.read = !book.pivot.read;
             }
         },
         watch: {
@@ -127,7 +128,7 @@
                 self.books = _.reject(self.books, ['isbn', isbn]);
             });
         },
-        beforeDestroy(){
+        beforeDestroy() {
             Event.$off(`shelf.delete`);
             Event.$off(`shelf.delete`);
             Event.$off(`shelf.book.remove`);
