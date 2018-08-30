@@ -10,30 +10,29 @@
                             </slot>
                         </router-link>
                     </div>
-                    <div class="column is-two-thirds">
+                    <div class="column is-two-thirds right-hand-side">
                         <div class="div is-pulled-right">
                             <slot name="drop-down">
                             </slot>
                         </div>
                         <div class="content">
                             <p class="book-title has-text-weight-bold">
-                               <slot name="title">
-                                   <progress class="progress is-width-90" value="0" max="100"></progress>
-                                   <progress class="progress is-width-40" value="0" max="100"></progress>
-                                   <progress class="progress is-width-30" value="0" max="100"></progress>
-                               </slot>
+                                <slot name="title">
+                                    <progress class="progress is-width-90" value="0" max="100"></progress>
+                                    <progress class="progress is-width-40" value="0" max="100"></progress>
+                                    <progress class="progress is-width-30" value="0" max="100"></progress>
+                                </slot>
                             </p>
-                            <slot name="authors">
-                                <p class="author" v-if="authors">by
-                                    <span v-for="(author, index) in authors" :key="index" v-if="authors">
-                                    {{ author }}<span v-if="index !== 0 && index === authors.length - 1">, </span>
-                                </span>
-                                </p>
-                            </slot>
-                            <div class="tags has-addons has-been-read" v-if="read">
-                                <span class="tag"><i class="fas fa-book-reader"></i></span>
-                                <span class="tag is-success">Read</span>
-                            </div>
+                            <p class="author">
+                                <slot name="authors">
+                                </slot>
+                            </p>
+                            <transition name="fade" mode="out-in">
+                                <div class="tags has-addons has-been-read" v-if="read">
+                                    <span class="tag"><i class="fas fa-book-reader"></i></span>
+                                    <span class="tag is-success">Read</span>
+                                </div>
+                            </transition>
                         </div>
                     </div>
                 </div>
@@ -50,36 +49,36 @@
                 required: false,
                 default: false
             },
-            shelfId:{
+            shelfId: {
                 type: Number,
                 required: false
             },
-            userId:{
+            userId: {
                 type: Number,
                 required: false
             },
-            read:{
-                type: Boolean,
+            read: {
+                // type: Boolean,
                 default: false
             },
-            searchQuery:{
+            searchQuery: {
                 type: String,
                 required: false
             }
         },
         computed: {
 
-            bookUrl(){
-                if(!this.isbn){
+            bookUrl() {
+                if (!this.isbn) {
                     return null;
                 }
-                if(this.searchQuery){
+                if (this.searchQuery) {
                     return `/book/${this.isbn}?search=${this.searchQuery}`;
                 }
                 return `/book/${this.isbn}`;
             }
         },
-        methods:{
+        methods: {
             titleToLength(title) {
                 if (!title) {
                     return false
@@ -94,9 +93,9 @@
 </script>
 
 <style lang="scss" scoped>
-    .column{
+    .right-hand-side {
         position: relative;
-        .has-been-read{
+        .has-been-read {
             position: absolute;
             bottom: 0;
             left: 0;

@@ -20,7 +20,7 @@ import Multiselect from 'vue-multiselect'
 
 /** Sentry vuejs**/
 Raven
-    .config('https://f5c8e970f89d47e39af712727ef99164@sentry.io/1206231')
+    .config('https://ccbcd7504a6a47deac02a3f6d9469ab6@sentry.io/1271978')
     .addPlugin(RavenVue, Vue)
     .install();
 

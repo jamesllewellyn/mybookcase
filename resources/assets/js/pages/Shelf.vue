@@ -14,15 +14,16 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <book-in-list v-for="(book, index) in books" :key="index"  :isbn="book.isbn" :shelf-id="shelf.id" :user-id="user.id" :read="true">
+                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id" :read="book.pivot.read">
                         <img slot="cover"  class="image cover" :src="book.image" :alt="book.title">
                         <template slot="title">{{book.title}}</template>
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <shelf-book-drop-down
+                                    :read="book.pivot.read"
                                     :isbn="book.isbn"
                                     :shelf-id="shelf.id"
-                                    :user-id="user.id">
+                                    @readToggled="updateRead(book.id)">
                             </shelf-book-drop-down>
                         </template>
                     </book-in-list>
@@ -92,6 +93,10 @@
                         self.$refs.top.scrollTop = 0;
                     }, (error) => {
                     });
+            },
+            updateRead(bookId){
+                let book = this.books.find(book => book.id === bookId);
+                return book.pivot.read = !book.pivot.read;
             }
         },
         watch: {

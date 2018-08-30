@@ -45,6 +45,7 @@ Route::group(["middleware" => "auth:api"], function () {
 
     /** User Shelf Book*/
     Route::apiResource('shelf/{shelf}/book', 'ShelfBookController');
+    Route::put('shelf/{shelf}/book/{isbn}/read', 'BookReadController@update');
 
     /** Public */
     Route::get('user/{handle}/public', 'PublicShelfController@index');
@@ -53,8 +54,7 @@ Route::group(["middleware" => "auth:api"], function () {
 
     /** Friends */
     Route::get('friends', 'Friends\FriendController@index');
-//    Route::get('friends/pending', 'Friends\FriendRequestPendingController@index');
-//    Route::get('friends/sent', 'Friends\FriendRequestSentController@index');
+
     Route::get('friends-find', 'Friends\FriendSearchController@index');
     /** Create friend request **/
     Route::post('friend-request/{friend}', 'Friends\FriendRequestController@create');
