@@ -57,6 +57,9 @@
         },
         methods: {
             isTyping() {
+                if(this.mobile){
+                    return false;
+                }
                 clearTimeout(this.typingTimer);
                 return this.typingTimer = setTimeout(this.pausedTyping, this.doneTypingInterval);
             },
