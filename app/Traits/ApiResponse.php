@@ -9,7 +9,7 @@ trait ApiResponse
                 ->json(array_merge(
                     ['success' =>true],
                     $responseArray
-                ));
+                ), 200);
     }
 
     public function apiFail(Array $responseArray) {
@@ -23,5 +23,13 @@ trait ApiResponse
     public function apiUnauthorised(){
         /** todo: make this response nicer */
         return abort(403, 'Unauthorized action');
+    }
+
+    public function apiFail422($responseArray)
+    {
+        return response()->json(array_merge(
+            ['success' =>false],
+            $responseArray
+        ), 422);
     }
 }

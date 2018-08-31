@@ -36,9 +36,9 @@
                 </p>
             </div>
 
-            <a class="btn btn-link is-text-small is-block has-text-centered" href="">
+            <router-link class="btn btn-link is-text-small is-block has-text-centered" :to="{ name: 'password-reset-request'}">
                 Forgot Your Password?
-            </a>
+            </router-link>
             <router-link :to="{ name: 'register'}" class="btn btn-link is-text-small is-block has-text-centered">
                 Don't have an account? Get started
             </router-link>
