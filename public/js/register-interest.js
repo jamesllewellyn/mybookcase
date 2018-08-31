@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 228);
+/******/ 	return __webpack_require__(__webpack_require__.s = 231);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -18184,61 +18184,6 @@ module.exports = function(module) {
 
 /***/ }),
 
-/***/ 228:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(229);
-
-
-/***/ }),
-
-/***/ 229:
-/***/ (function(module, exports, __webpack_require__) {
-
-__webpack_require__(20);
-
-window.Vue = __webpack_require__(8);
-
-Vue.component('user-register-form', __webpack_require__(230));
-/** structure components **/
-var app = new Vue({
-    el: '#app',
-    data: function data() {
-        return {
-            email: '',
-            formErrors: [],
-            hasRegisteredInterest: false,
-            isLoading: false
-        };
-    },
-
-    components: {},
-    computed: {},
-    methods: {
-        submit: function submit() {
-            var self = this;
-            this.isLoading = true;
-            axios.post('/api/interested-user', { email: this.email }).then(function (response) {
-                self.isLoading = false;
-                self.hasRegisteredInterest = true;
-            }, function (error) {
-                if (error.response.data) {
-                    self.isLoading = false;
-                    return self.formErrors = error.response.data.errors;
-                }
-            });
-        },
-        getErrors: function getErrors(fieldName) {
-            if (this.formErrors[fieldName]) {
-                return this.formErrors[fieldName][0];
-            }
-        }
-    },
-    mounted: function mounted() {}
-});
-
-/***/ }),
-
 /***/ 23:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -20756,15 +20701,70 @@ Popper.Defaults = Defaults;
 
 /***/ }),
 
-/***/ 230:
+/***/ 231:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(232);
+
+
+/***/ }),
+
+/***/ 232:
+/***/ (function(module, exports, __webpack_require__) {
+
+__webpack_require__(20);
+
+window.Vue = __webpack_require__(8);
+
+Vue.component('user-register-form', __webpack_require__(233));
+/** structure components **/
+var app = new Vue({
+    el: '#app',
+    data: function data() {
+        return {
+            email: '',
+            formErrors: [],
+            hasRegisteredInterest: false,
+            isLoading: false
+        };
+    },
+
+    components: {},
+    computed: {},
+    methods: {
+        submit: function submit() {
+            var self = this;
+            this.isLoading = true;
+            axios.post('/api/interested-user', { email: this.email }).then(function (response) {
+                self.isLoading = false;
+                self.hasRegisteredInterest = true;
+            }, function (error) {
+                if (error.response.data) {
+                    self.isLoading = false;
+                    return self.formErrors = error.response.data.errors;
+                }
+            });
+        },
+        getErrors: function getErrors(fieldName) {
+            if (this.formErrors[fieldName]) {
+                return this.formErrors[fieldName][0];
+            }
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+
+/***/ 233:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(231)
+var __vue_script__ = __webpack_require__(234)
 /* template */
-var __vue_template__ = __webpack_require__(232)
+var __vue_template__ = __webpack_require__(235)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -20804,7 +20804,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 231:
+/***/ 234:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20963,7 +20963,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 232:
+/***/ 235:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {

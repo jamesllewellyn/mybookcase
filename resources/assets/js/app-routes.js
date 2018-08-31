@@ -8,6 +8,18 @@ let routes = [
         meta: { requiresAuth: false, hasShowSideMenu: false }
     },
     {
+        path: '/password-reset-request',
+        name: 'password-reset-request',
+        component: require('./pages/guest/PasswordResetRequest.vue'),
+        meta: { requiresAuth: false, hasShowSideMenu: false }
+    },
+    {
+        path: '/password-reset',
+        name: 'password-reset',
+        component: require('./pages/guest/PasswordReset.vue'),
+        meta: { requiresAuth: false, hasShowSideMenu: false }
+    },
+    {
         path: '/login',
         name: 'login',
         component: require('./pages/guest/Login.vue'),

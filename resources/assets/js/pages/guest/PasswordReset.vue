@@ -3,40 +3,29 @@
         <div class="column is-4">
             <div class=" has-text-centered">
                 <h1 class="title is-quicksans is-title">
-                    My Bookcase
+                    Reset your password
                 </h1>
             </div>
+
             <div class="box is-shadowless">
-                <form>
-                    <div class="field">
-                        <label class="label">Name</label>
-                        <p class="control">
-                            <input class="input" type="text" name="name"
-                                   placeholder="Please enter your name"
-                                   v-model="user.name">
+                <transition name="modal" mode="out-in">
+                    <div class="notification is-warning" v-if="tokenError">
+                        <p class="help ">
+                            Your password reset appears to be invalid. Please request another one.
                         </p>
-                        <p class="help is-danger" v-text="getErrors('name')"></p>
+                        <router-link class="btn btn-link is-text-small is-block has-text-centered" :to="{ name: 'password-reset-request'}">
+                            Request Password Reset
+                        </router-link>
                     </div>
-                    <div class="field">
-                        <label class="label">Email</label>
+                </transition>
+                <form>
+                    <div class="form-group field">
+                        <label for="email" class="label">E-Mail Address</label>
                         <p class="control">
-                            <input class="input" type="email" name="email"
-                                   placeholder="Please enter your email address"
+                            <input id="email" type="email" class="input" name="email" required autofocus
                                    v-model="user.email">
                         </p>
                         <p class="help is-danger" v-text="getErrors('email')"></p>
-                    </div>
-                    <div class="field">
-                        <label class="label">Handle</label>
-                        <p class="control has-icons-left">
-                            <input class="input" type="text" name="handle" placeholder="Create a handle"
-                                   v-model="user.handle">
-                            <span class="icon is-small is-left">@</span>
-                        </p>
-                        <p class="is-size-6">
-                            <small>Your handle will be displayed along with any messages in My Bookcase.</small>
-                        </p>
-                        <p class="help is-danger" v-text="getErrors('handle')"></p>
                     </div>
                     <div class="field">
                         <label class="label">Password</label>
@@ -56,33 +45,37 @@
                         </p>
                         <p class="help is-danger" v-text="getErrors('password_confirmation')"></p>
                     </div>
+
                     <p class="control">
-                        <button class="button is-primary is-fullwidth" @click.prevent="submit"
-                                :class="{'is-loading' : isLoading}">Submit
+                        <button class="button is-primary is-fullwidth" :class="{'is-loading' : isLoading}"
+                                @click.prevent="submit">Submit
                         </button>
                     </p>
+
                 </form>
             </div>
+
         </div>
     </div>
 </template>
-<script>
 
+<script>
     export default {
         data() {
             return {
-                formErrors: [],
                 isLoading: false,
-                user: {
-                    email: '',
-                    name: '',
-                    handle: '',
-                    password: '',
-                    password_confirm: ''
-                },
+                user: {email: null, password: null, password_confirmation: null, token : this.$route.query.token},
+                formErrors: [],
+                tokenError: false,
             }
         },
         computed: {
+            // token(){
+            //     if (!this.$route.query.token) {
+            //         return false;
+            //     }
+            //     return ;
+            // },
             login() {
                 return {
                     username: this.user.email,
@@ -97,14 +90,18 @@
             submit() {
                 let self = this;
                 this.isLoading = true;
-                axios.post('/api/user', this.user)
-                    .then((response) => {
+                axios.post(`password/reset`, this.user)
+                    .then(() => {
                         self.isLoading = false;
                         self.grantPassportToken();
                     }, (error) => {
+                        console.log(error.response);
                         if (error.response.data) {
                             self.isLoading = false;
-                            return self.formErrors = error.response.data.errors;
+                            self.formErrors = error.response.data.errors;
+                        }
+                        if (typeof error.response.data.errors.token !== 'undefined') {
+                            self.tokenError = true;
                         }
                     });
             },
@@ -129,13 +126,6 @@
                 if (this.formErrors[fieldName]) {
                     return this.formErrors[fieldName][0];
                 }
-            }
-        },
-        mounted() {
-            if (localStorage.getItem('access_token')) {
-                this.$store.dispatch('user/get');
-                this.$store.dispatch('bookcase/get');
-                Event.$emit('changePage', '/dashboard/');
             }
         }
     }
