@@ -52,7 +52,7 @@
         methods:{
             toggleRead(){
                 let self = this;
-                axios.put(`/api/shelf/${this.shelfId}/book/${this.isbn}/read`)
+                axios.put(`/api/book/${this.isbn}/read`)
                     .then(() => {
                        self.$emit('readToggled');
                     }, (error) => {

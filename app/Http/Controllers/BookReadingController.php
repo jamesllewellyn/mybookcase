@@ -7,16 +7,16 @@ use App\Shelf;
 use App\Book;
 use App\Traits\ApiResponse;
 
-class BookReadController extends Controller
+class BookReadingController extends Controller
 {
     use ApiResponse;
 
 
     public function index()
     {
-        $read = auth()->user()->read()->simplePaginate(10);
+        $reading = auth()->user()->reading()->simplePaginate(10);
 
-        return $this->apiSuccess(['read' => $read]);
+        return $this->apiSuccess(['reading' => $reading]);
     }
 
     /**
@@ -42,10 +42,10 @@ class BookReadController extends Controller
         }
 
         $userBook->update([
-            'read' => !$userBook->read
+            'reading' => !$userBook->reading
         ]);
 
-        return $this->apiSuccess(['message' => 'Book read status updated']);
+        return $this->apiSuccess(['message' => 'Book reading status updated']);
     }
 
 }

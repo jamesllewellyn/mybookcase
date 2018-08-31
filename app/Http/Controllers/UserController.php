@@ -13,12 +13,11 @@ class UserController extends Controller
 
     /**
      * get logged in user data
-     * @param Request $request
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return $this->apiSuccess(['user' => $request->user()]);
+        return $this->apiSuccess(['user' => User::where('id', auth()->user()->id)->withCount('read', 'reading', 'pendingFriendRequests')->first()]);
     }
 
     /**
@@ -31,7 +30,7 @@ class UserController extends Controller
     {
         $user = new User();
 
-        $request->merge(['handle' => str_replace( ' ',  '' , strtolower($request->handle))]);
+        $request->merge(['handle' => str_replace(' ', '', strtolower($request->handle))]);
 
         $this->validate(request(), $user->validation);
 
@@ -58,7 +57,7 @@ class UserController extends Controller
 
         $this->authorize('access-user', [$user]);
 
-        $request->merge(['handle' => str_replace( ' ',  '' , strtolower($request->handle))]);
+        $request->merge(['handle' => str_replace(' ', '', strtolower($request->handle))]);
 
         $this->validate(Request(), $user->updateValidation());
 

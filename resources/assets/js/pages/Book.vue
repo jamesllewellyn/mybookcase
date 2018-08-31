@@ -8,12 +8,13 @@
                     <div class="book-placeholder" v-if="!book.cover_url"></div>
                 </div>
                 <p class="field">
-                    <add-book-to-shelf-button :book="book" v-if="!isOnShelf"></add-book-to-shelf-button>
                     <router-link class="button is-success is-block"
                                  v-if="isOnShelf"
                                  :to="`/shelf/${isOnShelf.id}`"
 
                     >On Shelf</router-link>
+                    <add-book-to-shelf-button :book="book"></add-book-to-shelf-button>
+
                 </p>
             </div>
             <div class="column">

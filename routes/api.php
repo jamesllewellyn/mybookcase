@@ -45,7 +45,13 @@ Route::group(["middleware" => "auth:api"], function () {
 
     /** User Shelf Book*/
     Route::apiResource('shelf/{shelf}/book', 'ShelfBookController');
-    Route::put('shelf/{shelf}/book/{isbn}/read', 'BookReadController@update');
+
+
+    Route::put('book/{isbn}/read', 'BookReadController@update');
+    Route::get('read', 'BookReadController@index');
+
+    Route::put('book/{isbn}/reading', 'BookReadingController@update');
+    Route::get('reading', 'BookReadingController@index');
 
     /** Public */
     Route::get('user/{handle}/public', 'PublicShelfController@index');
