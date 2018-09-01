@@ -64,7 +64,7 @@ class Shelf extends Model
     public function books()
     {
         return $this->belongsToMany(Book::class, 'shelf_books')
-            ->wherePivot('deleted_at', '=', null)->withTimestamps()->withPivot('read');
+            ->wherePivot('deleted_at', '=', null)->withTimestamps();
     }
 
     /***********************

@@ -8,6 +8,7 @@
         "php": "^7.1.3",
         "aws/aws-sdk-php": "^3.54",
         "barryvdh/laravel-cors": "^0.11.0",
+        "doctrine/dbal": "^2.8",
         "fideloper/proxy": "^4.0",
         "google/apiclient": "^2.0",
         "guzzlehttp/guzzle": "~6.0",

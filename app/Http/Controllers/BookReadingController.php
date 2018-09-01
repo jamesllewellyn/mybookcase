@@ -7,22 +7,22 @@ use App\Shelf;
 use App\Book;
 use App\Traits\ApiResponse;
 
-class BookReadController extends Controller
+class BookReadingController extends Controller
 {
     use ApiResponse;
 
 
     public function index()
     {
-        $read = auth()->user()->read()->simplePaginate(10);
+        $reading = auth()->user()->reading()->simplePaginate(10);
 
-        return $this->apiSuccess(['read' => $read]);
+        return $this->apiSuccess(['reading' => $reading]);
     }
 
     /**
      * Toggle book read
      *
-     * @param  String  $isbn
+     * @param  String $isbn
      * @return \Illuminate\Http\Response
      */
     public function update($isbn)
@@ -31,23 +31,22 @@ class BookReadController extends Controller
 
         $book = Book::findByISBN($isbn);
 
-        if(! $book){
+        if (!$book) {
             return $this->apiFail(['message' => 'Book could not be found']);
         }
 
         if(! $user->hasBook($book->id)){
-           $user->addBook($book);
+            $user->addBook($book);
         }
 
         $userBook = UserBook::where(['user_id' => $user->id, 'book_id' => $book->id])->first();
 
-
         $userBook->update([
-            'read' => !$userBook->read,
-            'reading' => false,
+            'reading' => !$userBook->reading,
+            'read'    => false
         ]);
 
-        return $this->apiSuccess(['message' => 'Book read status updated', 'read' => $userBook->read]);
+        return $this->apiSuccess(['message' => 'Book reading status updated', 'reading' => $userBook->reading]);
     }
 
 }

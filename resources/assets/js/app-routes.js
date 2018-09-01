@@ -37,6 +37,18 @@ let routes = [
         component: require('./pages/Home.vue'),
         meta: { requiresAuth: true, hasShowSideMenu: true  }
     },
+    {
+        path: '/reading/',
+        name: 'reading',
+        component: require('./pages/Reading.vue'),
+        meta: { requiresAuth: true, hasShowSideMenu: true  }
+    },
+    {
+        path: '/read/',
+        name: 'read',
+        component: require('./pages/Read.vue'),
+        meta: { requiresAuth: true, hasShowSideMenu: true  }
+    },
     // {
     //     path: '/inbox/',
     //     name: 'inbox',

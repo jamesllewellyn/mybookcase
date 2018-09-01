@@ -1,26 +1,15 @@
 <template>
     <drop-down-button :boarder="false" :direction="'is-right'" :icon="'fa-ellipsis-v'" :class="'is-pulled-right'">
         <template slot="dropdown-items">
-            <router-link :to="`/book/${isbn}?isbn=true`" class="dropdown-item" >
+            <router-link :to="`/book/${isbn}?isbn=true`" class="dropdown-item">
                 View
             </router-link>
-            <a class="dropdown-item" @click="bookMoveShelfModalOpen = true">
-                Move
-                <portal to="modals" v-if="bookMoveShelfModalOpen">
-                    <book-move-shelf-modal
-                            :shelf-id="shelfId"
-                            :is-visible="bookMoveShelfModalOpen"
-                            :isbn="isbn"
-                            @close="bookMoveShelfModalOpen = false"
-                    ></book-move-shelf-modal>
-                </portal>
-            </a>
-            <a class="dropdown-item" @click="toggleRead">
-                <span v-if="!read">Mark As Read</span>
-                <span v-else>Mark As Not Read</span>
-            </a>
-            <hr class="dropdown-divider">
-            <a class="dropdown-item is-danger" @click="bookRemoveModalOpen = true">
+            <move-shelf-menu-item :isbn="isbn" :shelf-id="shelfId" v-if="shelfId"></move-shelf-menu-item>
+            <add-book-to-shelf-menu-item :isbn="isbn" v-if="!shelfId"></add-book-to-shelf-menu-item>
+            <toggle-read-menu-item :isbn="isbn" @readToggled="$emit('readToggled')"></toggle-read-menu-item>
+            <toggle-reading-menu-item :isbn="isbn" @readingToggled="$emit('readingToggled')"></toggle-reading-menu-item>
+            <hr class="dropdown-divider" v-if="shelfId">
+            <a class="dropdown-item is-danger" @click="bookRemoveModalOpen = true" v-if="shelfId">
                 Remove
                 <portal to="modals" v-if="bookRemoveModalOpen">
                     <book-remove-modal
@@ -35,10 +24,13 @@
     </drop-down-button>
 </template>
 <script>
-    import DropDownButton from '../bulma/DropDownButton.vue';
-    import BookMoveShelfModal from '../modals/BookMoveShelfModal.vue';
-    import BookRemoveModal from '../modals/BookRemoveModal.vue';
-
+    import DropDownButton from '../bulma/DropDownButton';
+    import BookMoveShelfModal from '../modals/BookMoveShelfModal';
+    import BookRemoveModal from '../modals/BookRemoveModal';
+    import ToggleReadMenuItem from './ToggleReadMenuItem';
+    import ToggleReadingMenuItem from './ToggleReadingMenuItem';
+    import AddBookToShelfMenuItem from './AddBookToShelfMenuItem';
+    import MoveShelfMenuItem from './MoveShelfMenuItem';
 
     export default {
         data() {
@@ -47,18 +39,15 @@
                 bookRemoveModalOpen: false,
             }
         },
-        components: {DropDownButton, BookMoveShelfModal, BookRemoveModal},
-        props: ['isbn', 'shelfId', 'read'],
-        methods:{
-            toggleRead(){
-                let self = this;
-                axios.put(`/api/shelf/${this.shelfId}/book/${this.isbn}/read`)
-                    .then(() => {
-                       self.$emit('readToggled');
-                    }, (error) => {
-                        console.log(error);
-                    });
-            }
-        }
+        components: {
+            DropDownButton,
+            BookMoveShelfModal,
+            BookRemoveModal,
+            ToggleReadMenuItem,
+            ToggleReadingMenuItem,
+            AddBookToShelfMenuItem,
+            MoveShelfMenuItem
+        },
+        props: ['isbn', 'shelfId'],
     }
 </script>

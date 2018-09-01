@@ -27,12 +27,7 @@
                                 <slot name="authors">
                                 </slot>
                             </p>
-                            <transition name="fade" mode="out-in">
-                                <div class="tags has-addons has-been-read" v-if="read">
-                                    <span class="tag"><i class="fas fa-book-reader"></i></span>
-                                    <span class="tag is-success">Read</span>
-                                </div>
-                            </transition>
+                            <book-status :isbn="isbn"></book-status>
                         </div>
                     </div>
                 </div>
@@ -43,6 +38,8 @@
 </template>
 
 <script>
+    import BookStatus from '../components/BookStatus';
+
     export default {
         props: {
             isbn: {
@@ -57,17 +54,13 @@
                 type: Number,
                 required: false
             },
-            read: {
-                // type: Boolean,
-                default: false
-            },
             searchQuery: {
                 type: String,
                 required: false
             }
         },
+        components:{BookStatus},
         computed: {
-
             bookUrl() {
                 if (!this.isbn) {
                     return null;
@@ -76,7 +69,7 @@
                     return `/book/${this.isbn}?search=${this.searchQuery}`;
                 }
                 return `/book/${this.isbn}`;
-            }
+            },
         },
         methods: {
             titleToLength(title) {
