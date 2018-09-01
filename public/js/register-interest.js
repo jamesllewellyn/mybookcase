@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 243);
+/******/ 	return __webpack_require__(__webpack_require__.s = 250);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -20701,22 +20701,29 @@ Popper.Defaults = Defaults;
 
 /***/ }),
 
-/***/ 243:
+/***/ 25:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(244);
+module.exports = __webpack_require__(26);
+
+/***/ }),
+
+/***/ 250:
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports = __webpack_require__(251);
 
 
 /***/ }),
 
-/***/ 244:
+/***/ 251:
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(21);
 
 window.Vue = __webpack_require__(9);
 
-Vue.component('user-register-form', __webpack_require__(245));
+Vue.component('user-register-form', __webpack_require__(252));
 /** structure components **/
 var app = new Vue({
     el: '#app',
@@ -20756,15 +20763,15 @@ var app = new Vue({
 
 /***/ }),
 
-/***/ 245:
+/***/ 252:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(0)
 /* script */
-var __vue_script__ = __webpack_require__(246)
+var __vue_script__ = __webpack_require__(253)
 /* template */
-var __vue_template__ = __webpack_require__(247)
+var __vue_template__ = __webpack_require__(254)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -20804,7 +20811,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 246:
+/***/ 253:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -20963,7 +20970,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 247:
+/***/ 254:
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -21243,13 +21250,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-065c7a60", module.exports)
   }
 }
-
-/***/ }),
-
-/***/ 25:
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(26);
 
 /***/ }),
 

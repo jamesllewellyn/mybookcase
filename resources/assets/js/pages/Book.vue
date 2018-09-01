@@ -7,18 +7,16 @@
                     <img :src="book.cover_url" alt="" v-if="book.cover_url">
                     <div class="book-placeholder" v-if="!book.cover_url"></div>
                 </div>
-                <p class="field">
-                    <router-link class="button is-success is-block"
-                                 v-if="isOnShelf"
-                                 :to="`/shelf/${isOnShelf.id}`">
-                        <span class="icon">
-                            <i class="fas fa-bookmark"></i>
-                        </span>
-                        <span>On Shelf</span>
-                    </router-link>
+                <!--<router-link class="button is-success is-block" v-if="isOnShelf" :to="`/shelf/${isOnShelf.id}`">-->
+                <!--<span class="icon">-->
+                <!--<i class="fas fa-bookmark"></i>-->
+                <!--</span>-->
+                <!--<span>On Shelf</span>-->
+                <!--</router-link>-->
 
-                    <add-book-to-shelf-button :book="book"></add-book-to-shelf-button>
-                </p>
+                <book-options-drop-down :isbn="book.isbn">Book Options</book-options-drop-down>
+
+
             </div>
             <div class="column">
                 <p class="title wrapper">
@@ -30,11 +28,12 @@
                 <p class="level" v-if="!book.authors">
                     <progress class="progress is-width-10" value="0" max="100"></progress>
                 </p>
-                <div class="level">
-                    <div class="level-left">
-                        <star-rating :rating="getRating" :read-only="true" :increment="0.01"></star-rating>
-                    </div>
-                </div>
+                <p class="level">
+                    <star-rating :rating="getRating" :read-only="true" :increment="0.01"></star-rating>
+                </p>
+
+                <book-status :isbn="book.isbn"></book-status>
+
                 <div class="description wrapper">
                     <p v-html="book.description" v-if="book.description"></p>
                     <div v-if="!book.description">
@@ -69,7 +68,8 @@
 
 <script>
     import StarRating from 'vue-star-rating';
-    import AddBookToShelfButton from '../components/buttons/AddBookToShelfButton';
+    import BookStatus from '../components/BookStatus';
+    import BookOptionsDropDown from '../components/buttons/BookOptionsDropDown';
     import BackButton from '../components/buttons/BackButton';
 
     export default {
@@ -78,20 +78,13 @@
                 book: ''
             }
         },
-        components: {StarRating, AddBookToShelfButton, BackButton},
+        components: {StarRating, BookOptionsDropDown, BackButton, BookStatus},
         computed: {
             isbn() {
                 if (!this.$route.params.isbn) {
                     return false;
                 }
                 return this.$route.params.isbn;
-            },
-            isOnShelf() {
-                if (!this.isbn) {
-                    return false;
-                }
-                console.log(`isOnShelf ${this.isbn}`);
-                return this.$store.getters['bookcase/isOnShelf'](this.isbn);
             },
             searchQuery() {
                 if (!this.$route.query.search) {

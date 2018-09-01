@@ -114,6 +114,9 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.post(`/api/shelf/${shelfId}/book`, {isbn: isbn, isbn_13: false})
                     .then((response) => {
+                        if(!response.data.success){
+                            return resolve(response);
+                        }
                         commit('addBook', {shelfId: shelfId, book: response.data.book});
                         return resolve(response);
                     }, (error) => {
