@@ -14,11 +14,19 @@ export default {
         updateReading: (state, {reading}) => {
             return state.reading = reading;
         },
+        addReading: (state, isbn) => {
+             state.reading.push(isbn);
+             return state.read = state.read.filter(readISBN => readISBN !== isbn);
+        },
+        removeReading: (state, isbn) => {
+            return state.reading = state.reading.filter(readISBN => readISBN !== isbn);
+        },
         updateRead: (state, {read}) => {
             return state.read = read;
         },
         addRead: (state, isbn) => {
-            return state.read.push(isbn);
+            state.read.push(isbn);
+            return state.reading = state.reading.filter(readISBN => readISBN !== isbn);
         },
         removeRead: (state, isbn) => {
             return state.read = state.read.filter(readISBN => readISBN !== isbn);

@@ -28,15 +28,10 @@
                                 </slot>
                             </p>
                             <transition name="fade" mode="out-in">
-                                <div class="tags has-addons has-been-read" v-if="read">
-                                    <span class="tag"><i class="fas fa-book"></i></span>
-                                    <span class="tag is-success">Read</span>
-                                </div>
-                            </transition>
-                            <transition name="fade" mode="out-in">
-                                <div class="tags has-addons has-been-read" v-if="reading">
-                                    <span class="tag"><i class="fas fa-book-reader"></i></span>
-                                    <span class="tag is-warning">Reading</span>
+                                <div class="tags has-addons has-been-read" v-if="read || reading">
+                                    <span class="tag"><i :class="[{'fas fa-book': read }, {'fas fa-book-reader' : reading}]"></i></span>
+                                    <span class="tag is-success" v-if="read">Read</span>
+                                    <span class="tag is-warning"  v-if="reading">Reading</span>
                                 </div>
                             </transition>
                         </div>

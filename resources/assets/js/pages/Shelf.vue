@@ -26,7 +26,7 @@
                         </template>
                     </book-in-list>
 
-                    <shelf-book v-if="books.length === 0"></shelf-book>
+                    <message v-if="books.length === 0">Add books to this shelf and they will appear here.</message>
                 </div>
 
                 <nav class="pagination" role="navigation" aria-label="pagination" v-if="nextPageUrl || prevPageUrl">
@@ -44,9 +44,10 @@
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner';
-    import ShelfOptionsDropDown from '../components/buttons/ShelfOptionsDropDown.vue';
-    import BookInList from '../components/BookInList.vue';
-    import ShelfBookDropDown from '../components/buttons/ShelfBookDropDown.vue';
+    import ShelfOptionsDropDown from '../components/buttons/ShelfOptionsDropDown';
+    import BookInList from '../components/BookInList';
+    import ShelfBookDropDown from '../components/buttons/ShelfBookDropDown';
+    import Message from '../components/Message';
 
     export default {
         data() {
@@ -58,7 +59,7 @@
                 books: []
             }
         },
-        components: {VueSimpleSpinner, ShelfOptionsDropDown, BookInList, ShelfBookDropDown},
+        components: {VueSimpleSpinner, ShelfOptionsDropDown, BookInList, ShelfBookDropDown, Message},
         computed: {
             id: function () {
                 if (!this.$route.params.id) {

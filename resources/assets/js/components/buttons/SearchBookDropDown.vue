@@ -16,6 +16,7 @@
                 </portal>
             </a>
             <toggle-read-menu-item :isbn="isbn"></toggle-read-menu-item>
+            <toggle-reading-menu-item :isbn="isbn"></toggle-reading-menu-item>
         </template>
     </drop-down-button>
 </template>
@@ -23,6 +24,7 @@
     import DropDownButton from '../bulma/DropDownButton';
     import AddToShelfModal from '../modals/AddToShelfModal';
     import ToggleReadMenuItem from './ToggleReadMenuItem';
+    import ToggleReadingMenuItem from './ToggleReadingMenuItem';
 
     export default {
         data() {
@@ -30,7 +32,7 @@
                 addToShelfModelOpen: false,
             }
         },
-        components: {DropDownButton, AddToShelfModal, ToggleReadMenuItem},
+        components: {DropDownButton, AddToShelfModal, ToggleReadMenuItem, ToggleReadingMenuItem},
         props: ['isbn', 'book', 'userId']
     }
 </script>

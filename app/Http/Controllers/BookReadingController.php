@@ -22,7 +22,7 @@ class BookReadingController extends Controller
     /**
      * Toggle book read
      *
-     * @param  String  $isbn
+     * @param  String $isbn
      * @return \Illuminate\Http\Response
      */
     public function update($isbn)
@@ -31,21 +31,22 @@ class BookReadingController extends Controller
 
         $book = Book::findByISBN($isbn);
 
-        if(! $book){
+        if (!$book) {
             return $this->apiFail(['message' => 'Book could not be found']);
+        }
+
+        if(! $user->hasBook($book->id)){
+            $user->addBook($book);
         }
 
         $userBook = UserBook::where(['user_id' => $user->id, 'book_id' => $book->id])->first();
 
-        if(! $userBook){
-            $user->addBook($book);
-        }
-
         $userBook->update([
-            'reading' => !$userBook->reading
+            'reading' => !$userBook->reading,
+            'read'    => false
         ]);
 
-        return $this->apiSuccess(['message' => 'Book reading status updated']);
+        return $this->apiSuccess(['message' => 'Book reading status updated', 'reading' => $userBook->reading]);
     }
 
 }

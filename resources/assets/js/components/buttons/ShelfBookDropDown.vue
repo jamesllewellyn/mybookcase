@@ -16,6 +16,7 @@
                 </portal>
             </a>
             <toggle-read-menu-item :isbn="isbn" @readToggled="$emit('readToggled')"></toggle-read-menu-item>
+            <toggle-reading-menu-item :isbn="isbn" @readingToggled="$emit('readingToggled')"></toggle-reading-menu-item>
             <hr class="dropdown-divider">
             <a class="dropdown-item is-danger" @click="bookRemoveModalOpen = true">
                 Remove
@@ -36,7 +37,7 @@
     import BookMoveShelfModal from '../modals/BookMoveShelfModal';
     import BookRemoveModal from '../modals/BookRemoveModal';
     import ToggleReadMenuItem from './ToggleReadMenuItem';
-
+    import ToggleReadingMenuItem from './ToggleReadingMenuItem';
 
     export default {
         data() {
@@ -45,7 +46,7 @@
                 bookRemoveModalOpen: false,
             }
         },
-        components: {DropDownButton, BookMoveShelfModal, BookRemoveModal, ToggleReadMenuItem},
-        props: ['isbn', 'shelfId', 'read'],
+        components: {DropDownButton, BookMoveShelfModal, BookRemoveModal, ToggleReadMenuItem, ToggleReadingMenuItem},
+        props: ['isbn', 'shelfId'],
     }
 </script>

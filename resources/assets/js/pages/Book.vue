@@ -10,11 +10,14 @@
                 <p class="field">
                     <router-link class="button is-success is-block"
                                  v-if="isOnShelf"
-                                 :to="`/shelf/${isOnShelf.id}`"
+                                 :to="`/shelf/${isOnShelf.id}`">
+                        <span class="icon">
+                            <i class="fas fa-bookmark"></i>
+                        </span>
+                        <span>On Shelf</span>
+                    </router-link>
 
-                    >On Shelf</router-link>
                     <add-book-to-shelf-button :book="book"></add-book-to-shelf-button>
-
                 </p>
             </div>
             <div class="column">
@@ -68,22 +71,23 @@
     import StarRating from 'vue-star-rating';
     import AddBookToShelfButton from '../components/buttons/AddBookToShelfButton';
     import BackButton from '../components/buttons/BackButton';
+
     export default {
         data() {
             return {
                 book: ''
             }
         },
-        components:{StarRating, AddBookToShelfButton, BackButton},
+        components: {StarRating, AddBookToShelfButton, BackButton},
         computed: {
-            isbn(){
+            isbn() {
                 if (!this.$route.params.isbn) {
                     return false;
                 }
                 return this.$route.params.isbn;
             },
-            isOnShelf(){
-                if(! this.isbn){
+            isOnShelf() {
+                if (!this.isbn) {
                     return false;
                 }
                 console.log(`isOnShelf ${this.isbn}`);
@@ -132,7 +136,7 @@
                     });
             },
             addToShelfModal() {
-                if(! this.$store.state.isAuthenticated){
+                if (!this.$store.state.isAuthenticated) {
                     return Event.$emit('modalShow', 'loginModal');
                 }
                 Event.$emit('modalShow', 'addToShelf');
