@@ -15,12 +15,14 @@
                     </add-to-shelf-modal>
                 </portal>
             </a>
+            <toggle-read-menu-item :isbn="isbn"></toggle-read-menu-item>
         </template>
     </drop-down-button>
 </template>
 <script>
-    import DropDownButton from '../bulma/DropDownButton.vue';
-    import AddToShelfModal from '../modals/AddToShelfModal.vue';
+    import DropDownButton from '../bulma/DropDownButton';
+    import AddToShelfModal from '../modals/AddToShelfModal';
+    import ToggleReadMenuItem from './ToggleReadMenuItem';
 
     export default {
         data() {
@@ -28,7 +30,7 @@
                 addToShelfModelOpen: false,
             }
         },
-        components: {DropDownButton, AddToShelfModal},
+        components: {DropDownButton, AddToShelfModal, ToggleReadMenuItem},
         props: ['isbn', 'book', 'userId']
     }
 </script>

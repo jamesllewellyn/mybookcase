@@ -13,8 +13,9 @@ export default {
         updateSuccess: (state, {user}) => {
             return state.user = user;
         },
-        updateReadCount: (state, {readCount}) => {
-            return state.readCount = readCount;
+        updateReadCount: (state, readCount) => {
+            console.log(readCount);
+            return state.user.read_count = readCount;
         },
         clear: (state) => {
             console.log('user/clear');

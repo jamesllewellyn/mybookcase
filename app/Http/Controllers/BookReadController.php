@@ -35,17 +35,19 @@ class BookReadController extends Controller
             return $this->apiFail(['message' => 'Book could not be found']);
         }
 
-        $userBook = UserBook::where(['user_id' => $user->id, 'book_id' => $book->id])->first();
-
-        if(! $userBook){
-            $user->addBook($book);
+        if(! $user->hasBook($book->id)){
+           $user->addBook($book);
         }
 
+        $userBook = UserBook::where(['user_id' => $user->id, 'book_id' => $book->id])->first();
+
+
         $userBook->update([
-            'read' => !$userBook->read
+            'read' => !$userBook->read,
+            'reading' => false,
         ]);
 
-        return $this->apiSuccess(['message' => 'Book read status updated']);
+        return $this->apiSuccess(['message' => 'Book read status updated', 'read' => $userBook->read]);
     }
 
 }

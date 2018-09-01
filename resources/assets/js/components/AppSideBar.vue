@@ -52,7 +52,7 @@
                             </span>
                             <span class="name">Reading</span>
                             <span class="tag is-light is-pulled-right"
-                            >{{user.reading_count}}</span>
+                            >{{readingCount}}</span>
                         </router-link>
                     </transition>
                     <a href="" class="item" v-if="pageLoading">
@@ -67,7 +67,7 @@
                             </span>
                             <span class="name">Read</span>
                             <span class="tag is-light is-pulled-right"
-                                 >{{user.read_count}}</span>
+                                 >{{readCount}}</span>
                         </router-link>
                     </transition>
                     <a href="" class="item" v-if="pageLoading">
@@ -130,6 +130,12 @@
         computed: {
             pageLoading() {
                 return this.$store.getters.getPageLoading && !this.user
+            },
+            readCount(){
+                return this.$store.getters['bookcase/getReadCount'];
+            },
+            readingCount(){
+                return this.$store.getters['bookcase/getReadingCount'];
             }
         },
         methods:{

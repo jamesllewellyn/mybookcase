@@ -201,13 +201,28 @@ class User extends Authenticatable
         return $this->shelves()->where('id', $shelfId)->exists();
     }
 
+    public function getReadCount()
+    {
+        return $this->read()->count();
+    }
+
+    public function getRead()
+    {
+        return $this->read()->get();
+    }
+
+    public function getReading()
+    {
+        return $this->reading()->get();
+    }
+
     /***********************
      * Action methods
      **********************/
 
     public function addBook($book)
     {
-        return$this->books()->attach($book->id);
+        return $this->books()->attach($book->id);
     }
 
     /**

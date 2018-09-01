@@ -33,6 +33,12 @@
                                     <span class="tag is-success">Read</span>
                                 </div>
                             </transition>
+                            <transition name="fade" mode="out-in">
+                                <div class="tags has-addons has-been-read" v-if="reading">
+                                    <span class="tag"><i class="fas fa-book-reader"></i></span>
+                                    <span class="tag is-warning">Reading</span>
+                                </div>
+                            </transition>
                         </div>
                     </div>
                 </div>
@@ -57,10 +63,6 @@
                 type: Number,
                 required: false
             },
-            read: {
-                // type: Boolean,
-                default: false
-            },
             searchQuery: {
                 type: String,
                 required: false
@@ -76,6 +78,12 @@
                     return `/book/${this.isbn}?search=${this.searchQuery}`;
                 }
                 return `/book/${this.isbn}`;
+            },
+            read(){
+                return this.$store.getters['bookcase/isFlaggedAsRead'](this.isbn);
+            },
+            reading(){
+                return this.$store.getters['bookcase/isFlaggedAsReading'](this.isbn);
             }
         },
         methods: {
