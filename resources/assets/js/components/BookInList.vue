@@ -18,9 +18,10 @@
                         <div class="content">
                             <p class="book-title has-text-weight-bold">
                                 <slot name="title">
-                                    <progress class="progress is-width-90" value="0" max="100"></progress>
-                                    <progress class="progress is-width-40" value="0" max="100"></progress>
-                                    <progress class="progress is-width-30" value="0" max="100"></progress>
+                                    {{titleToLength}}
+                                    <!--<progress class="progress is-width-90" value="0" max="100"></progress>-->
+                                    <!--<progress class="progress is-width-40" value="0" max="100"></progress>-->
+                                    <!--<progress class="progress is-width-30" value="0" max="100"></progress>-->
                                 </slot>
                             </p>
                             <p class="author">
@@ -43,6 +44,10 @@
     export default {
         props: {
             isbn: {
+                required: false,
+                default: false
+            },
+            title: {
                 required: false,
                 default: false
             },
@@ -70,16 +75,14 @@
                 }
                 return `/book/${this.isbn}`;
             },
-        },
-        methods: {
-            titleToLength(title) {
-                if (!title) {
+            titleToLength() {
+                if (!this.title) {
                     return false
                 }
-                if (title.length < 32) {
-                    return title
+                if (this.title.length < 25) {
+                    return this.title
                 }
-                return `${title.substring(0, 32)}...`
+                return `${this.title.substring(0, 25)}...`
             },
         }
     }

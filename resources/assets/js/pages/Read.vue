@@ -4,14 +4,14 @@
             <div class="content" v-if="! isLoading">
                 <div class="level is-mobile">
                     <div class="level-left">
-                        <h1 class="is-quicksans has-text-weight-semibold" >Read</h1>
+                        <h1 class="is-quicksans has-text-weight-semibold">Read</h1>
                     </div>
                 </div>
 
                 <transition-group class="columns is-multiline" name="fade" mode="out-in">
-                    <book-in-list v-for="(book, index) in read" :key="index" :isbn="book.isbn">
+                    <book-in-list v-for="(book, index) in read" :key="index" :isbn="book.isbn" :title="book.title">
                         <img slot="cover" class="image cover" :src="book.image" :alt="book.title">
-                        <template slot="title">{{book.title}}</template>
+                        <!--<template slot="title">{{book.title}}</template>-->
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <shelf-book-drop-down

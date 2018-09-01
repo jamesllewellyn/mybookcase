@@ -14,9 +14,9 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id">
+                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id" :title="book.title">
                         <img slot="cover"  class="image cover" :src="book.image" :alt="book.title">
-                        <template slot="title">{{book.title}}</template>
+                        <!--<template slot="title">{{book.title}}</template>-->
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <shelf-book-drop-down

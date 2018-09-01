@@ -9,9 +9,9 @@
                 </div>
 
                 <transition-group class="columns is-multiline" name="fade" mode="out-in">
-                    <book-in-list v-for="(book, index) in reading" :key="index" :isbn="book.isbn">
+                    <book-in-list v-for="(book, index) in reading" :key="index" :isbn="book.isbn" :title="book.title">
                         <img slot="cover" class="image cover" :src="book.image" :alt="book.title">
-                        <template slot="title">{{book.title}}</template>
+                        <!--<template slot="title">{{book.title}}</template>-->
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <shelf-book-drop-down

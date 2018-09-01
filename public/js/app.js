@@ -40657,12 +40657,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         isbn: {
+            required: false,
+            default: false
+        },
+        title: {
             required: false,
             default: false
         },
@@ -40689,17 +40694,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 return '/book/' + this.isbn + '?search=' + this.searchQuery;
             }
             return '/book/' + this.isbn;
-        }
-    },
-    methods: {
-        titleToLength: function titleToLength(title) {
-            if (!title) {
+        },
+        titleToLength: function titleToLength() {
+            if (!this.title) {
                 return false;
             }
-            if (title.length < 32) {
-                return title;
+            if (this.title.length < 25) {
+                return this.title;
             }
-            return title.substring(0, 32) + '...';
+            return this.title.substring(0, 25) + '...';
         }
     }
 });
@@ -40935,20 +40938,11 @@ var render = function() {
                   { staticClass: "book-title has-text-weight-bold" },
                   [
                     _vm._t("title", [
-                      _c("progress", {
-                        staticClass: "progress is-width-90",
-                        attrs: { value: "0", max: "100" }
-                      }),
-                      _vm._v(" "),
-                      _c("progress", {
-                        staticClass: "progress is-width-40",
-                        attrs: { value: "0", max: "100" }
-                      }),
-                      _vm._v(" "),
-                      _c("progress", {
-                        staticClass: "progress is-width-30",
-                        attrs: { value: "0", max: "100" }
-                      })
+                      _vm._v(
+                        "\n                                " +
+                          _vm._s(_vm.titleToLength) +
+                          "\n                                "
+                      )
                     ])
                   ],
                   2
@@ -44462,7 +44456,10 @@ var render = function() {
                   _vm._l(_vm.reading, function(book, index) {
                     return _c(
                       "book-in-list",
-                      { key: index, attrs: { isbn: book.isbn } },
+                      {
+                        key: index,
+                        attrs: { isbn: book.isbn, title: book.title }
+                      },
                       [
                         _c("img", {
                           staticClass: "image cover",
@@ -44473,10 +44470,6 @@ var render = function() {
                           },
                           slot: "cover"
                         }),
-                        _vm._v(" "),
-                        _c("template", { slot: "title" }, [
-                          _vm._v(_vm._s(book.title))
-                        ]),
                         _vm._v(" "),
                         _c("template", { slot: "authors" }, [
                           _vm._v(_vm._s(book.authors))
@@ -44777,7 +44770,10 @@ var render = function() {
                   _vm._l(_vm.read, function(book, index) {
                     return _c(
                       "book-in-list",
-                      { key: index, attrs: { isbn: book.isbn } },
+                      {
+                        key: index,
+                        attrs: { isbn: book.isbn, title: book.title }
+                      },
                       [
                         _c("img", {
                           staticClass: "image cover",
@@ -44788,10 +44784,6 @@ var render = function() {
                           },
                           slot: "cover"
                         }),
-                        _vm._v(" "),
-                        _c("template", { slot: "title" }, [
-                          _vm._v(_vm._s(book.title))
-                        ]),
                         _vm._v(" "),
                         _c("template", { slot: "authors" }, [
                           _vm._v(_vm._s(book.authors))
@@ -49712,7 +49704,11 @@ var render = function() {
                       "book-in-list",
                       {
                         key: index,
-                        attrs: { isbn: book.isbn, "shelf-id": _vm.shelf.id }
+                        attrs: {
+                          isbn: book.isbn,
+                          "shelf-id": _vm.shelf.id,
+                          title: book.title
+                        }
                       },
                       [
                         _c("img", {
@@ -49724,10 +49720,6 @@ var render = function() {
                           },
                           slot: "cover"
                         }),
-                        _vm._v(" "),
-                        _c("template", { slot: "title" }, [
-                          _vm._v(_vm._s(book.title))
-                        ]),
                         _vm._v(" "),
                         _c("template", { slot: "authors" }, [
                           _vm._v(_vm._s(book.authors))
@@ -50936,7 +50928,10 @@ var render = function() {
                       _vm._l(_vm.searchResults.data, function(book, index) {
                         return _c(
                           "book-in-list",
-                          { key: index, attrs: { isbn: book.isbn } },
+                          {
+                            key: index,
+                            attrs: { isbn: book.isbn, title: book.title }
+                          },
                           [
                             book.image
                               ? _c("img", {
@@ -50945,10 +50940,6 @@ var render = function() {
                                   slot: "cover"
                                 })
                               : _vm._e(),
-                            _vm._v(" "),
-                            _c("template", { slot: "title" }, [
-                              _vm._v(_vm._s(book.title))
-                            ]),
                             _vm._v(" "),
                             _c("template", { slot: "authors" }, [
                               _vm._v(_vm._s(book.authors))
