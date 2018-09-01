@@ -45,7 +45,8 @@
                             </router-link>
                         </div>
                         <div class="navbar-item" @click="toggleMobileMenu">
-                            <router-link exact active-class="is-active" :to="`/user/@${user.handle}`" @click="toggleMobileMenu">
+                            <router-link exact active-class="is-active" :to="`/user/@${user.handle}`"
+                                         @click="toggleMobileMenu">
                             <span class="icon">
                                 <i class="fa fa-user-circle"></i>
                             </span>
@@ -53,11 +54,31 @@
                             </router-link>
                         </div>
                         <div class="navbar-item" @click="toggleMobileMenu">
-                            <router-link active-class="is-active"  to="/friends/" @click="toggleMobileMenu">
+                            <router-link active-class="is-active" to="/friends/" @click="toggleMobileMenu">
                             <span class="icon">
                                 <i class="fa fa-users"></i>
                             </span>
                                 <span class="name">Friends</span>
+                            </router-link>
+                        </div>
+                        <div class="navbar-item" @click="toggleMobileMenu">
+                            <router-link class="item" active-class="is-active" tag="a" to="/reading/">
+                            <span class="icon">
+                                <i class="fas fa-book-reader"></i>
+                            </span>
+                                <span class="name">Reading</span>
+                                <span class="tag is-light is-pulled-right"
+                                >{{readingCount}}</span>
+                            </router-link>
+                        </div>
+                        <div class="navbar-item" @click="toggleMobileMenu">
+                            <router-link class="item" active-class="is-active" tag="a" to="/read/">
+                                     <span class="icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                                <span class="name">Read</span>
+                                <span class="tag is-light is-pulled-right"
+                                >{{readCount}}</span>
                             </router-link>
                         </div>
                         <div class="navbar-item">
@@ -108,6 +129,14 @@
                 required: true
             }
         },
+        computed: {
+            readCount() {
+                return this.$store.getters['bookcase/getReadCount'];
+            },
+            readingCount() {
+                return this.$store.getters['bookcase/getReadingCount'];
+            }
+        },
         methods: {
             toggleMobileMenu() {
                 return this.showMobileNav = !this.showMobileNav;
@@ -133,7 +162,7 @@
         .navbar-item {
             margin-top: 20px;
             margin-bottom: 20px;
-            a{
+            a {
                 color: #4a4a4a;
             }
         }
