@@ -3,7 +3,7 @@
 @import url("https://fonts.googleapis.com/css?family=Quicksand");
 
 .is-quicksans{
-    font-family: 'Quicksand', sans-serif;
+    font-family: Quicksand, Avenir, Helvetica, sans-serif;
 }
 
 body, body *:not(html):not(style):not(br):not(tr):not(code) {
@@ -12,7 +12,7 @@ body, body *:not(html):not(style):not(br):not(tr):not(code) {
 }
 
 body {
-    background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
+    background-color: #ffffff;
     color: #74787E;
     height: 100%;
     hyphens: auto;
