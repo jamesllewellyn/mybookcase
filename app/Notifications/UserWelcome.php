@@ -42,8 +42,8 @@ class UserWelcome extends Notification
     {
         return (new MailMessage)
             ->subject("Welcome to MyBookcase.co")
-            ->greeting("Hi {$notifiable->name}, welcome to My Bookcase")
-            ->line("Thank you for signing up with My Bookcase")
+            ->greeting("Hi {$notifiable->name}")
+            ->line("Welcome to My Bookcase, thank you for signing up.")
             ->line("Happy reading")
             ->action('Login',
                 url("/#/login")
