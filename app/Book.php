@@ -3,9 +3,16 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\UserBook;
 
 class Book extends Model
 {
+    /**
+     * The accessors to append to the model's array form.
+     *
+     * @var array
+     */
+    protected $appends = ['read', 'reading'];
 
     public $table = "books";
 
@@ -58,9 +65,19 @@ class Book extends Model
             ->wherePivot('deleted_at', '=', null)->withTimestamps();
     }
 
-
     public static function findByISBN($isbn)
     {
         return static::where(['isbn' => $isbn])->first();
+    }
+
+
+    public function getReadAttribute()
+    {
+        return UserBook::where(['book_id' => $this->id, 'user_id' => auth()->user()->id])->first()->read;
+    }
+
+    public function getReadingAttribute()
+    {
+        return UserBook::where(['book_id' => $this->id, 'user_id' => auth()->user()->id])->first()->reading;
     }
 }

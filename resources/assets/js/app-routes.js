@@ -8,6 +8,18 @@ let routes = [
         meta: { requiresAuth: false, hasShowSideMenu: false }
     },
     {
+        path: '/password-reset-request',
+        name: 'password-reset-request',
+        component: require('./pages/guest/PasswordResetRequest.vue'),
+        meta: { requiresAuth: false, hasShowSideMenu: false }
+    },
+    {
+        path: '/password-reset',
+        name: 'password-reset',
+        component: require('./pages/guest/PasswordReset.vue'),
+        meta: { requiresAuth: false, hasShowSideMenu: false }
+    },
+    {
         path: '/login',
         name: 'login',
         component: require('./pages/guest/Login.vue'),
@@ -23,6 +35,18 @@ let routes = [
         path: '/dashboard/',
         name: 'dashboard',
         component: require('./pages/Home.vue'),
+        meta: { requiresAuth: true, hasShowSideMenu: true  }
+    },
+    {
+        path: '/reading/',
+        name: 'reading',
+        component: require('./pages/Reading.vue'),
+        meta: { requiresAuth: true, hasShowSideMenu: true  }
+    },
+    {
+        path: '/read/',
+        name: 'read',
+        component: require('./pages/Read.vue'),
         meta: { requiresAuth: true, hasShowSideMenu: true  }
     },
     // {

@@ -18,8 +18,9 @@ class ShelfController extends Controller
     public function index()
     {
         $shelves = request()->user()->getShelves();
-
-        return $this->apiSuccess(['shelves' => $shelves]);
+        $reading = request()->user()->getReading()->pluck('isbn');
+        $read = request()->user()->getRead()->pluck('isbn');
+        return $this->apiSuccess(['shelves' => $shelves, 'reading' => $reading, 'read' => $read ]);
     }
 
     /**

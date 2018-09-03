@@ -4,10 +4,32 @@ export default {
     namespaced: true,
     state: {
         bookcase: null,
+        reading: [],
+        read: [],
     },
     mutations: {
         createBookcase: (state, {shelves}) => {
             return state.bookcase = new Bookcase(shelves);
+        },
+        updateReading: (state, {reading}) => {
+            return state.reading = reading;
+        },
+        addReading: (state, isbn) => {
+             state.reading.push(isbn);
+             return state.read = state.read.filter(readISBN => readISBN !== isbn);
+        },
+        removeReading: (state, isbn) => {
+            return state.reading = state.reading.filter(readISBN => readISBN !== isbn);
+        },
+        updateRead: (state, {read}) => {
+            return state.read = read;
+        },
+        addRead: (state, isbn) => {
+            state.read.push(isbn);
+            return state.reading = state.reading.filter(readISBN => readISBN !== isbn);
+        },
+        removeRead: (state, isbn) => {
+            return state.read = state.read.filter(readISBN => readISBN !== isbn);
         },
         addShelf: (state, {shelf}) => {
             return state.bookcase.addShelf(shelf);
@@ -35,6 +57,8 @@ export default {
             axios.get('/api/shelf')
                 .then((response) => {
                     commit('createBookcase', {shelves: response.data.shelves});
+                    commit('updateReading', {reading: response.data.reading});
+                    commit('updateRead', {read: response.data.read});
                 }, (error) => {
 
                 });
@@ -49,15 +73,15 @@ export default {
         },
         addShelf: ({commit}, name) => {
             return new Promise((resolve, reject) => {
-            axios.post(`/api/shelf`, {name : name})
-                .then((response) => {
-                    commit('addShelf', {shelf: response.data.shelf});
-                    return resolve(response);
-                }, (error) => {
-                    if (error.response.data) {
-                        return reject(error.response.data.errors);
-                    }
-                });
+                axios.post(`/api/shelf`, {name: name})
+                    .then((response) => {
+                        commit('addShelf', {shelf: response.data.shelf});
+                        return resolve(response);
+                    }, (error) => {
+                        if (error.response.data) {
+                            return reject(error.response.data.errors);
+                        }
+                    });
             });
         },
         updateShelf: ({commit}, {id, shelf}) => {
@@ -90,6 +114,9 @@ export default {
             return new Promise((resolve, reject) => {
                 axios.post(`/api/shelf/${shelfId}/book`, {isbn: isbn, isbn_13: false})
                     .then((response) => {
+                        if(!response.data.success){
+                            return resolve(response);
+                        }
                         commit('addBook', {shelfId: shelfId, book: response.data.book});
                         return resolve(response);
                     }, (error) => {
@@ -148,10 +175,34 @@ export default {
                 return false;
             }
             let shelf = state.bookcase.findBook(isbn);
-            if(!shelf){
+            if (!shelf) {
                 return false
             }
             return shelf[0];
+        },
+        getReadCount: (state) => {
+            if(!state.read){
+                return 0;
+            }
+            return state.read.length;
+        },
+        isFlaggedAsRead: (state) => (isbn) => {
+            if (!state.read) {
+                return false;
+            }
+            return state.read.find(readISBN => readISBN === isbn);
+        },
+        getReadingCount: (state) => {
+            if(!state.reading){
+                return 0;
+            }
+            return state.reading.length;
+        },
+        isFlaggedAsReading: (state) => (isbn) => {
+            if (!state.reading) {
+                return false;
+            }
+            return state.reading.find(readingISBN => readingISBN === isbn);
         },
     }
 }

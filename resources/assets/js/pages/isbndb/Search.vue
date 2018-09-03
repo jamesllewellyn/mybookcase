@@ -5,9 +5,9 @@
             <div class="search-results" v-if="!isSearching">
                 <div class="columns is-multiline" :class="{'is-loading' : isSearching}" v-if="searchResults">
 
-                    <book-in-list v-for="(book, index) in searchResults.data" :key="index"  :isbn="book.isbn">
+                    <book-in-list v-for="(book, index) in searchResults.data" :key="index"  :isbn="book.isbn" :title="book.title">
                         <img slot="cover"  class="image cover" :src="book.image" v-if="book.image">
-                        <template slot="title">{{book.title}}</template>
+                        <!--<template slot="title">{{book.title}}</template>-->
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <search-book-drop-down :isbn="book.isbn" :book="book">

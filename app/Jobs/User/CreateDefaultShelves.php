@@ -36,9 +36,7 @@ class CreateDefaultShelves implements ShouldQueue
     {
         $shelves = collect([
             ['name' => 'Favorites', 'public' => true],
-            ['name' => 'Reading', 'public' => false],
             ['name' => 'To Read', 'public' => false],
-            ['name' => 'Read', 'public' => false]
         ]);
 
         $shelves->map(function ($shelf) {
@@ -56,7 +54,7 @@ class CreateDefaultShelves implements ShouldQueue
 
     private function assignShelfBooks($shelf)
     {
-        return factory(ShelfBook::class, 10)->create([
+        return factory(UserBooks::class, 10)->create([
             'shelf_id' => $shelf->id,
         ]);
     }

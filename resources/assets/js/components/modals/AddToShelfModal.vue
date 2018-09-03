@@ -17,7 +17,6 @@
 </template>
 
 <script>
-    import store from '../../store';
     import Modal from '../../components/Modal.vue';
 
     export default {
@@ -30,10 +29,10 @@
             }
         },
         components:{Modal},
-        props: ['shelfId', 'userId', 'isVisible', 'book'],
+        props: ['isVisible', 'isbn'],
         computed: {
             shelves() {
-                return store.getters['bookcase/getShelves'];
+                return this.$store.getters['bookcase/getShelves'];
             }
         },
         methods: {
@@ -41,7 +40,7 @@
                 let self = this;
                 this.isLoading = true;
                 this.errorMessage = null;
-                this.$store.dispatch('bookcase/addBook', {shelfId: this.selectedShelf.id, isbn: this.book.isbn})
+                this.$store.dispatch('bookcase/addBook', {shelfId: this.selectedShelf.id, isbn: this.isbn})
                     .then((response) => {
                         if(! response.data.success){
                             self.errorMessage = response.data.message;

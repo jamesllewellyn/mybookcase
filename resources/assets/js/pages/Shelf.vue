@@ -14,21 +14,19 @@
                     </div>
                 </div>
                 <div class="columns is-multiline">
-                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id" :read="book.pivot.read">
+                    <book-in-list v-for="(book, index) in books" :key="index" :isbn="book.isbn" :shelf-id="shelf.id" :title="book.title">
                         <img slot="cover"  class="image cover" :src="book.image" :alt="book.title">
-                        <template slot="title">{{book.title}}</template>
+                        <!--<template slot="title">{{book.title}}</template>-->
                         <template slot="authors">{{book.authors}}</template>
                         <template slot="drop-down">
                             <shelf-book-drop-down
-                                    :read="book.pivot.read"
                                     :isbn="book.isbn"
-                                    :shelf-id="shelf.id"
-                                    @readToggled="updateRead(book.id)">
+                                    :shelf-id="shelf.id">
                             </shelf-book-drop-down>
                         </template>
                     </book-in-list>
 
-                    <shelf-book v-if="books.length === 0"></shelf-book>
+                    <message v-if="books.length === 0">Add books to this shelf and they will appear here.</message>
                 </div>
 
                 <nav class="pagination" role="navigation" aria-label="pagination" v-if="nextPageUrl || prevPageUrl">
@@ -46,9 +44,10 @@
 
 <script>
     import VueSimpleSpinner from 'vue-simple-spinner';
-    import ShelfOptionsDropDown from '../components/buttons/ShelfOptionsDropDown.vue';
-    import BookInList from '../components/BookInList.vue';
-    import ShelfBookDropDown from '../components/buttons/ShelfBookDropDown.vue';
+    import ShelfOptionsDropDown from '../components/buttons/ShelfOptionsDropDown';
+    import BookInList from '../components/BookInList';
+    import ShelfBookDropDown from '../components/buttons/ShelfBookDropDown';
+    import Message from '../components/Message';
 
     export default {
         data() {
@@ -60,7 +59,7 @@
                 books: []
             }
         },
-        components: {VueSimpleSpinner, ShelfOptionsDropDown, BookInList, ShelfBookDropDown},
+        components: {VueSimpleSpinner, ShelfOptionsDropDown, BookInList, ShelfBookDropDown, Message},
         computed: {
             id: function () {
                 if (!this.$route.params.id) {
@@ -94,10 +93,6 @@
                     }, (error) => {
                     });
             },
-            updateRead(bookId){
-                let book = this.books.find(book => book.id === bookId);
-                return book.pivot.read = !book.pivot.read;
-            }
         },
         watch: {
             /** whenever id changes, get shelf data */

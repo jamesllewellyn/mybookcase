@@ -5,6 +5,7 @@ namespace App;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Notifications\ResetPasswordNotification;
 
 class User extends Authenticatable
 {
@@ -68,6 +69,15 @@ class User extends Authenticatable
     /**
      * Get all users shelves.
      */
+    public function books()
+    {
+        return $this->belongsToMany(Book::class, 'user_books', 'user_id', 'book_id')
+            ->wherePivot('deleted_at', '=', null)->withTimestamps();
+    }
+
+    /**
+     * Get all users shelves.
+     */
     public function shelves()
     {
         return $this->hasMany(Shelf::class, 'user_id', 'id');
@@ -97,6 +107,17 @@ class User extends Authenticatable
         return $this->hasMany(FriendRequest::class, 'friend_id', 'id');
     }
 
+
+    public function read()
+    {
+        return $this->books()->where('user_books.read', true);
+    }
+
+    public function reading()
+    {
+        return $this->books()->where('user_books.reading', true);
+    }
+
     /************
      * Static Methods
      ************/
@@ -109,6 +130,11 @@ class User extends Authenticatable
     /************
      * Boolean Methods
      ************/
+
+    public function hasBook($bookId)
+    {
+        return $this->books()->where('books.id', $bookId)->exists();
+    }
 
 
     public function hasShelf($shelfId)
@@ -123,8 +149,9 @@ class User extends Authenticatable
 
     public function hasPendingFriendRequests($friendId)
     {
-        $receivedRequest =  $this->pendingFriendRequests()->where('friend_requests.user_id', $friendId)->exists();
+        $receivedRequest = $this->pendingFriendRequests()->where('friend_requests.user_id', $friendId)->exists();
         $sendRequest = $this->sentFriendRequests()->where('friend_requests.friend_id', $friendId)->exists();
+
         return $receivedRequest || $sendRequest;
     }
 
@@ -172,5 +199,40 @@ class User extends Authenticatable
     public function canAccessShelf($shelfId)
     {
         return $this->shelves()->where('id', $shelfId)->exists();
+    }
+
+    public function getReadCount()
+    {
+        return $this->read()->count();
+    }
+
+    public function getRead()
+    {
+        return $this->read()->get();
+    }
+
+    public function getReading()
+    {
+        return $this->reading()->get();
+    }
+
+    /***********************
+     * Action methods
+     **********************/
+
+    public function addBook($book)
+    {
+        return $this->books()->attach($book->id);
+    }
+
+    /**
+     * Send the password reset notification.
+     *
+     * @param  string $token
+     * @return void
+     */
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPasswordNotification($token));
     }
 }

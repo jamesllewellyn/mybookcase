@@ -1,9 +1,11 @@
 <template>
     <div class="dropdown" :class="[{'is-active' : isActive}, direction]" v-on-clickaway="hideDropdown">
         <div class="dropdown-trigger" @click.prevent="isActive = !isActive">
-            <button class="button is-transparent" aria-haspopup="true" aria-controls="dropdown-menu"
-                    :class="!boarder ? 'has-no-boarder' : ''">
-                <span v-text="text" v-if="text"></span>
+            <button class="button" aria-haspopup="true" aria-controls="dropdown-menu"
+                    :class="[{'has-no-boarder' : !boarder }, {'is-transparent' : transparent}]">
+                <span>
+                    <slot></slot>
+                </span>
                 <span class="icon is-small">
                      <i class="fa" :class="icon" aria-hidden="true"></i>
                 </span>
@@ -46,6 +48,10 @@
             direction: {
                 type: String,
                 default: ''
+            },
+            transparent: {
+                type: Boolean,
+                default: true
             }
         },
         methods: {

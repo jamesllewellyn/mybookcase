@@ -1,13 +1,11 @@
 <template>
-    <a class="button is-block" @click="openModal = true">
-                    <span class="icon">
-                      <i class="fa fa-plus-circle"></i>
-                    </span>
+    <a class="dropdown-item" @click="openModal = true">
         <span>Add To Shelf</span>
+
         <portal to="modals" v-if="openModal && isAuthenticated">
             <add-to-shelf-modal
                     :isVisible="openModal"
-                    :book="book"
+                    :isbn="isbn"
                     @close="openModal = false"
             >
             </add-to-shelf-modal>
@@ -37,7 +35,7 @@
                 return this.$store.getters['user/isAuthenticated'];
             },
         },
-        props: ['book'],
+        props: ['isbn'],
         components: {AddToShelfModal, LoginModal}
     }
 </script>

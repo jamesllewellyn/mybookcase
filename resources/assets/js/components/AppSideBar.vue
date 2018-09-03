@@ -36,6 +36,38 @@
                                 <i class="fa fa-users"></i>
                             </span>
                             <span class="name">Friends</span>
+                            <span class="tag is-danger is-pulled-right"
+                                  v-if="user.pending_friend_requests_count">{{user.pending_friend_requests_count}}</span>
+                        </router-link>
+                    </transition>
+                    <a href="" class="item" v-if="pageLoading">
+                        <progress class="progress is-width-70" value="0" max="100"></progress>
+                    </a>
+                </li>
+                <li>
+                    <transition name="fade" mode="out-in">
+                        <router-link class="item" active-class="is-active" tag="a" to="/reading/" v-if="!pageLoading">
+                            <span class="icon">
+                                <i class="fas fa-book-reader"></i>
+                            </span>
+                            <span class="name">Reading</span>
+                            <span class="tag is-light is-pulled-right"
+                            >{{readingCount}}</span>
+                        </router-link>
+                    </transition>
+                    <a href="" class="item" v-if="pageLoading">
+                        <progress class="progress is-width-70" value="0" max="100"></progress>
+                    </a>
+                </li>
+                <li>
+                    <transition name="fade" mode="out-in">
+                        <router-link class="item" active-class="is-active" tag="a" to="/read/" v-if="!pageLoading">
+                            <span class="icon">
+                                <i class="fas fa-book"></i>
+                            </span>
+                            <span class="name">Read</span>
+                            <span class="tag is-light is-pulled-right"
+                                 >{{readCount}}</span>
                         </router-link>
                     </transition>
                     <a href="" class="item" v-if="pageLoading">
@@ -46,10 +78,6 @@
             <p class="menu-label">
                 Bookcase
                 <shelf-add-button></shelf-add-button>
-                <!--<a class="is-pulled-right align-vertical tooltip is-tooltip-right is-primary"-->
-                            <!--data-tooltip="Add New Bookshelf" @click.prevent="triggerEvent('modalShow', 'shelfAdd')"><i-->
-                    <!--class="fa fa-plus-circle is-pulled-right align-vertical is-primary"-->
-                    <!--aria-hidden="true"></i></a>-->
             </p>
             <transition name="fade" mode="out-in">
                 <ul class="menu-list" v-if="!pageLoading">
@@ -102,6 +130,12 @@
         computed: {
             pageLoading() {
                 return this.$store.getters.getPageLoading && !this.user
+            },
+            readCount(){
+                return this.$store.getters['bookcase/getReadCount'];
+            },
+            readingCount(){
+                return this.$store.getters['bookcase/getReadingCount'];
             }
         },
         methods:{

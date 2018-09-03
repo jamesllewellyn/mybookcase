@@ -18,21 +18,17 @@
                         <div class="content">
                             <p class="book-title has-text-weight-bold">
                                 <slot name="title">
-                                    <progress class="progress is-width-90" value="0" max="100"></progress>
-                                    <progress class="progress is-width-40" value="0" max="100"></progress>
-                                    <progress class="progress is-width-30" value="0" max="100"></progress>
+                                    {{titleToLength}}
+                                    <!--<progress class="progress is-width-90" value="0" max="100"></progress>-->
+                                    <!--<progress class="progress is-width-40" value="0" max="100"></progress>-->
+                                    <!--<progress class="progress is-width-30" value="0" max="100"></progress>-->
                                 </slot>
                             </p>
                             <p class="author">
                                 <slot name="authors">
                                 </slot>
                             </p>
-                            <transition name="fade" mode="out-in">
-                                <div class="tags has-addons has-been-read" v-if="read">
-                                    <span class="tag"><i class="fas fa-book-reader"></i></span>
-                                    <span class="tag is-success">Read</span>
-                                </div>
-                            </transition>
+                            <book-status :isbn="isbn"></book-status>
                         </div>
                     </div>
                 </div>
@@ -43,9 +39,15 @@
 </template>
 
 <script>
+    import BookStatus from '../components/BookStatus';
+
     export default {
         props: {
             isbn: {
+                required: false,
+                default: false
+            },
+            title: {
                 required: false,
                 default: false
             },
@@ -57,17 +59,13 @@
                 type: Number,
                 required: false
             },
-            read: {
-                // type: Boolean,
-                default: false
-            },
             searchQuery: {
                 type: String,
                 required: false
             }
         },
+        components:{BookStatus},
         computed: {
-
             bookUrl() {
                 if (!this.isbn) {
                     return null;
@@ -76,17 +74,15 @@
                     return `/book/${this.isbn}?search=${this.searchQuery}`;
                 }
                 return `/book/${this.isbn}`;
-            }
-        },
-        methods: {
-            titleToLength(title) {
-                if (!title) {
+            },
+            titleToLength() {
+                if (!this.title) {
                     return false
                 }
-                if (title.length < 32) {
-                    return title
+                if (this.title.length < 25) {
+                    return this.title
                 }
-                return `${title.substring(0, 32)}...`
+                return `${this.title.substring(0, 25)}...`
             },
         }
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Shelf;
 use App\ShelfBook;
+use App\UserBook;
 use App\User;
 use Illuminate\Http\Request;
 use App\Traits\ApiResponse;
@@ -37,6 +38,8 @@ class ShelfBookController extends Controller
     {
         $this->authorize('access-shelf', [$shelf]);
 
+        $user = auth()->user();
+
         $shelfBook = new ShelfBook();
         /** validate the request data */
         $this->validate(Request(), $shelfBook->validation, $shelfBook->messages);
@@ -46,6 +49,11 @@ class ShelfBookController extends Controller
         }
 
         $book = $shelf->addBook($request->get('isbn'), $request->get('isbn_13'));
+
+        if(! $user->hasBook($book->id)){
+            $user->addBook($book);
+        }
+
         /** return success and added book*/
         return  $this->apiSuccess(['message' => "Book has been added to shelf {$shelf->name}", 'book' => $book]);
     }
