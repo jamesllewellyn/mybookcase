@@ -50862,7 +50862,7 @@ var render = function() {
                       _c("add-to-shelf-modal", {
                         attrs: {
                           isVisible: _vm.addToShelfModelOpen,
-                          book: _vm.book
+                          isbn: _vm.isbn
                         },
                         on: {
                           close: function($event) {
