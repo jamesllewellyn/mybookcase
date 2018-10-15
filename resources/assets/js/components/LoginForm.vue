@@ -71,16 +71,21 @@
             submit() {
                 let self = this;
                 this.isLoading = true;
+                this.$store.commit('appLoading');
                 this.$store.dispatch('authentication/login', {login: this.login})
                     .then((response) => {
                         self.isLoading = false;
-                        Event.$emit('changePage', '/dashboard/');
                         return self.$store.dispatch('user/get');
                     })
                     .then((response) => {
-                        return self.$store.dispatch('bookcase/get');
+                        self.$store.dispatch('bookcase/get');
+                        setTimeout(()=>{
+                          return this.$store.commit('appFinishedLoading');
+                        }, 2000);
+                        return Event.$emit('changePage', '/dashboard/');
                     })
                     .catch((error) => {
+                      this.$store.commit('appFinishedLoading');
                         self.isLoading = false;
                         return self.loginError = true;
                     });

@@ -23,7 +23,6 @@ class ISBNdb
         $this->client = new Client([
             'headers'  => ['Accept' => 'application/xml', 'x-api-key' => env('ISBNDB_API_KEY')],
             'base_uri' => 'https://api.isbndb.com/',
-
         ]);
     }
 
