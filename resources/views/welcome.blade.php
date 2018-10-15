@@ -21,7 +21,9 @@
     </app-mobile-nav-bar>
 
     <div class="columns is-gapless full-height">
+        <transition name="fade" mode="out-in">
         <app-side-bar :user="user" :bookcase="bookcase" v-if="isAuthenticated && hasShowSideMenu"></app-side-bar>
+        </transition>
         <div class="column full-height scrollable" :class="[isGuestPage ?  '' :  'is-10-desktop is-9-tablet' ]"
              ref="top">
             <div class="main-content" :class="{ 'page' : $route.name !== 'welcome'}">
@@ -51,7 +53,9 @@
         </div>
     </div>
     <portal-target name="modals" slim></portal-target>
-
+    <app-loading
+        :is-app-loading="isAppLoading">
+    </app-loading>
 </div>
 <script src="{{ mix('js/app.js') }}"></script>
 </body>

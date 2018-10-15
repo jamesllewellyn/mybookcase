@@ -45,23 +45,18 @@ Vue.component('login-form', require('./components/LoginForm.vue'));
 Vue.component('friends-search', require('./components/FriendSearch.vue'));
 /** bulma components **/
 Vue.component('drop-down-button', require('./components/bulma/DropDownButton.vue'));
+Vue.component('app-loading', require('./components/AppLoading.vue'));
 
 
 const app = new Vue({
     el: '#app',
     router,
     store,
-    data(){
-        return {
-             // : false,
-            // pageLoading: true
-        }
-    },
     components: {VueSimpleSpinner},
     computed: {
-        // pageLoading() {
-        //     return store.state.pageLoading;
-        // },
+        isAppLoading() {
+            return store.state.isAppLoading;
+        },
         user() {
             return store.getters['user/get'];
         },
@@ -92,7 +87,7 @@ const app = new Vue({
         logout(){
             this.$store.commit('authentication/logout');
             this.$store.commit('user/clear');
-            this.changePage('/');
+            this.changePage('/login');
         }
     },
     mounted() {
