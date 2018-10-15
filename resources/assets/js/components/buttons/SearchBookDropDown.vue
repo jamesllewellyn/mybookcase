@@ -9,7 +9,7 @@
                 <portal to="modals" v-if="addToShelfModelOpen">
                     <add-to-shelf-modal
                             :isVisible="addToShelfModelOpen"
-                            :book="book"
+                            :isbn="isbn"
                             @close="addToShelfModelOpen = false"
                     >
                     </add-to-shelf-modal>

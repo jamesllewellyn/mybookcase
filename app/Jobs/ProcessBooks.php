@@ -54,8 +54,8 @@ class ProcessBooks implements ShouldQueue
     private function addBook($book)
     {
         return Book::create([
-            'title'   => $book->title,
-            'authors' => $book->authors,
+            'title'   => substr($book->title, 0, 250),
+            'authors' => isset($book->authors) ? $book->authors : null,
             'isbn'    => $book->isbn,
             'isbn_13' => isset($book->isbn13) ? $book->isbn13 : null,
             'image'   => isset($book->image) ? $book->image : null,
@@ -71,8 +71,8 @@ class ProcessBooks implements ShouldQueue
     private function updateBook($storedBook, $book)
     {
         return $storedBook->update([
-            'title'   => $book->title,
-            'authors' => $book->authors,
+            'title'   => substr($book->title, 0, 250),
+            'authors' => isset($book->authors) ? $book->authors : null,
             'isbn'    => $book->isbn,
             'isbn_13' => isset($book->isbn13) ? $book->isbn13 : null,
             'image'   => isset($book->image) ? $book->image : null,

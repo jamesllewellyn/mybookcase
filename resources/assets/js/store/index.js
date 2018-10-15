@@ -17,9 +17,16 @@ const store = new Vuex.Store({
         bookcase
     },
     state: {
-        pageLoading: true,
+      isAppLoading: false,
     },
-
+    mutations:{
+        appLoading(state){
+            return state.isAppLoading = true;
+        },
+        appFinishedLoading(state){
+            return state.isAppLoading = false;
+        }
+    }
 });
 
 export default store;

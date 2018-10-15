@@ -12630,7 +12630,7 @@ label.panel-block:hover {
 
 /** code styles **/
 
-body {
+html {
   background-image: linear-gradient(135deg, #fdfcfb 0%, #e2d1c3 100%);
 }
 
@@ -12737,10 +12737,6 @@ body {
           box-shadow: 0 0 20px 0 #cfd2d478;
 }
 
-.main-content {
-  min-height: 900px;
-}
-
 @font-face {
   font-family: 'blokk';
   src: url("/fonts/blokk/blokkneue-regular-webfont.woff2") format("woff2"), url("/fonts/blokk/blokkneue-regular-webfont.woff") format("woff");
@@ -12828,8 +12824,8 @@ h1 {
 
 .fade-enter-active,
 .fade-leave-active {
-  -webkit-transition: opacity .3s;
-  transition: opacity .3s;
+  -webkit-transition: opacity .5s;
+  transition: opacity .5s;
 }
 
 .fade-enter,
