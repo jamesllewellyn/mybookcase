@@ -4,6 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <meta name="keywords" content="mybookcase, organise your books, organize your books, online bookshelf, catalogue your books, book cataloging, free book catalog, catalogue, library books online">
+
+    <meta name="description"
+          content="Your new online bookcase for organising, sharing and growing your book collection."/>
+
+    <meta property="og:title" content="Online orginisation for you books."/>
+    <meta property="og:description"
+          content="Your new online bookcase for organising, sharing and growing your book collection."/>
+    <meta property="og:image" content="https://mybookcase.co/images/social/homepage-screenshot.png"/>
+    <meta property="og:image:height" content="686"/>
+    <meta property="og:image:width" content="1279"/>
+    <meta property="og:site_name" content="My Bookcase"/>
+    <meta property="og:type" content="website"/>
+    <meta property="og:url" content="https://mybookcase.co"/>
+
     <title>My Bookcase</title>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css"
           integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
