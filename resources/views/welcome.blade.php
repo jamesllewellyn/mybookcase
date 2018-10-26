@@ -10,12 +10,13 @@
     <meta name="description"
           content="Your new online bookcase for organising, sharing and growing your book collection."/>
 
-    <meta property="og:title" content="Online orginisation for you books."/>
+    <meta property="og:title" content="Online orginisation for your books."/>
     <meta property="og:description"
           content="Your new online bookcase for organising, sharing and growing your book collection."/>
-    <meta property="og:image" content="https://mybookcase.co/images/social/homepage-screenshot.png"/>
-    <meta property="og:image:height" content="686"/>
-    <meta property="og:image:width" content="1279"/>
+    <meta property="og:image:secure_url" content="https://mybookcase.co/images/social/homepage-screenshot.png"/>
+    <meta property="og:image:type" content="image/png" />
+    {{--<meta property="og:image:height" content="686"/>--}}
+    {{--<meta property="og:image:width" content="1279"/>--}}
     <meta property="og:site_name" content="My Bookcase"/>
     <meta property="og:type" content="website"/>
     <meta property="og:url" content="https://mybookcase.co"/>
